@@ -2,9 +2,9 @@
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Routing;
 using Microsoft.AspNet.Routing.Template;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +33,8 @@ namespace NEXT
         {
             services.AddRouting();
             services.AddMvc();
+            services.AddSession();
+            services.AddCaching();
 
         }
 
@@ -50,7 +52,7 @@ namespace NEXT
             //routes
             var routeBuilder = new RouteBuilder();
             routeBuilder.ServiceProvider = app.ApplicationServices;
-            routeBuilder.Routes.Add(new TemplateRoute(new AuthRouter(), "auth/", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
+            //routeBuilder.Routes.Add(new TemplateRoute(new AuthRouter(), "auth/", app.ApplicationServices.GetService<IInlineConstraintResolver>()));
             routeBuilder.Build();
             app.UseRouter(routeBuilder.Build());
 
@@ -72,8 +74,9 @@ namespace NEXT
                 options.AutomaticAuthenticate = true;
                 options.AutomaticChallenge = true;
             });
+
             app.UseMvcWithDefaultRoute();
-            
+            app.UseSession();    
 
 
         }
