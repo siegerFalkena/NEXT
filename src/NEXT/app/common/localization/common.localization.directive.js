@@ -8,6 +8,7 @@ function flagSelector() {
         scope: {
             lln: '=',
         },
-        templateUrl: '/common/localization/partials/localizationSelector.html'
+        templateUrl: '/common/localization/partials/localizationSelector.html',
+        probablyUseless: "commons"
     }
 }

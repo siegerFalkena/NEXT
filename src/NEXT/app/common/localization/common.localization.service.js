@@ -50,6 +50,7 @@ function l10nFact($locale, $http, $log, $cookies, $rootScope) {
         function cb_failure(res) {
             $log.info('failed getting localization file: ' + res.status + "\t" + res.statusText);
         };
+
         $http.get(l10nService.currentLocale.file, {}).then(cb_success, cb_failure);
     };
 

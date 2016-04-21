@@ -1,12 +1,15 @@
+/// <binding BeforeBuild='devBuild' Clean='cleanDocs, cleanDist' />
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     util = require('gulp-util'),
     changed = require('gulp-changed'),
     sequence = require('run-sequence'),
     injectReload = require('gulp-inject-reload'),
+    lr = require('gulp-livereload'),
     bower = require('gulp-bower'),
     cookieParser = require('cookie-parser'),
-    Server = require('karma').Server,
+    express = require('express'),
+    expressLivereload = require('express-livereload'),
     clean = require('gulp-clean'),
     shell = require('gulp-shell');
 
@@ -83,6 +86,7 @@ gulp.task('copycomponents', ['copyCSS', 'copyImages'],
                 ASSET + 'bower/angular-resource/angular-resource.min.js',
                 ASSET + 'bower/angular-cookies/angular-cookies.min.js',
                 ASSET + 'bower/angular-route/angular-route.min.js',
+                ASSET + 'bower/livereload/dist/livereload.js',
                 ASSET + 'bower/angular-mocks/angular-mocks.js',
                 ASSET + 'bower/angular-ui-router/release/angular-ui-router.min.js',
                 ASSET + 'bower/angular-bootstrap/ui-bootstrap-tpls.min.js',
@@ -140,10 +144,9 @@ gulp.task('generateDocs', function(done) {
 });
 
 
-var lr;
 function reloadCB(event) {
-    var fileName = require('path').relative(__dirname +
-        '/dist/', event.path);
+    var fileName = require('path').relative(__dirname + "/" +
+        DIST, event.path);
 
     lr.changed({
         body: {
@@ -158,24 +161,16 @@ gulp.task('cleanDocs', function(){
 });
 
 
+gulp.task('cleanDist', function () {
+    return gulp.src([DIST + '**/*.*', DIST + '*.*'], { read: false }).pipe(clean());
+});
+
 gulp.task('test', function() {
     gulp.src(
         'assets/bower/angular-mocks/angular-mocks.js'
     ).pipe(gulp.dest('assets/js/'));
-    return sequence('devBuild', 'runTestServer');
+    return sequence('devBuild');
 });
-
-
-gulp.task('runTestServer', function(done) {
-    new Server({
-        configFile: __dirname +
-            '/karma.conf.js',
-        singleRun: true
-    }, function() {
-        done();
-    }).start();
-});
-
 
 gulp.task('buildWatcher', function() {
     util.log('watching ' + SRC + ' for build');
@@ -195,7 +190,8 @@ gulp.task('reloadWatcher', function() {
 });
 
 
-gulp.task('devEnv', function() {
+gulp.task('devEnv', function (cb) {
+    lr.listen();
     return sequence( 'devBuild', [
         'buildWatcher', 'reloadWatcher'
     ]);
