@@ -1,0 +1,47 @@
+<div class="container-fluid fullscreen" ng-controller="loginCtrl">
+    <div class="background-image fullscreen">
+        <div class="row fullscreen">
+            <form name="loginform">
+                <div class="col-md-2 col-md-offset-8 padding bgtranslucent">
+                    <div class="row logo-bg">
+                        <brand brand="brand"></brand>
+                        <brand brand="client" class="align-right"></brand>
+                        <flag-selector lln="l10n" class="navbar-brand pull-right"></flag-selector>
+                    </div>
+                    <div class="input-group input-group-lg col-lg-12 padding">
+                        <input type="text" name="username" class="form-control niceinput bgtranslucent submitbutton" ng-model="username" required 
+                        uib-tooltip="usernametooltip" 
+                        tooltip-enable="loginform.username.$error.required && ! loginform.username.$pristine"
+                        tooltip-placement="right"
+                        placeholder="{{l10n.getLocalized('username')}} ">
+                    </div>
+                    <div class="input-group input-group-lg col-lg-12 padding ">
+                        <input type="password" name="password" class="form-control niceinput bgtranslucent submitbutton" ng-model="password"
+                        uib-tooltip="passwordtooltip" 
+                        tooltip-enable="loginform.password.$error.required && ! loginform.username.$pristine"
+                        tooltip-placement="right"
+                        required placeholder="{{l10n.getLocalized('password')}} ">
+
+                    </div>
+                    <div class="input-group input-group-lg col-lg-12 padding ">
+                        <button class="form-control btn btn-lg btn-block bgtranslucent submitbutton niceinput" ng-disabled="loginform.$invalid" ng-click="login()">
+                            {{l10n.getLocalized('submit')}}  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-2 col-md-offset-8 padding bgtransparent">
+                    <div class="list-group">
+                        <a ng-show="loginform.username.$error.required && ! loginform.username.$pristine" class="list-group-item list-group-item-danger">
+                            <h4 class="message">{{l10n.getLocalized('username')}} {{l10n.getLocalized('required')}} !</h4>
+                        </a>
+                        <a ng-show="loginform.password.$error.required && ! loginform.password.$pristine" class="list-group-item list-group-item-danger">
+                            <h4 class="message">{{l10n.getLocalized('password')}} {{l10n.getLocalized('required')}} !</h4>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- <button class="btn btn-default btn-lg" ng-click="scope()">LOGSCOPE!</button> -->
+            </form>
+        </div>
+    </div>
+</div>

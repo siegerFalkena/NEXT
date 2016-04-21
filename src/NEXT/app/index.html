@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="assets/css/ui-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/metro-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="/LANG/localeFlags/flags.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/flags.css" />
+    
+</head>
+
+<body ng-app="concentrator" ng-controller="coreCtrl">
+    <div ng-if="!loginscreen">
+        <div class="row">
+            <navbar></navbar>
+            </hr>
+        </div>
+        <div class="row" style="padTop">
+            <div ui-view></div>
+        </div>
+    </div>
+    <div ng-if="loginscreen" class="fullscreen">
+        <loginscreen locale="l10n"></loginscreen>
+    </div>
+</body>
+<!--IMPORTS-->
+<script src="assets/js/angular.min.js"></script>
+<script src="assets/js/angular-cookies.min.js"></script>
+<script src="assets/js/angular-animate.min.js"></script>
+<script src="assets/js/angular-resource.min.js"></script>
+<script src="assets/js/angular-ui-router.min.js"></script>
+<script src="assets/js/ui-bootstrap-tpls.min.js"></script>
+<script src="assets/js/toArrayFilter.js"></script>
+<script src="assets/js/underscore-min.js"></script>
+<script src="assets/js/ui-grid.min.js"></script>
+
+<!--MODELS-->
+<script src="index.js"></script>
+<script src="concentrator/model/product/concentrator.model.product.js"></script>
+<script src="concentrator/model/product/concentrator.model.product.resource.js"></script>
+<script src="concentrator/model/product/concentrator.model.product.directive.js"></script>
+<script src="concentrator/model/product/concentrator.model.product.controller.js"></script>
+
+<script src="routes.js"></script>
+<script src="common/directives.js"></script>
+<script src="common/components/navbar/navbar.js"></script>
+<script src="common/components/navbar/navbarDirectives.js"></script>
+<script src="common/components/selector/selector.js"></script>
+<script src="common/components/selector/selectorDirectives.js"></script>
+<script src="concentrator/navbar/navbarController.js"></script>
+<script src="common/components/searchFilter/searchFilter.js"></script>
+<script src="common/components/searchFilter/searchFilterDirectives.js"></script>
+<script src="common/components/messageList/messageListDirectives.js"></script>
+
+     <!--LOCALIZATION-->
+<script src="common/localization/common.localization.js"></script>
+<script src="common/localization/common.localization.service.js"></script>
+<script src="common/localization/common.localization.directive.js"></script>
+    
+         <!--AUTHORIZATION-->
+<script src="common/auth/common.auth.js"></script>
+<script src="common/auth/common.auth.controller.js"></script>
+<script src="common/auth/common.auth.service.js"></script>
+
+</html>

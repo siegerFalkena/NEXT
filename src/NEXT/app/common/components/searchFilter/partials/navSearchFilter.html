@@ -1,0 +1,14 @@
+<div class="navbar-form input-group-btn">
+    <input type="text" class="form-control" aria-label="query input" ng-model="searchaction.query" placeholder="query" style="background-color: #FFF5ED;" ng-change="searchaction.filterchange(searchaction)">
+    <select uib-dropbown-menu class="btn btn-default form-control" name="multipleSelect" id="multipleSelect" ng-model="searchaction.querycategory" ng-change="searchaction.filterchange(searchaction)">
+        <option ng-repeat="category in searchaction.searchmetacategories" value="{{category}}" ng-if="searchaction.optionany">
+            {{category.name}}
+        </option>
+        <option ng-repeat="category in searchaction.searchcategories" value="{{category}}" ng-if="category.shown">
+            {{category.name}}
+        </option>
+    </select>
+    <button class="btn btn-default" type="button" ng-click="searchaction.go(searchaction)">
+        {{searchaction.actionLabel}}
+    </button>
+</div>

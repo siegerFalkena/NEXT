@@ -1,0 +1,22 @@
+{
+    "locale": "nl",
+    "save": "opslaan",
+    "submit": "Verder",
+    "product": "Producten",
+    "password": "wachtwoord",
+    "vendor": "Verkoper",
+    "category": "Categorie",
+    "channel": "Kanaal",
+    "order": "Orders",
+    "admin": "Administrator",
+    "addfilter": "voeg filter toe",
+    "filter": "filter tekst",
+    "user": "Gebruiker",
+    "username": "Gebruikersnaam",
+    "logout": "Uitloggen",
+    "query": "Query",
+    "search": "Zoek",
+    "isRequired": "is vereist",
+    "any": "elke",
+    "show properties": "toon eigenschappen"
+}

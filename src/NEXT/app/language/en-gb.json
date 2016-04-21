@@ -1,0 +1,23 @@
+{   
+    "locale": "gb",
+    "save": "Save",
+    "submit": "Submit",
+    "product": "Products",
+    "password": "Password",
+    "vendor": "Vendor",
+    "category": "Category",
+    "channel": "Channel",
+    "order": "Orders",
+    "user": "User",
+    "admin": "Admin",
+    "username": "Username",
+    "logout": "Logout",
+    "addfilter": "Add filter",
+    "filter": "filter",
+    "query": "Query",
+    "search": "Search",
+    "isRequired": "is required",
+    "any": "any",
+    "locale": "Locale",
+    "show properties": "show properties"
+}

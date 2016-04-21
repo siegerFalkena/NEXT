@@ -1,0 +1,59 @@
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="navbarCtrl">
+    <div class="navbar-header" style="margin-right: 40px">
+        <brand brand="diract"></brand>
+        <brand brand="brand"></brand>
+        <button type="button" class="nav navbar-toggle navbar-btn" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+            <span class="sr-only">{{l10n.getLocalized('togglenav')}}Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" uib-collapse="navCollapsed">
+        <ul class="nav navbar-nav">
+            <li class="menuitem">
+                <a href="#/product"><h4>{{l10n.getLocalized('product')}}</h4></a>
+            </li>
+            <li class="menuitem">
+                <a href="#/vendor"><h4>
+                {{l10n.getLocalized('vendor')}}</h4></a>
+            </li>
+            <li class="menuitem">
+                <a href="#/order"><h4>
+                {{l10n.getLocalized('order')}}</h4></a>
+            </li>
+            <li class="menuitem">
+                <a href="#/category"><h4>{{l10n.getLocalized('category')}}</h4></a>
+            </li>
+            <li class="menuitem">
+                <a href="#/channel"><h4>
+                {{l10n.getLocalized('channel')}}</h4></a>
+            </li>
+            <li class="menuitem" id="search-dropdown" uib-dropdown is-open="search.isopen">
+                <a href uib-dropdown-toggle>
+                    <h4><span class="glyphicon glyphicon-search"></span><span class="caret"></span></h4>
+                </a>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="search-dropdown">
+                    <li class="menuitem">
+                        <navSearchFilter searchaction="navaction"></navSearchFilter>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="menuitem" id="single-button" uib-dropdown is-open="admin.isopen">
+                <a href uib-dropdown-toggle>
+                    <h4>{{l10n.getLocalized('admin')}}<span class="caret"></span></h4>
+                </a>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li class="menuitem"><a href="#/user"><h5>{{l10n.getLocalized('user')}}</h5></a></li>
+                </ul>
+            </li>
+            <li class="menuitem padding">
+                <flag-selector lln="l10n"></flag-selector>
+            </li>
+            <li class="menuitem" style="padding-right: 20px">
+                <a ng-click="auth.logout()"><h4><span class="glyphicon glyphicon-log-out" aria-hidden="true"></h4></a>
+            </li>
+        </ul>
+</nav>
