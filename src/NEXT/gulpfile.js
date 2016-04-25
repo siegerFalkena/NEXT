@@ -9,7 +9,6 @@ var gulp = require('gulp'),
     bower = require('gulp-bower'),
     cookieParser = require('cookie-parser'),
     express = require('express'),
-    expressLivereload = require('express-livereload'),
     clean = require('gulp-clean'),
     shell = require('gulp-shell');
 

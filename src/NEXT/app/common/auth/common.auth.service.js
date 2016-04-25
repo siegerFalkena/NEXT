@@ -33,7 +33,8 @@ function authServiceF($http, $log, $cookies, $window) {
         $http.defaults.headers.common.username = username;
         $http.defaults.headers.common.password = password;
         $http.defaults.headers.common.remember = true;
-        var temp = $http.post('localhost:57319/api/auth', '').then(cb_success, cb_failure);
+        var temp = $http.post('api/auth', '').then(cb_success, cb_failure);
+        
         return temp;
     };
 

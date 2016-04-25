@@ -36,13 +36,15 @@ namespace API
 
         // POST api/auth
         [HttpPost]
-        public string Post([FromBody]string username, [FromBody]string password, [FromBody]string token)
+        public string Post([FromHeader]string username, [FromHeader]string password)
         {
             StringBuilder bulder = new StringBuilder();
             foreach (string key in Request.Headers.Keys) {
                 bulder.Append(key);
             }
-            Response.Cookies.Append("tokenCookie", "someValue", defaultCookieOptions);
+            Response.Cookies.Append("authToken", "someValue", defaultCookieOptions);
+            Response.Cookies.Append("user", "someValue", defaultCookieOptions);
+            Response.Cookies.Append("role", "someValue", defaultCookieOptions);
             return bulder.ToString();
         }
         
