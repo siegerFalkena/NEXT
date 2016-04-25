@@ -181,7 +181,8 @@ gulp.task('buildWatcher', function() {
 });
 
 
-gulp.task('reloadWatcher', function() {
+gulp.task('reloadWatcher', function () {
+    lr.listen();
     util.log('watching ' + DIST + 'for builds');
     return gulp.watch([DIST + '**/*.*', DIST +
         '*.*'
@@ -190,7 +191,6 @@ gulp.task('reloadWatcher', function() {
 
 
 gulp.task('devEnv', function (cb) {
-    lr.listen();
     return sequence( 'devBuild', [
         'buildWatcher', 'reloadWatcher'
     ]);

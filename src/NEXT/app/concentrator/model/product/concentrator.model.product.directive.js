@@ -10,7 +10,8 @@ function productlist() {
             searchaction: '=',
             itemlist: '=',
             messages: '=',
-            sortaction: '='
+            sortaction: '=',
+            snortaction: 'changed'
         },
         templateUrl: '/concentrator/views/product/productList.html'
     }
