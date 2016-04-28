@@ -49,19 +49,9 @@ namespace API
         }
         
         [HttpPut("{id}")]
-        public String Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]string value)
         {
-            StringBuilder builder = new StringBuilder();
-            try {
-                
-                foreach (String key in Request.Cookies.Keys) {
-                    builder.Append(key);
-                }
-
-                } catch (Exception e) {
-                builder.Append(e.ToString());
-            }
-            return builder.ToString();
+            return "";
         }
 
         // DELETE api/values/5

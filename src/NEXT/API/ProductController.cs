@@ -50,16 +50,18 @@ namespace API
             return productList;
         }
 
-        private List<String> tempObjectStore = new List<String>();
+        private List<string> tempObjectStore = new List<string>();
         // GET: api/product
         [HttpGet]
-        public IEnumerable<string> Get()
+        public String Get()
         {
             List<string> jsonlist = new List<string>();
+
             foreach (Product p in productList()) {
                 jsonlist.Add(JsonConvert.SerializeObject(p));
             }
-            return jsonlist;
+            
+            return JsonConvert.SerializeObject(productList());
         }
 
         // GET api/values/5

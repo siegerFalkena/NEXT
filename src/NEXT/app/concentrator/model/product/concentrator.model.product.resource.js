@@ -1,5 +1,5 @@
 'use strict';
-angular.module('concentrator.model.product', ['ngResource'])
+angular.module('concentrator.model.product')
     .config(['$resourceProvider', productResources])
     .service('productResources', ['$resource', '$log', productAPI]);
 
@@ -8,8 +8,8 @@ function productResources($resourceProvider) {
 }
 
 function productAPI($resource, $log) {
-    var Product = $resource('/REST/product/:productID', { productID: '@id' }, {
-        //functions
+    var Product = $resource('/api/product/:productID', { productID: '@id' }, {
+        query: { method: 'get', isArray: true, cancellable: true }
     });
 
     this.getClass = function() {

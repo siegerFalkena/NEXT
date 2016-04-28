@@ -49,7 +49,12 @@ gulp.task('build', ['components', 'docs'], function() {
 })
 
 
-gulp.task('devBuild', ['components', 'test'], function() {
+gulp.task('devBuild', ['components'], function () {
+    var liveReloadConfig = {
+        port: LIVERELOAD_PORT,
+        host: 'http://127.0.0.1',
+        script: 'livereload.js'
+    };
     gulp.src([SRC + '**/*.*'])
         .pipe(changed(DIST))
         .pipe(gulp.dest(DIST));
@@ -57,12 +62,7 @@ gulp.task('devBuild', ['components', 'test'], function() {
         .pipe(changed(DIST + 'app'))
         .pipe(gulp.dest(DIST));
     return gulp.src(SRC + 'index.html')
-        .pipe(injectReload({
-            port: LIVERELOAD_PORT,
-            host: 'http://" + (location.host || "localhost").split(":")[0] + "',
-            script: 'livereload.js',
-            snipver: 1
-        }))
+        //.pipe(injectReload(liveReloadConfig))
         .pipe(gulp.dest(DIST));
 })
 
@@ -80,11 +80,13 @@ gulp.task('copycomponents', ['copyCSS', 'copyImages'],
                 ASSET + 'bower/angular-sanitize/angular-sanitize.min.js',
                 ASSET + 'bower/underscore/underscore-min.js',
                 ASSET + 'bower/angular-ui-grid/ui-grid.min.js',
+                ASSET + 'bower/angular-ui-grid/ui-grid.js',
                 ASSET + 'bower/angular-toArrayFilter/toArrayFilter.js',
                 ASSET + 'bower/angular-animate/angular-animate.min.js',
                 ASSET + 'bower/angular-resource/angular-resource.min.js',
                 ASSET + 'bower/angular-cookies/angular-cookies.min.js',
                 ASSET + 'bower/angular-route/angular-route.min.js',
+                ASSET + 'bower/angular-touch/angular-touch.min.js',
                 ASSET + 'bower/livereload/dist/livereload.js',
                 ASSET + 'bower/angular-mocks/angular-mocks.js',
                 ASSET + 'bower/angular-ui-router/release/angular-ui-router.min.js',
@@ -145,7 +147,8 @@ gulp.task('generateDocs', function(done) {
 
 function reloadCB(event) {
     var fileName = require('path').relative(__dirname + "/" +
-        DIST, event.path);
+      DIST, event.path);
+    console.log(fileName);
 
     lr.changed({
         body: {
@@ -161,14 +164,7 @@ gulp.task('cleanDocs', function(){
 
 
 gulp.task('cleanDist', function () {
-    return gulp.src([DIST + '**/*.*', DIST + '*.*'], { read: false }).pipe(clean());
-});
-
-gulp.task('test', function() {
-    gulp.src(
-        'assets/bower/angular-mocks/angular-mocks.js'
-    ).pipe(gulp.dest('assets/js/'));
-    return sequence('devBuild');
+    return gulp.src([DIST + '**/*.*', DIST + '*.*', DIST], { read: false }).pipe(clean());
 });
 
 gulp.task('buildWatcher', function() {
@@ -182,15 +178,17 @@ gulp.task('buildWatcher', function() {
 
 
 gulp.task('reloadWatcher', function () {
-    lr.listen();
     util.log('watching ' + DIST + 'for builds');
     return gulp.watch([DIST + '**/*.*', DIST +
         '*.*'
-    ], reloadCB);
+    ], lr.event);
+
 });
 
 
 gulp.task('devEnv', function (cb) {
+    lr.listen();
+    console.log(lr)
     return sequence( 'devBuild', [
         'buildWatcher', 'reloadWatcher'
     ]);

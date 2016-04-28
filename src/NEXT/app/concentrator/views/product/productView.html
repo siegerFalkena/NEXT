@@ -1,6 +1,7 @@
 <div class="divide-nav" ng-controller="productCtrl" style="padding-top: 71px">
     <div class="col-md-12">
         <div class="row">
+            <div id="grid1" ui-grid="gridOptions" class="grid"></div>
             <div class="col-md-6 col-md-offset-2">
                 <div class="input-group padding">
                     <!-- /btn-group -->
@@ -11,11 +12,7 @@
                         
                         </button>
                         <ul uib-dropdown-menu class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">{{l10n.getLocalized('addfilter')}}</a></li>
                         </ul>
                         <button type="button" class="btn btn-default">
                         {{l10n.getLocalized('addfilter')}}
@@ -24,12 +21,7 @@
                 </div>
                 <!-- /input-group -->
             </div>
-        </div>
-        <h1>LIST</h1>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-              <div id="grid1" ui-grid="{ data: resourceList }" class="grid"></div>
-            </div>
-        </div>
+           </div>
     </div>
+            
 </div>

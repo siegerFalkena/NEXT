@@ -1,6 +1,4 @@
 'use strict';
-angular.module('concentrator.model.product').directive('productlist',
-    productlist);
 
 function productlist() {
     return {
