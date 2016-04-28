@@ -14,9 +14,10 @@ function productCtrl($q, $scope ,productResources , $log ,l10n) {
     var Product = productResources.getClass();
     var query = Product.query();
     var promise = query.$promise;
+    $scope.gridOptions = {};
 
     function cb_success(resolvedValue) {
-        $scope.list = resolvedValue;
+        $scope.gridOptions.data = resolvedValue;
         $log.info(resolvedValue);
     }
     function cb_failure(response){
