@@ -24,6 +24,11 @@ body,
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow-x:hidden;
+}
+
+div {
+    overflow-x:hidden;
 }
 
 .navbar-brand {
@@ -89,12 +94,6 @@ h4, .submitbutton {
     border: none;
 }
 
-
-.rightest {
-    margin-right: 20px;
-}
-
 .grid {
-    width: 500px;
-    height: 500px;
+    width:100%;
 }

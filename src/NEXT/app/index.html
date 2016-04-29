@@ -1,25 +1,22 @@
 <!doctype html>
 <html lang="en">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <head>
     <link rel="stylesheet" type="text/css" href="assets/css/ui-grid.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/metro-bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="assets/css/flags.css" />
-    
+    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
 </head>
-<body ng-app="concentrator" ng-controller="coreCtrl">
+<body ng-app="concentrator" ng-controller="coreCtrl" class="fullscreen">
     <div ng-if="!loginscreen">
-        <div class="row">
             <navbar></navbar>
             </hr>
-        </div>
-        <div class="row" style="padTop">
+        <div style="padTop">
             <div ui-view></div>
         </div>
     </div>
-    <div ng-if="loginscreen" class="fullscreen">
-        <loginscreen locale="l10n"></loginscreen>
+    <div ng-if="loginscreen">
+        <loginscreen locale="l10n" class="fullscreen"></loginscreen>
     </div>
 </body>
 <!--IMPORTS-->
@@ -33,15 +30,11 @@
 <script src="assets/js/toArrayFilter.js"></script>
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/ui-grid.min.js"></script>
-
-
 <!--MODELS-->
 <script src="index.js"></script>
 <script src="concentrator/model/product/concentrator.model.product.js"></script>
 <script src="concentrator/model/product/concentrator.model.product.resource.js"></script>
-<script src="concentrator/model/product/concentrator.model.product.directive.js"></script>
-<script src="concentrator/model/product/concentrator.model.product.controller.js"></script>
-
+<script src="concentrator/controller/concentrator.controller.product.js"></script>
 <script src="routes.js"></script>
 <script src="common/directives.js"></script>
 <script src="common/components/navbar/navbar.js"></script>
@@ -52,13 +45,11 @@
 <script src="common/components/searchFilter/searchFilter.js"></script>
 <script src="common/components/searchFilter/searchFilterDirectives.js"></script>
 <script src="common/components/messageList/messageListDirectives.js"></script>
-
-     <!--LOCALIZATION-->
+<!--LOCALIZATION-->
 <script src="common/localization/common.localization.js"></script>
 <script src="common/localization/common.localization.service.js"></script>
 <script src="common/localization/common.localization.directive.js"></script>
-    
-         <!--AUTHORIZATION-->
+<!--AUTHORIZATION-->
 <script src="common/auth/common.auth.js"></script>
 <script src="common/auth/common.auth.controller.js"></script>
 <script src="common/auth/common.auth.service.js"></script>

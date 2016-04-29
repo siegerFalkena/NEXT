@@ -1,5 +1,5 @@
-<div class="divide-nav" ng-controller="productCtrl" style="padding-top: 71px">
-    <div class="col-md-12">
+<div class="divide-nav" ng-controller="productListCtrl" style="padding-top: 71px">
+    <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12">
         <div class="row">
             <div class="col-md-6 col-md-offset-2">
                 <div class="input-group padding">
@@ -21,7 +21,9 @@
                 <!-- /input-group -->
             </div>
            </div>
-            <div id="grid1" ui-grid="gridOptions" class="grid"></div>
     </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div id="grid1" ui-grid="gridOptions" ui-grid-edit ui-grid-pagination style="width:100%; height:100%"></div>
+    </div> 
             
 </div>

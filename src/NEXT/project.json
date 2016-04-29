@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "compilationOptions": {
     "emitEntryPoint": true
@@ -36,8 +36,7 @@
         "System.Web.Extensions": "4.0.0.0"
       }
     },
-    "dnxcore50": {
-    }
+    "dnxcore50": {    }
   },
 
   "exclude": [

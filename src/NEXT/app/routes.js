@@ -1,7 +1,7 @@
 'use strict';
 angular.module('concentrator')
     .run(['$rootScope', '$state', '$stateParams',
-        function($rootScope, $state, $stateParams) {
+        function ($rootScope, $state, $stateParams) {
 
             // It's very handy to add references to $state and $stateParams to the $rootScope
             // so that you can access them from any scope within your applications.For example,
@@ -13,22 +13,10 @@ angular.module('concentrator')
     ])
     .config(
         ['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
-            function($stateProvider, $urlRouterProvider,
+            function ($stateProvider, $urlRouterProvider,
                 $urlMatcherFactoryProvider) {
 
-                $urlMatcherFactoryProvider.type('contact', ['contacts',
-                    function(contacts) {
-                        return {
-                            encode: function(contact) {
-                                return contact.id;
-                            },
-                            decode: function(id) {
-                                return contacts.get(id);
-                            },
-                            pattern: /[0-9]{1,4}/
-                        };
-                    }
-                ]);
+               
 
                 /////////////////////////////
                 // Redirects and Otherwise //
@@ -43,7 +31,7 @@ angular.module('concentrator')
                 // .when('/user/:id', '/contacts/:id')
 
                 // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
-                    .otherwise('/');
+                    .otherwise('/404');
 
 
                 //////////////////////////
@@ -51,16 +39,32 @@ angular.module('concentrator')
                 //////////////////////////
 
                 // Use $stateProvider to configure your states.
-                $stateProvider
 
                 //////////
                 // Home //
                 //////////
 
-                    .state("product", {
-                        url: '/product',
-                        templateUrl: 'concentrator/views/product/productView.html'
-                    });
+
+                  
+                $stateProvider
+                .state('product', {
+                    url: '/product',
+                    abstract: true,
+                    template: '<ui-view/>'
+                })
+                 .state('product.list', {
+                    url: '',
+                    templateUrl: "concentrator/views/product/productList.html"
+                }).state("product.detail", {
+                    url: '/{id}',
+                    templateUrl: "concentrator/views/product/productViewLarge.html"
+                }).state("home", {
+                    url: '/home',
+                    templateUrl: 'concentrator/views/Home/home.html'
+                }).state('404', {
+                    url: '/404',
+                    templateUrl: '404.html'
+                });
 
             }
         ]

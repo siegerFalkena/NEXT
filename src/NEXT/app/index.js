@@ -12,6 +12,7 @@ angular.module('concentrator', [
         'ui.bootstrap.tooltip',
         'concentrator.concentrator.navbar',
         'concentrator.model.product',
+        'concentrator.controller.product',
         'common.localization',
         'common.auth',
         'ngCookies'

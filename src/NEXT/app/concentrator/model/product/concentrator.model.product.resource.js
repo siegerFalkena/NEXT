@@ -8,8 +8,7 @@ function productResources($resourceProvider) {
 }
 
 function productAPI($resource, $log) {
-    var Product = $resource('/api/product/:productID', { productID: '@id' }, {
-        query: { method: 'get', isArray: true, cancellable: true }
+    var Product = $resource('/api/product/:productId', { productId: '@id' }, {
     });
 
     this.getClass = function() {

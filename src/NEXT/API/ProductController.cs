@@ -14,9 +14,108 @@ using System.IO;
 
 namespace API
 {
-    [Route("api/[controller]")]
+    [Route("api/product")]
     public class ProductController : Controller
     {
+
+        private static List<string> names = new List<string> {"Papaya", "Banana", "Cherry", "Apple", "Pear" , "Orange", "Durian" , "Dragonfruit"
+            , "Kiwi", "Qumquat", "Lime", "Lemon", "Jujube", "Olive", "Melon", "Tomato", "Coconut", "Apple",
+"Apricot",
+"Avocado",
+"Banana",
+"Bilberry",
+"Blackberry",
+"Blackcurrant",
+"Blueberry",
+"Boysenberry",
+"Cantaloupe",
+"Currant",
+"Cherry",
+"Cherimoya",
+"Cloudberry",
+"Coconut",
+"Cranberry",
+"Damson",
+"Date",
+"Dragonfruit",
+"Durian",
+"Elderberry",
+"Feijoa",
+"Fig",
+"Goji berry",
+"Gooseberry",
+"Grape",
+"Raisin",
+"Grapefruit",
+"Guava",
+"Huckleberry",
+"Jabuticaba",
+"Jackfruit",
+"Jambul",
+"Jujube",
+"Juniper berry",
+"Kiwifruit",
+"Kumquat",
+"Lemon",
+"Lime",
+"Loquat",
+"Lychee",
+"Mango",
+"Marionberry",
+"Melon",
+"Cantaloupe",
+"Honeydew",
+"Watermelon",
+"Miracle fruit",
+"Mulberry",
+"Nectarine",
+"Nance",
+"Olive",
+"Orange",
+"Blood orange",
+"Clementine",
+"Mandarine",
+"Tangerine",
+"Papaya",
+"Passionfruit",
+"Peach",
+"Pear",
+"Persimmon",
+"Physalis",
+"Plantain",
+"Plum/prune(dried plum)",
+"Pineapple",
+"Pomegranate",
+"Pomelo",
+"Purple mangosteen",
+"Quince",
+"Raspberry",
+"Salmonberry",
+"Rambutan",
+"Redcurrant",
+"Salal berry",
+"Salak",
+"Satsuma",
+"Star fruit",
+"Strawberry",
+"Tamarillo",
+"Tamarind",
+"Ugli fruit"};
+        private static Random random = new Random();
+        private static List<Product> randomProductList(int number)
+        {
+            List<Product> products = new List<Product>();
+            for (int i = 0; i < number; i++)
+            {
+                string name = names[random.Next(names.Count)];
+                Product product = new Product(i, name, random.NextDouble() * 20);
+                products.Add(product);
+            }
+            return products;
+        }
+
+        private List<Product> productList = randomProductList(200);
+
 
         JsonSerializer serializer = new JsonSerializer();
         public class Product
@@ -33,43 +132,49 @@ namespace API
             }
         }
 
-        public List<Product> productList()
-        {
-            List<Product> productList = new List<Product>();
-            productList.Add(new Product(1, "dragonfruit", 9.999));
-            productList.Add(new Product(1, "apple", 9.999));
-            productList.Add(new Product(1, "pear", 9.999));
-            productList.Add(new Product(1, "durian", 9.999));
-            productList.Add(new Product(1, "cherry", 9.999));
-            productList.Add(new Product(1, "papapaya", 9.999));
-            productList.Add(new Product(1, "banana", 9.999));
-            productList.Add(new Product(1, "granaatapple", 9.999));
-            productList.Add(new Product(1, "limoen", 9.999));
-            productList.Add(new Product(1, "citroen", 9.999));
-            productList.Add(new Product(1, "meloen", 9.999));
-            return productList;
-        }
-
         private List<string> tempObjectStore = new List<string>();
         // GET: api/product
         [HttpGet]
         public String Get()
         {
-            List<string> jsonlist = new List<string>();
-
-            foreach (Product p in productList()) {
-                jsonlist.Add(JsonConvert.SerializeObject(p));
+            int page = 0;
+            int results = 25;
+            try
+            {
+                var query = Request.Query;
+                if (query.Keys.Contains("page"))
+                {
+                    page = int.Parse(query["page"]);
+                }
+                if (query.Keys.Contains("results"))
+                {
+                    page = int.Parse(query["results"]);
+                }
+                List<Product> templist = productList.GetRange(page*results, results);
+                return JsonConvert.SerializeObject(templist);
             }
-            
-            return JsonConvert.SerializeObject(productList());
+            catch (Exception e)
+            {
+                return JsonConvert.SerializeObject(e);
+            }
         }
 
-        // GET api/values/5
+        // GET: api/product
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            Product temp = null;
+            try
+            {
+                temp = productList[id];
+            }
+            catch (Exception e)
+            {
+                return JsonConvert.SerializeObject(e);
+            }
+            return JsonConvert.SerializeObject(temp);
         }
+
 
         // POST api/values
         [HttpPost]
