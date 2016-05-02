@@ -19,5 +19,9 @@
   "isRequired": "is vereist",
   "any": "elke",
   "show properties": "toon eigenschappen",
-  "price": "prijs"
+  "price": "prijs",
+  "description": "beschrijving",
+  "add": "toevoegen",
+  "remove": "verwijderen",
+  "refresh":  "verversen"
 }

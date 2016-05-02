@@ -16,7 +16,7 @@ angular.module('concentrator')
             function ($stateProvider, $urlRouterProvider,
                 $urlMatcherFactoryProvider) {
 
-               
+
 
                 /////////////////////////////
                 // Redirects and Otherwise //
@@ -45,7 +45,7 @@ angular.module('concentrator')
                 //////////
 
 
-                  
+
                 $stateProvider
                 .state('product', {
                     url: '/product',
@@ -53,18 +53,23 @@ angular.module('concentrator')
                     template: '<ui-view/>'
                 })
                  .state('product.list', {
-                    url: '',
-                    templateUrl: "concentrator/views/product/productList.html"
-                }).state("product.detail", {
-                    url: '/{id}',
-                    templateUrl: "concentrator/views/product/productViewLarge.html"
-                }).state("home", {
-                    url: '/home',
-                    templateUrl: 'concentrator/views/Home/home.html'
-                }).state('404', {
-                    url: '/404',
-                    templateUrl: '404.html'
-                });
+                     url: '',
+                     templateUrl: "concentrator/views/product/productList.html"
+                 }).state("product.detail", {
+                     url: '/{id}',
+                     templateUrl: "concentrator/views/product/productViewLarge.html"
+                 }).state("product.new", {
+                     url: '/',
+                     params: { isNew: true},
+                     templateUrl: "concentrator/views/product/productViewLarge.html"
+                 })
+                    .state("home", {
+                        url: '/home',
+                        templateUrl: 'concentrator/views/Home/home.html'
+                    }).state('404', {
+                        url: '/404',
+                        templateUrl: '404.html'
+                    });
 
             }
         ]

@@ -2,39 +2,50 @@
     <div class="row" style="margin-top:81px">
         <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
             <div class="row">
-                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
-                    <img class="img-responsive" src="http://s4.evcdn.com/images/block/I0-001/017/919/495-8.jpeg_/institute-7th-annual-fruit-beer-cider-festival-95.jpeg" />
-                    <button ng-show="edit" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                    <div class="col-lg-2 col-md-4 col-sm-3 col-xs-3">
+                        <img class="img-responsive" src="http://s4.evcdn.com/images/block/I0-001/017/919/495-8.jpeg_/institute-7th-annual-fruit-beer-cider-festival-95.jpeg" />
+                        <button ng-show="edit" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></button>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4" style="margin-top: 30px">
+                        <button class="btn btn-lg btn-default" ng-show="!edit" ng-click="edit = !edit"><span class="glyphicon glyphicon-pencil"></span></button>
+                        <button class="btn btn-lg btn-default" ng-show="edit" ng-click="edit = !edit"><span class="glyphicon glyphicon-ok"></span></button>
+                        <button class="btn btn-lg btn-default" ng-show="edit" ng-click="product.$save(); edit = !edit"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
                     <div class="page-header text-center">
                         <h1 id="productName" ng-show="!edit">{{product.name ? product.name : 'product.name'}}</h1>
 
                         <div class="col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1 input-group-lg text-center" ng-show="edit">
-                            <h1><input type="text" class="input-group" ng-model="product.name" /></h1>
+                            <h1><input type="text" class="input-group" ng-model="product.name" placeholder="product.name" /></h1>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4" style="margin-top: 30px">
-                    <button class="btn btn-lg btn-default" ng-init="edit = false" ng-show="!edit" ng-click="edit = !edit"><span class="glyphicon glyphicon-pencil"></span></button>
-                    <button class="btn btn-lg btn-default" ng-show="edit" ng-click="edit = !edit"><span class="glyphicon glyphicon-ok"></span></button>
-                    <button class="btn btn-lg btn-default" ng-show="edit" ng-click="save(); edit = !edit"><span class="glyphicon glyphicon-remove"></span></button>
 
-                </div>
             </div>
-            <div class="row" style="margin-top:20px">
-                <div class="col-lg-5 col-md-5 col-sm-10 col-xs-10">
+            <div class="row">
+
+                <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3" ng-if="!edit">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><h1 class="text-muted">{{l10n.getLocalized('description')}}</h1></div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-8 col-xs-12">
+                    <h3 ng-if="!edit"><small>{{product.description}}</small></h3>
+                    <textarea ng-if="edit" class="form-control" placeholder="{{l10n.getLocalized('description')}}" ng-model="product.description"></textarea>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
                     <div class="input-group input-group-lg">
                         <span class="input-group-addon" id="spanprice">{{l10n.getLocalized('price')}}</span>
                         <input type="number" ng-model="product.price" class="form-control" placeholder="product.price" aria-describedby="spanprice" ng-disabled="!edit">
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-5 col-sm-10 col-xs-10" style="">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6" style="">
                     <div class="input-group input-group-lg">
                         <span class="input-group-addon" id="spanprice">Id</span>
                         <input type="number" ng-model="product.ID" class="form-control" placeholder="product.ID" aria-describedby="spanprice" disabled>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

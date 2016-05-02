@@ -9,10 +9,11 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
+using NEXT.API.Model;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace API
+namespace NEXT.API
 {
     [Route("api/product")]
     public class ProductController : Controller
@@ -101,14 +102,20 @@ namespace API
 "Tamarillo",
 "Tamarind",
 "Ugli fruit"};
+
         private static Random random = new Random();
         private static List<Product> randomProductList(int number)
         {
             List<Product> products = new List<Product>();
+            List<Category> categories = new List<Category>();
             for (int i = 0; i < number; i++)
             {
                 string name = names[random.Next(names.Count)];
-                Product product = new Product(i, name, random.NextDouble() * 20);
+                int[] categoryKeys = new int[random.Next(CategoryController.categories.Count)];
+                for (int j = 0; j < categoryKeys.Length; j++) {
+                    categoryKeys[j] = CategoryController.categories[random.Next(CategoryController.categories.Count)].id;
+                }
+                Product product = new Product(i, name, random.NextDouble() * 20, categoryKeys);
                 products.Add(product);
             }
             return products;
@@ -118,19 +125,7 @@ namespace API
 
 
         JsonSerializer serializer = new JsonSerializer();
-        public class Product
-        {
-            public string name;
-            public int ID;
-            public double price;
-
-            public Product(int id, string name, double price)
-            {
-                this.ID = id;
-                this.name = name;
-                this.price = price;
-            }
-        }
+       
 
         private List<string> tempObjectStore = new List<string>();
         // GET: api/product
