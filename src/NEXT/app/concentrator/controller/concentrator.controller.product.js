@@ -12,8 +12,6 @@ function productListCtrl($q, $scope ,productResources , $log ,l10n, $rootScope, 
 
 
     $log.info(uiGridConstants);
-    uiGridConstants.scrollbars.ALWAYS= 0;
-    uiGridConstants.scrollbars.NEVER = 1;
 
     //product resource class
     var Product = productResources.getClass();
