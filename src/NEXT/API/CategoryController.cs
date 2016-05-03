@@ -1,60 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+
 using NEXT.API.Model;
+
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NEXT.API
 {
+
     [Route("api/[controller]")]
     public class CategoryController : Controller
     {
-        public static Random r = new Random();
-        public static List<Category> categories = generateCategories(20);
+        private readonly ILogger<CategoryController> logger;
+        private ApplicationContext ctx;
 
-        public static List<Category> generateCategories(int number)
+        public CategoryController(ApplicationContext ctx,  ILogger<CategoryController> logger)
         {
-            string[] typicalKeywords = { "sweet", "sour", "tangy", "green", "red", "hard", "soft", "dangerous" };
-            List<Category> list = new List<Category>(number);
-            for (int i = 0; i < number; i++)
-            {
-                Category cat = new Category(i);
-                for (int j = 0; j < r.Next(typicalKeywords.Length); j++) {
-                    cat.keywords.Add(typicalKeywords[r.Next(typicalKeywords.Length)]);
-                }
-                list.Add(cat);
-            }
-            return list;
+            this.logger = logger;
+            this.ctx = ctx;
         }
+
 
         // GET: api/category
         [HttpGet]
         public String Get()
         {
-            return JsonConvert.SerializeObject(categories);
+            return JsonConvert.SerializeObject(ctx.products.ToList());
         }
 
-        // GET api/values/5
+        // GET api/category/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            try {
-                return JsonConvert.SerializeObject(categories[id]);
+            var category= ctx.categories.Where<Category>(Category => Category.id == id);
+            return JsonConvert.SerializeObject(category);
+        }
+
+        // POST api/category
+        [HttpPost]
+        public void Post([FromBody]string description)
+        {
+            Category cat = new Category();
+            try
+            {
+                cat.description = description;
+                cat.name = "name";
+                ctx.categories.Add(cat);
+                ctx.SaveChangesAsync();
             }
-            catch (Exception e) {
-                return JsonConvert.SerializeObject(e);
+            catch (Exception e)
+            {
+                cat.description = e.Message.ToString();
+                cat.name = e.Message.ToString();
+                ctx.categories.Add(cat);
+                ctx.SaveChanges();
             }
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
+
 
         // PUT api/values/5
         [HttpPut("{id}")]

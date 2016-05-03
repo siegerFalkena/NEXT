@@ -10,6 +10,9 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNet.StaticFiles;
 using Microsoft.Extensions.Logging;
+using NEXT.API.Model;
+using Microsoft.Data.Entity;
+using NEXT.API;
 
 namespace NEXT
 {
@@ -31,6 +34,8 @@ namespace NEXT
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = @"Server=localhost,2301;Database=NEXT;User ID=NEXT;Password=password31!;";
+            services.AddEntityFramework().AddSqlServer().AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
             services.AddRouting();
             services.AddMvc();
             services.AddSession();
@@ -39,7 +44,7 @@ namespace NEXT
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseIISPlatformHandler();
 
@@ -63,7 +68,7 @@ namespace NEXT
             };
 
             app.UseFileServer(fileServerOptions);
-
+            
             fileOptions.DefaultFileNames.Clear();
             fileOptions.DefaultFileNames.Add("htmlpage.html");
             app.UseDefaultFiles();                    
@@ -75,9 +80,13 @@ namespace NEXT
                 options.AutomaticChallenge = true;
             });
 
-            app.UseMvcWithDefaultRoute();
-            app.UseSession();    
+            if (env.IsDevelopment()) {
+                app.UseRuntimeInfoPage();
+                app.UseDeveloperExceptionPage();
+            }
 
+            app.UseMvcWithDefaultRoute();
+            app.UseSession();
 
         }
 
