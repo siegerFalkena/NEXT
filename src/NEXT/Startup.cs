@@ -10,9 +10,10 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNet.StaticFiles;
 using Microsoft.Extensions.Logging;
-using NEXT.API.Model;
+using NEXT.API.Models;
 using Microsoft.Data.Entity;
 using NEXT.API;
+using NEXT.API.Repositories;
 
 namespace NEXT
 {
@@ -36,6 +37,7 @@ namespace NEXT
         {
             var connection = @"Server=localhost,2301;Database=NEXT;User ID=NEXT;Password=password31!;";
             services.AddEntityFramework().AddSqlServer().AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+            services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddRouting();
             services.AddMvc();
             services.AddSession();

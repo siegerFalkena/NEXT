@@ -3,13 +3,13 @@ using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using NEXT.API.Model;
+using NEXT.API.Models;
 
 namespace NEXT.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20160503143039_NEXTV4")]
-    partial class NEXTV4
+    [Migration("20160504113715_NEXT")]
+    partial class NEXT
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -17,30 +17,42 @@ namespace NEXT.Migrations
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("NEXT.API.Model.Category", b =>
+            modelBuilder.Entity("NEXT.API.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("categoryID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("description");
 
                     b.Property<string>("name");
 
-                    b.HasKey("id");
+                    b.HasKey("categoryID");
                 });
 
-            modelBuilder.Entity("NEXT.API.Model.Product", b =>
+            modelBuilder.Entity("NEXT.API.Models.Product", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("productID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("description");
 
                     b.Property<string>("name");
 
-                    b.Property<double>("price");
+                    b.Property<decimal>("price");
 
-                    b.HasKey("ID");
+                    b.HasKey("productID");
+                });
+
+            modelBuilder.Entity("NEXT.API.Models.User", b =>
+                {
+                    b.Property<int>("userID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("email");
+
+                    b.Property<string>("name");
+
+                    b.HasKey("userID");
                 });
         }
     }

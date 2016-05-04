@@ -4,14 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace NEXT.API.Model
+namespace NEXT.API.Models
 {
-    public class Category
+    public class Role
     {
         [ScaffoldColumn(false)]
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        
+        string rolename;
+
+        int roleID;
     }
 }

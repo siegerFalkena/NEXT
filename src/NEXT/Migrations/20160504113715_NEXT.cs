@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 
 namespace NEXT.Migrations
 {
-    public partial class NEXTV4 : Migration
+    public partial class NEXT : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,28 +13,41 @@ namespace NEXT.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
+                    categoryID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     description = table.Column<string>(nullable: true),
                     name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.id);
+                    table.PrimaryKey("PK_Category", x => x.categoryID);
                 });
             migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
+                    productID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     description = table.Column<string>(nullable: true),
                     name = table.Column<string>(nullable: true),
-                    price = table.Column<double>(nullable: false)
+                    price = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.ID);
+                    table.PrimaryKey("PK_Product", x => x.productID);
+                });
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    userID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    email = table.Column<string>(nullable: true),
+                    name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.userID);
                 });
         }
 
@@ -42,6 +55,7 @@ namespace NEXT.Migrations
         {
             migrationBuilder.DropTable("Category");
             migrationBuilder.DropTable("Product");
+            migrationBuilder.DropTable("User");
         }
     }
 }

@@ -11,105 +11,18 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
-using NEXT.API.Model;
+using NEXT.API.Models;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NEXT.API
 {
-    [Route("api/product")]
-    public class ProductController : Controller
+    [Route("api/user")]
+    public class UserController : Controller
     {
-
-        private static List<string> names = new List<string> {"Papaya", "Banana", "Cherry", "Apple", "Pear" , "Orange", "Durian" , "Dragonfruit"
-            , "Kiwi", "Qumquat", "Lime", "Lemon", "Jujube", "Olive", "Melon", "Tomato", "Coconut", "Apple",
-"Apricot",
-"Avocado",
-"Banana",
-"Bilberry",
-"Blackberry",
-"Blackcurrant",
-"Blueberry",
-"Boysenberry",
-"Cantaloupe",
-"Currant",
-"Cherry",
-"Cherimoya",
-"Cloudberry",
-"Coconut",
-"Cranberry",
-"Damson",
-"Date",
-"Dragonfruit",
-"Durian",
-"Elderberry",
-"Feijoa",
-"Fig",
-"Goji berry",
-"Gooseberry",
-"Grape",
-"Raisin",
-"Grapefruit",
-"Guava",
-"Huckleberry",
-"Jabuticaba",
-"Jackfruit",
-"Jambul",
-"Jujube",
-"Juniper berry",
-"Kiwifruit",
-"Kumquat",
-"Lemon",
-"Lime",
-"Loquat",
-"Lychee",
-"Mango",
-"Marionberry",
-"Melon",
-"Cantaloupe",
-"Honeydew",
-"Watermelon",
-"Miracle fruit",
-"Mulberry",
-"Nectarine",
-"Nance",
-"Olive",
-"Orange",
-"Blood orange",
-"Clementine",
-"Mandarine",
-"Tangerine",
-"Papaya",
-"Passionfruit",
-"Peach",
-"Pear",
-"Persimmon",
-"Physalis",
-"Plantain",
-"Plum/prune(dried plum)",
-"Pineapple",
-"Pomegranate",
-"Pomelo",
-"Purple mangosteen",
-"Quince",
-"Raspberry",
-"Salmonberry",
-"Rambutan",
-"Redcurrant",
-"Salal berry",
-"Salak",
-"Satsuma",
-"Star fruit",
-"Strawberry",
-"Tamarillo",
-"Tamarind",
-"Ugli fruit"};
-
-
         JsonSerializer serializer = new JsonSerializer();
-        private static ILogger LOG = LoggerFactory.
         private ApplicationContext _context;
-        public ProductController(ApplicationContext context)
+        public UserController(ApplicationContext context)
         {
             this._context = context;
         }
@@ -126,7 +39,7 @@ namespace NEXT.API
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            IQueryable<Product> products = _context.products.Where<Product>(product => product.ID == id);
+            IQueryable<Product> products = _context.products.Where<Product>(product => product.productID == id);
             return JsonConvert.SerializeObject(products);
         }
 
@@ -139,7 +52,7 @@ namespace NEXT.API
             try
             {
                 product.name = name;
-                product.price = double.Parse(price);
+                product.price = decimal.Parse(price);
                 product.description = description;
                 _context.products.Add(product);
                 _context.SaveChanges();
@@ -154,10 +67,10 @@ namespace NEXT.API
         [HttpPut("{id}")]
         public void Put(int id, [FromForm] string name, [FromForm] string description, [FromForm] string price)
         {
-            Product product = _context.products.Where<Product>(pSelect => pSelect.ID == id).Single();
+            Product product = _context.products.Where<Product>(pSelect => pSelect.productID == id).Single();
             product.name = name;
             product.description = description;
-            product.price = double.Parse(price);
+            product.price = decimal.Parse(price);
             _context.SaveChanges();
         }
 

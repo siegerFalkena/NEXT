@@ -4,22 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-
-namespace NEXT.API.Model
+namespace NEXT.API.Models
 {
-    public class Product
+    public class Category
     {
-
-
-        [ScaffoldColumn(true)]
-        public int ID { get; set; }
-        
+        [ScaffoldColumn(false)]
+        public int categoryID { get; set; }
         public string name { get; set; }
-
-        [Display(Name = "Price")]
-        public double price { get; set; }
-        
         public string description { get; set; }
-
+        
     }
 }
