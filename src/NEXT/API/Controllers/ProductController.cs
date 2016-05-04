@@ -33,7 +33,7 @@ namespace NEXT.API
         }
 
         // GET: api/category
-        private static int defaultPage = 1;
+        private static int defaultPage = 0;
         private static int defaultPageResults = 25;
 
 
@@ -52,7 +52,7 @@ namespace NEXT.API
 
             IEnumerable<Product> products = productRepo.getProducts(query,
                 parsedPage ? queryPage : defaultPage,
-                parsedResults ? queryResults : defaultPage);
+                parsedResults ? queryResults : defaultPageResults);
 
             return JsonConvert.SerializeObject(products);
         }

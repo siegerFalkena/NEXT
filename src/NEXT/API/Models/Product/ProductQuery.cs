@@ -15,7 +15,7 @@ namespace NEXT.API.Query
         //TODO refactor to query builder
         public string minPrice { get; set; } = null;
         public string maxPrice { get; set; } = null;
-        public string nameContains { get; set; } = "";
+        public string nameContains { get; set; } = null;
         public string nameExact { get; set; } = null;
         public string descriptionContains { get; set; } = null ;
 
