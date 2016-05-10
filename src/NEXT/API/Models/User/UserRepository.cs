@@ -23,7 +23,8 @@ namespace NEXT.API.Models
         void IUserRepository.deleteUser(int ID)
         {
             User tempUser =  context.User.Where<User>( user=> user.ID == ID).Single();
-            context.User.Remove(tempUser);
+            tempUser.IsDeleted = true;
+            //context.User.Remove(tempUser);
         }
 
         User IUserRepository.getUserByID(int ID)
@@ -43,6 +44,10 @@ namespace NEXT.API.Models
                 queryObject = queryObject.Skip(skipPages * results);
             }
             return queryObject.Take(results).ToList();
+        }
+
+        User IUserRepository.getUserByName(string name) {
+            return context.User.Where(user => user.Username.Equals(name)).Single();
         }
 
         void IUserRepository.save()

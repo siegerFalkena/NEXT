@@ -14,7 +14,6 @@ using NEXT.API.Models;
 using Microsoft.Data.Entity;
 using NEXT.API;
 using NEXT.API.Repositories;
-using NEXT.API.Models;
 using NEXT.API.Query;
 
 namespace NEXT
@@ -42,6 +41,9 @@ namespace NEXT
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<ICompanyRepository, CompanyRepository>();
+            services.AddSingleton<IBrandRepository, BrandRepository>();
+            services.AddSingleton<IProductTypeRepository, ProductTypeRepository>();
+            services.AddAuthentication();
             services.AddRouting();
             services.AddMvc();
             services.AddSession();
@@ -59,7 +61,7 @@ namespace NEXT
             //var filetypeprovider = new FileExtensionContentTypeProvider();
             //filetypeprovider.Mappings.Add(".myapp", "application/x-msdownload");
             DefaultFilesOptions fileOptions = new DefaultFilesOptions();
-            
+
             //routes
             var routeBuilder = new RouteBuilder();
             routeBuilder.ServiceProvider = app.ApplicationServices;
@@ -68,25 +70,38 @@ namespace NEXT
             app.UseRouter(routeBuilder.Build());
 
             Console.WriteLine("The current directory is {0}", Directory.GetCurrentDirectory());
-            FileServerOptions fileServerOptions = new FileServerOptions() {
+            FileServerOptions fileServerOptions = new FileServerOptions()
+            {
                 RequestPath = new PathString("/app"),
                 EnableDirectoryBrowsing = true
             };
 
             app.UseFileServer(fileServerOptions);
-            
+
             fileOptions.DefaultFileNames.Clear();
             fileOptions.DefaultFileNames.Add("htmlpage.html");
-            app.UseDefaultFiles();                    
+            app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseCookieAuthentication(options => {
+            app.UseCookieAuthentication(options =>
+            {
                 options.AuthenticationScheme = "MyCookieMiddlewareInstance";
                 options.LoginPath = new PathString("/");
                 options.AutomaticAuthenticate = true;
                 options.AutomaticChallenge = true;
             });
 
-            if (env.IsDevelopment()) {
+            
+
+            app.UseCookieAuthentication(options =>
+            {
+                options.AuthenticationScheme = "NEXTAuthenticationScheme";
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
+            });
+
+
+            if (env.IsDevelopment())
+            {
                 app.UseRuntimeInfoPage();
                 app.UseDeveloperExceptionPage();
             }

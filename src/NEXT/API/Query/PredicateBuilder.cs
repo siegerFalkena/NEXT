@@ -8,6 +8,8 @@ namespace NEXT.API.Query
 {
     public static class PredicateBuilder
     {
+
+        //Stolen / copied from http://www.albahari.com/nutshell/predicatebuilder.aspx
         public static Expression<Func<T, bool>> True<T>() { return f => true; }
         public static Expression<Func<T, bool>> False<T>() { return f => false; }
 

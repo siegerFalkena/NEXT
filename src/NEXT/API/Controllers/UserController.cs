@@ -21,6 +21,10 @@ namespace NEXT.API
     public class UserController : Controller
     {
         JsonSerializer serializer = new JsonSerializer();
+        JsonSerializerSettings serializerSettings = new JsonSerializerSettings() {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            
+        };
         IUserRepository repository;
         ICompanyRepository companyRepo;
 
@@ -42,9 +46,7 @@ namespace NEXT.API
             query.firstNameContains = containsFirstName == null ? containsFirstName : null;
             query.lastNameContains = containsLastName == null ? containsLastName : null;
             int queryResults = results == 0 ? 25: results;
-            return JsonConvert.SerializeObject(repository.userQuery(query, queryResults, page), new JsonSerializerSettings() {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            }) ;
+            return JsonConvert.SerializeObject(repository.userQuery(query, queryResults, page), serializerSettings) ;
         }
 
         // GET: api/user

@@ -14,17 +14,24 @@ namespace NEXT.API.Controllers
     public class CompanyController : Controller
     {
         private ICompanyRepository repository;
-        public CompanyController(ICompanyRepository repository) {
+        private IUserRepository userRepo;
+        JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+
+        };
+        public CompanyController(ICompanyRepository repository, IUserRepository userRepo) {
             this.repository = repository;
+            this.userRepo = userRepo;
         }
 
         // GET: api/company
         [HttpGet]
-        public string Get(int results, int skipPage)
+        public string Get([FromQuery]int results, [FromQuery]int skipPage)
         {
             CompanyQuery query = new CompanyQuery();
             string companyLsit = JsonConvert.SerializeObject(repository.companyQuery(query, results, skipPage));
-            return companyLsit; 
+            return JsonConvert.SerializeObject(companyLsit, serializerSettings);
         }
 
         // GET api/company/5
@@ -55,11 +62,27 @@ namespace NEXT.API.Controllers
             throw new NotImplementedException();
         }
 
+        [HttpGet("{companyID}/user")]
+        public string getUsersInCompany(int companyID) {
+            Company company = repository.getCompanyByID(companyID);
+            return JsonConvert.SerializeObject(company.User, serializerSettings);
+        }
+
+        [HttpGet("{companyID}/user")]
+        public string addUserToCompany(int companyID, [FromForm] int userID)
+        {
+            Company company = repository.getCompanyByID(companyID);
+            User user = userRepo.getUserByID(userID);
+            repository.addUserToCompany(companyID, userID);
+            repository.save();
+            return JsonConvert.SerializeObject(company.User, serializerSettings);
+        }
+
         // DELETE api/company/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            repository.deleteCompany(id);
         }
     }
 }

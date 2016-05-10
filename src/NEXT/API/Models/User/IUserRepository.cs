@@ -11,6 +11,7 @@ namespace NEXT.API.Repositories
         void createUser(User user);
         void deleteUser(int ID);
         User getUserByID(int ID);
+        User getUserByName(string name);
         void updateUser(User user);
         List<User> userQuery(UserQuery query, int results, int skipPages);
         void save();

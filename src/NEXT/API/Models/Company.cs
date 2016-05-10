@@ -21,5 +21,6 @@ namespace NEXT.API.Models
         public string resourceString() {
             return "api/company/" + ID.ToString();
         }
+
     }
 }

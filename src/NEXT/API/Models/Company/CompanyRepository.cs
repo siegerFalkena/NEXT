@@ -24,6 +24,7 @@ namespace NEXT.API.Models
         void ICompanyRepository.deleteCompany(int ID)
         {
             Company tempCompany =  context.Company.Where<Company>( Company=> Company.ID == ID).Single();
+            tempCompany.IsActive = false;
             context.Company.Remove(tempCompany);
         }
 
@@ -40,10 +41,11 @@ namespace NEXT.API.Models
         List<Company> ICompanyRepository.companyQuery(CompanyQuery query, int results, int skipPages)
         {
             IQueryable<Company> queryObject = context.Company.Where(query.asExpression());
+            int queryResults = results > 0 ? results : 25; 
             if ( skipPages > 0) {
-                queryObject = queryObject.Skip(skipPages * results);
+                queryObject = queryObject.Skip(skipPages * queryResults);
             }
-            return queryObject.Take(results).ToList();
+            return queryObject.Take(queryResults).ToList();
         }
 
         void ICompanyRepository.save()
@@ -52,6 +54,11 @@ namespace NEXT.API.Models
         }
 
         void IDisposable.Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addUserToCompany(int companyID, int userID)
         {
             throw new NotImplementedException();
         }

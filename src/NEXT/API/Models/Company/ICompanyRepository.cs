@@ -10,6 +10,7 @@ namespace NEXT.API.Repositories
     {
         void createCompany(Company Company);
         void deleteCompany(int ID);
+        void addUserToCompany(int companyID, int userID);
         Company getCompanyByID(int ID);
         void updateCompany(Company Company);
         List<Company> companyQuery(CompanyQuery query, int results, int skipPages);
