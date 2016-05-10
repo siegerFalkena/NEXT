@@ -9,16 +9,16 @@ namespace NEXT.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private ApplicationContext _context;
+        private NEXTContext _context;
 
-        public ProductRepository(ApplicationContext context) {
+        public ProductRepository(NEXTContext context) {
             this._context = context;
         }
 
         public void deleteProduct(int productID)
         {
-            Product tbd = _context.products.Where<Product>(product => product.productID == productID).Single();
-            _context.products.Remove(tbd);
+            Product tbd = _context.Product.Where<Product>(product => product.ID == productID).Single();
+            _context.Product.Remove(tbd);
         }
 
         public void Dispose()
@@ -28,12 +28,12 @@ namespace NEXT.API.Repositories
 
         public Product getProductByID(int productID)
         {
-           return _context.products.Where<Product>(product => product.productID == productID).Single();
+            return _context.Product.Where<Product>(product => product.ID == productID).Single();
         }
 
-        public IEnumerable<Product> getProducts(ProductQuery query,int page, int results)
+        public IEnumerable<Product> getProducts(ProductQuery query, int page, int results)
         {
-            return _context.products.Where<Product>(query.asExpression()).Skip(page*results).Take(results).ToList();
+            return _context.Product.Where<Product>(query.asExpression()).Skip(page * results).Take(results).ToList();
         }
 
         public void insertProduct(Product product)
@@ -48,7 +48,7 @@ namespace NEXT.API.Repositories
 
         public void updateProduct(Product product)
         {
-            _context.products.Update(product);
+            _context.Product.Update(product);
         }
     }
 }

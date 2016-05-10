@@ -21,8 +21,8 @@ namespace NEXT.API
     public class UserController : Controller
     {
         JsonSerializer serializer = new JsonSerializer();
-        private ApplicationContext _context;
-        public UserController(ApplicationContext context)
+        private NEXTContext _context;
+        public UserController(NEXTContext context)
         {
             this._context = context;
         }
@@ -32,14 +32,14 @@ namespace NEXT.API
         [HttpGet]
         public String Get()
         {
-            return JsonConvert.SerializeObject(_context.products.ToList<Product>());
+            return "";
         }
 
         // GET: api/product
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            IQueryable<Product> products = _context.products.Where<Product>(product => product.productID == id);
+            IQueryable<Product> products = _context.Product.Where<Product>(product => product.ID == id);
             return JsonConvert.SerializeObject(products);
         }
 
@@ -51,11 +51,7 @@ namespace NEXT.API
             Product product = new Product();
             try
             {
-                product.name = name;
-                product.price = decimal.Parse(price);
-                product.description = description;
-                _context.products.Add(product);
-                _context.SaveChanges();
+              
             }
             catch (Exception e)
             {
@@ -67,10 +63,8 @@ namespace NEXT.API
         [HttpPut("{id}")]
         public void Put(int id, [FromForm] string name, [FromForm] string description, [FromForm] string price)
         {
-            Product product = _context.products.Where<Product>(pSelect => pSelect.productID == id).Single();
-            product.name = name;
-            product.description = description;
-            product.price = decimal.Parse(price);
+            Product product = _context.Product.Where<Product>(pSelect => pSelect.ID == id).Single();
+            product.SKU = name;
             _context.SaveChanges();
         }
 

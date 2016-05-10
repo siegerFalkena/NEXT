@@ -35,8 +35,8 @@ namespace NEXT
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server=localhost,2301;Database=NEXT;User ID=NEXT;Password=password31!;";
-            services.AddEntityFramework().AddSqlServer().AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
+            var connection = @"Server=localhost,1433;Database=NEXT;User ID=NEXT;Password=password31!;";
+            services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddRouting();
             services.AddMvc();
