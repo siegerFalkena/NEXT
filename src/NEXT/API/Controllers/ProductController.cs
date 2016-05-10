@@ -26,7 +26,7 @@ namespace NEXT.API
         private NEXTContext _context;
         private IProductRepository productRepo;
 
-        public ProductController(NEXTContext context, IProductRepository productRepo)
+        public ProductController(NEXTContext context, ProductRepository productRepo)
         {
             this._context = context;
             this.productRepo = productRepo;
@@ -40,21 +40,8 @@ namespace NEXT.API
         [HttpGet]
         public String Get([FromQuery]string page, [FromQuery]string results, [FromQuery]string name, [FromQuery]string fpricemin, [FromQuery]string fpricemax)
         {
-            ProductQuery query = new ProductQuery();
-            query.minPrice = fpricemin;
-            query.maxPrice = fpricemax;
-            query.nameContains  = name;
 
-            int queryPage;
-            bool parsedPage = int.TryParse(page, out queryPage);
-            int queryResults;
-            bool parsedResults = int.TryParse(results, out queryResults);
-
-            IEnumerable<Product> products = productRepo.getProducts(query,
-                parsedPage ? queryPage : defaultPage,
-                parsedResults ? queryResults : defaultPageResults);
-
-            return JsonConvert.SerializeObject(products);
+            return JsonConvert.SerializeObject(null);
         }
 
     // GET: api/product

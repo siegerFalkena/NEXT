@@ -14,6 +14,8 @@ using NEXT.API.Models;
 using Microsoft.Data.Entity;
 using NEXT.API;
 using NEXT.API.Repositories;
+using NEXT.API.Models;
+using NEXT.API.Query;
 
 namespace NEXT
 {
@@ -38,6 +40,8 @@ namespace NEXT
             var connection = @"Server=localhost,1433;Database=NEXT;User ID=NEXT;Password=password31!;";
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
             services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<ICompanyRepository, CompanyRepository>();
             services.AddRouting();
             services.AddMvc();
             services.AddSession();

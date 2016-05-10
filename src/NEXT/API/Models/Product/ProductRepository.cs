@@ -23,7 +23,6 @@ namespace NEXT.API.Repositories
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public Product getProductByID(int productID)

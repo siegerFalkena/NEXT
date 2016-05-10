@@ -18,10 +18,7 @@ namespace NEXT.API.Query
         public Expression<Func<Product, bool>> asExpression()
         {
             Expression<Func<Product, bool>> query = (Product => true);
-            if (minPrice != null) {
-                query = PredicateBuilder.And(query, (Product => Product.ID))
 
-            }
             return query;
 
         }

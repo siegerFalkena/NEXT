@@ -17,5 +17,9 @@ namespace NEXT.API.Models
 
         public virtual ICollection<User> User { get; set; }
         public virtual ICollection<Vendor> Vendor { get; set; }
+
+        public string resourceString() {
+            return "api/company/" + ID.ToString();
+        }
     }
 }
