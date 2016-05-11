@@ -33,7 +33,9 @@ namespace NEXT.API.Repositories
 
         public IEnumerable<Brand> getBrands(BrandQuery query, int page, int results)
         {
-            return _context.Brand.Where<Brand>(query.asExpression()).Skip(page * results).Take(results).ToList();
+            IQueryable<Brand> brandQuery = _context.Brand.Where(query.asExpression());
+            brandQuery = query.orderQuery(brandQuery);
+            return brandQuery.Skip(page * results).Take(results).ToList();
         }
 
         public void insertBrand(Brand brand)

@@ -22,10 +22,8 @@ namespace NEXT.API.Controllers
 
         // GET: api/values
         [HttpGet]
-        public string Get( [FromQuery] int results, [FromQuery] int skipPage, [FromQuery] string brandNameContains)
+        public string Get( [FromQuery][Bind("brandNameContains,ascending,orderBy")] BrandQuery query, [FromQuery] int skipPage, [FromQuery] int results)
         {
-            BrandQuery query = new BrandQuery();
-            query.brandNameContains = brandNameContains;
             IEnumerable<Brand> brands = brandRepo.getBrands(query, skipPage, results);
             return JsonConvert.SerializeObject(brands);
         }
