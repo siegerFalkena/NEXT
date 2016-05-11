@@ -32,7 +32,7 @@ function coreCtrl($scope, auth) {
     if (auth.isAuth()) {
         $scope.loginscreen = false
     } else {
-        $scope.loginscreen = true
+        $scope.loginscreen = false
     }
 }
 

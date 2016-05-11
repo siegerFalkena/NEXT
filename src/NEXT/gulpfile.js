@@ -68,11 +68,11 @@ gulp.task('devBuild', ['components'], function () {
 
 
 gulp.task('components', function() {
-    return sequence('bower', 'copycomponents');
+    return sequence(['copyCSS', 'copyImages', 'copyFonts', 'copycomponents']);
 });
 
 
-gulp.task('copycomponents', ['copyCSS', 'copyImages'],
+gulp.task('copycomponents',
     function() {
         return gulp.src([
                 ASSET + 'bower/angular/angular.min.js',
@@ -100,7 +100,7 @@ gulp.task('copycomponents', ['copyCSS', 'copyImages'],
     });
 
 
-gulp.task('copyCSS', ['copyFonts'], function() {
+gulp.task('copyCSS', function() {
     return gulp.src([
             ASSET + 'css/metro-bootstrap.css',
             ASSET + 'css/flags.css',

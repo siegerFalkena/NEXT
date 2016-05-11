@@ -13,7 +13,7 @@ namespace NEXT.API.Query
 
         //TODO code a predicatebuilder so not everything has to be passed
         //TODO refactor to query builder
-        string brandNameContains { get;set;} = null;
+        public string brandNameContains { get;set;} = null;
 
         public Expression<Func<Brand, bool>> asExpression()
         {
@@ -21,6 +21,7 @@ namespace NEXT.API.Query
             if (brandNameContains != null) {
                 query = PredicateBuilder.And(query, (brand => brand.Name.Contains(brandNameContains)));
             }
+
 
             return query;
 

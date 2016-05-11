@@ -21,8 +21,8 @@ namespace NEXT.API.Models
         public int CreatedBy { get; set; }
         public string ExternalProductIdentifier { get; set; }
         public DateTime? LastModified { get; set; }
-        public int? LastModifiedBy { get; set; }
-        public int? ParentProductID { get; set; }
+        public int? LastModifiedBy { get; set; } = null;
+        public int? ParentProductID { get; set; } = null;
         public int ProductTypeID { get; set; }
         public string SKU { get; set; }
 

@@ -38,12 +38,19 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             { name: "description", editableCellTemplat: 'ui-grid/dropdownEditor', width: '20%' },
             { name: "categories", width: '20%' },
             { name: "price", width: '20%' },
-
-
-
         ]
-    };
+    }
+    $scope.gridOptions.pagination.on.paginationChanged($scope, function (pagenumbers, pageSize) {
+        paginationOptions.pageNumber = pagenumbers;
+        paginationOptions.pageSize = pageSize;
+        getPage();
+    });
 
+    var getPage = function getPageF() {
+        //product 
+        var url;
+
+    }
 
     function removeSelection() {
     }

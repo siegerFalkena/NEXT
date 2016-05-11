@@ -30,6 +30,7 @@ namespace NEXT.API.Controllers
         [HttpPost("login")]
         public async Task authUser([FromForm] string username, [FromForm] string password, [FromForm]bool isPersistent)
         {
+
             User user = new Models.User();
             user.Username = username;
             user.Password = password;

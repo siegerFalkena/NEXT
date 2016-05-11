@@ -31,9 +31,11 @@ function loginCtrl($scope, $cookies, $log, $window, auth, l10n) {
 
     $scope.login = function() {
         function cb_result(b_success) {
-            $window.location.href = "/"
+            var herp = 'derp';
+            $log.info(b_success);
+            //$window.location.href = "/"
         };
-        var temp = auth.auth($scope.username, $scope.password, cb_result);
+        var temp = auth.auth($scope.username, $scope.password, $scope.rememberMe, cb_result);
     };
 
     $scope.messages = []

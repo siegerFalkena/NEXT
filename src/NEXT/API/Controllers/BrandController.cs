@@ -22,9 +22,10 @@ namespace NEXT.API.Controllers
 
         // GET: api/values
         [HttpGet]
-        public string Get( [FromQuery] int results, [FromQuery] int skipPage)
+        public string Get( [FromQuery] int results, [FromQuery] int skipPage, [FromQuery] string brandNameContains)
         {
             BrandQuery query = new BrandQuery();
+            query.brandNameContains = brandNameContains;
             IEnumerable<Brand> brands = brandRepo.getBrands(query, skipPage, results);
             return JsonConvert.SerializeObject(brands);
         }
@@ -48,9 +49,13 @@ namespace NEXT.API.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromQuery]string name)
         {
-            throw new NotImplementedException();
+            Brand brand = new Brand();
+            brand.ID = id;
+            brand.Name = name;
+            brandRepo.updateBrand(brand);
+            brandRepo.Save();
         }
 
         // DELETE api/values/5

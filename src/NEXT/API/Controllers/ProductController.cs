@@ -43,10 +43,9 @@ namespace NEXT.API
 
 
         [HttpGet]
-        public String Get([FromQuery]string page, [FromQuery]string results, [FromQuery]string name, [FromQuery]string fpricemin, [FromQuery]string fpricemax)
+        public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
-
-            return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(productRepo.getProducts(query, page, results));
         }
 
         // GET: api/product
@@ -60,44 +59,18 @@ namespace NEXT.API
 
         // POST api/values
         [HttpPost]
-        public void Post([FromForm] string SKU, [FromForm] int brandID, [FromForm] string brandName, [FromForm] int productTypeID, [FromForm] string productTypeName, [FromForm] int parentProductID, [FromForm] string externalProductIdentifier, [FromForm] string created, [FromForm] int createdBy)
-        //http://localhost:58895/api/product?SKU=product&brandName=brandName&productTypeName=typename&externalProductIdentifier=productIdentifyer&created=5/1/2008 8:30:52 AM&createdBy=1
+        public void Post([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID", Prefix = "p")] Product product,
+                         [FromForm][Bind("Name,ID", Prefix = "b")]Brand newBrand,
+                         [FromForm][Bind("Name,ID", Prefix = "t")]ProductType newType)
         {
-            Product product = new Product();
-            Brand brand;
-            if (brandID == 0 && brandName != null)
+            if (ModelState.IsValid)
             {
-                brand = new Brand();
-                brand.Name = brandName;
+                productRepo.insertProduct(product, newType, newBrand);
+                productRepo.Save();
             }
-            else
-            {
-                brand = brandRepo.getBrandByID(brandID);
+            else {
+                Response.StatusCode = 400;
             }
-
-            ProductType type;
-            if (productTypeID == 0 && productTypeName != null)
-            {
-                type = new ProductType();
-                type.Name = productTypeName;
-            }
-            else
-            {
-                type = typeRepo.getProductTypeByID(productTypeID);
-            }
-
-            product.ProductType = type;
-            product.Brand = brand;
-
-            product.SKU = SKU;
-            product.ProductType = type;
-            product.ParentProductID = parentProductID;
-            product.ExternalProductIdentifier = externalProductIdentifier;
-            product.Created = DateTime.Parse(created);
-            product.CreatedBy = createdBy;
-
-            _context.Product.Add(product);
-            _context.SaveChanges();
         }
 
         // PUT api/values/5
