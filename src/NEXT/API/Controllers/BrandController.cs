@@ -47,11 +47,8 @@ namespace NEXT.API.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromQuery]string name)
+        public void Put(int id, [FromForm][Bind("Name")]Brand brand)
         {
-            Brand brand = new Brand();
-            brand.ID = id;
-            brand.Name = name;
             brandRepo.updateBrand(brand);
             brandRepo.Save();
         }

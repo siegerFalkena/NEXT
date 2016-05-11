@@ -23,6 +23,8 @@ namespace NEXT.API
     {
 
         JsonSerializer serializer = new JsonSerializer();
+        JsonSerializerSettings serializerSettings = new JsonSerializerSettings {ReferenceLoopHandling= ReferenceLoopHandling.Ignore };
+        
         private NEXTContext _context;
         private IProductRepository productRepo;
         private IProductTypeRepository typeRepo;
@@ -45,7 +47,12 @@ namespace NEXT.API
         [HttpGet]
         public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
-            return JsonConvert.SerializeObject(productRepo.getProducts(query, page, results));
+            int total;
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("data", productRepo.getProducts(query, page, results, out total));
+            dictionary.Add("meta", total.ToString());
+
+            return JsonConvert.SerializeObject(dictionary, serializerSettings);
         }
 
         // GET: api/product

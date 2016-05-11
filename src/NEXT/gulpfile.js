@@ -92,6 +92,7 @@ gulp.task('copycomponents',
                 ASSET + 'bower/angular-ui-router/release/angular-ui-router.min.js',
                 ASSET + 'bower/angular-bootstrap/ui-bootstrap-tpls.min.js',
                 ASSET + 'bower/oclazyload/dist/ocLazyLoad.min.js',
+                ASSET + 'bower/underscore/underscore.min.js',
                 '/node_modules/quagga/dist/quagga.min.js'
 
             ])

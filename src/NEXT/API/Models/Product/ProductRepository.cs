@@ -30,9 +30,12 @@ namespace NEXT.API.Repositories
             return _context.Product.Where<Product>(product => product.ID == productID).Single();
         }
 
-        public IEnumerable<Product> getProducts(ProductQuery query, int page, int results)
-        {
-            return _context.Product.Where<Product>(query.asExpression()).Skip(page * results).Take(results).ToList();
+        public IEnumerable<Product> getProducts(ProductQuery query, int page, int results, out int total)
+        {   IQueryable<Product> productQuery = _context.Product.Where<Product>(query.asExpression());
+            int pageSkip = page > 0 ? page : 0;
+            int resultSkip = results > 0 ? results : 25;
+            total = productQuery.Count();
+            return productQuery.Skip(page * resultSkip).Take(resultSkip).ToList();
         }
 
         

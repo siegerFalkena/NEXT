@@ -10,7 +10,7 @@ namespace NEXT.API.Repositories
     public interface IProductRepository: IDisposable
     {
         Product getProductByID(int productID);
-        IEnumerable<Product> getProducts(ProductQuery query, int page, int results);
+        IEnumerable<Product> getProducts(ProductQuery query, int page, int results, out int total);
         void insertProduct(Product product, ProductType type, Brand brand);
         void insertProduct(Product product, Brand brand);
         void insertProduct(Product product, ProductType type);
