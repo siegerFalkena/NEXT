@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NEXT.API.Models;
 using NEXT.API.Query;
@@ -31,10 +32,14 @@ namespace NEXT.API.Repositories
         }
 
         public IEnumerable<Product> getProducts(ProductQuery query, int page, int results, out int total)
-        {   IQueryable<Product> productQuery = _context.Product.Where<Product>(query.asExpression());
+        {
+            Expression<Func<Product, bool>> queryAsExpre = query.asExpression();
+            IQueryable<Product> productQuery = _context.Product.Where<Product>(queryAsExpre);
+            total = _context.Product.Where<Product>(queryAsExpre).Where(product => true).Count();
+            
             int pageSkip = page > 0 ? page : 0;
             int resultSkip = results > 0 ? results : 25;
-            total = productQuery.Count();
+            productQuery = query.getOrdering(productQuery);
             return productQuery.Skip(page * resultSkip).Take(resultSkip).ToList();
         }
 

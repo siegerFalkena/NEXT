@@ -2,16 +2,19 @@
 <html lang="en">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <head>
-    <link rel="stylesheet" type="text/css" href="assets/css/ui-grid.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/metro-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/ui-grid.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/metro-bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/flags.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/datetimepicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/loading-bar.css" />
 </head>
 <body ng-app="concentrator" ng-controller="coreCtrl" class="fullscreen">
     <div ng-if="!loginscreen">
-            <navbar></navbar>
-            </hr>
+        <navbar></navbar>
+        </hr>
         <div style="padTop">
+            <div id="loading-bar-container" style="padding-top:50px; margin-top:50px"></div>
             <div ui-view></div>
         </div>
     </div>
@@ -21,6 +24,7 @@
 </body>
 <!--BEFORE ANGULAR IMPORTS-->
 <script src="assets/js/underscore-min.js"></script>
+<script src="assets/js/moment.js"></script>
 
 <!--ANGULAR IMPORTS-->
 <script src="assets/js/angular.min.js"></script>
@@ -33,6 +37,8 @@
 <script src="assets/js/toArrayFilter.js"></script>
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/ui-grid.min.js"></script>
+<script src="assets/js/loading-bar.min.js"></script>
+
 <!--MODELS-->
 <script src="index.js"></script>
 <script src="concentrator/model/product/concentrator.model.product.js"></script>

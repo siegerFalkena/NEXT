@@ -22,19 +22,17 @@ namespace NEXT.API
     public class ProductController : Controller
     {
 
-        JsonSerializer serializer = new JsonSerializer();
-        JsonSerializerSettings serializerSettings = new JsonSerializerSettings {ReferenceLoopHandling= ReferenceLoopHandling.Ignore };
+        private static JsonSerializer serializer = new JsonSerializer();
+        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings {ReferenceLoopHandling= ReferenceLoopHandling.Ignore };
         
-        private NEXTContext _context;
         private IProductRepository productRepo;
         private IProductTypeRepository typeRepo;
         private IBrandRepository brandRepo;
 
 
-        public ProductController(NEXTContext context, IProductRepository productRepo, IProductTypeRepository typeRepo, IBrandRepository brandRepo)
+        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo, IBrandRepository brandRepo)
         {
             this.brandRepo = brandRepo;
-            this._context = context;
             this.productRepo = productRepo;
             this.typeRepo = typeRepo;
         }
@@ -45,7 +43,7 @@ namespace NEXT.API
 
 
         [HttpGet]
-        public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
+        public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU,orderBy,ascending")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
             int total;
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -59,8 +57,7 @@ namespace NEXT.API
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            IQueryable<Product> products = _context.Product.Where<Product>(product => product.ID == id);
-            return JsonConvert.SerializeObject(products);
+            return JsonConvert.SerializeObject(productRepo.getProductByID(id), serializerSettings);
         }
 
 
@@ -82,17 +79,18 @@ namespace NEXT.API
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromForm] string name, [FromForm] string description, [FromForm] string price)
+        public void Put([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID") ]Product product)
         {
-            Product product = _context.Product.Where<Product>(pSelect => pSelect.ID == id).Single();
-            _context.SaveChanges();
+            productRepo.updateProduct(product);
+            productRepo.Save();
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-
+            productRepo.deleteProduct(id);
+            productRepo.Save();
         }
     }
 }
