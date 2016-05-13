@@ -11,9 +11,10 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
-using NEXT.API.Models;
+using NEXT.DB.Models;
 using NEXT.API.Repositories;
 using NEXT.API.Query;
+using NEXT.API.Serializer;
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NEXT.API
@@ -22,14 +23,17 @@ namespace NEXT.API
     public class ProductController : Controller
     {
 
-        JsonSerializer serializer = new JsonSerializer();
-        private NEXTContext _context;
+        private static JsonSerializer serializer = new JsonSerializer();
+        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings {ReferenceLoopHandling= ReferenceLoopHandling.Ignore };
+        
         private IProductRepository productRepo;
+        private IProductTypeRepository typeRepo;
 
-        public ProductController(NEXTContext context, IProductRepository productRepo)
+
+        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo)
         {
-            this._context = context;
             this.productRepo = productRepo;
+            this.typeRepo = typeRepo;
         }
 
         // GET: api/category
@@ -38,63 +42,66 @@ namespace NEXT.API
 
 
         [HttpGet]
-        public String Get([FromQuery]string page, [FromQuery]string results, [FromQuery]string name, [FromQuery]string fpricemin, [FromQuery]string fpricemax)
+        public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU,orderBy,ascending")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
-            ProductQuery query = new ProductQuery();
-            query.minPrice = fpricemin;
-            query.maxPrice = fpricemax;
-            query.nameContains  = name;
+            int total;
+            string data = "";
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            IEnumerable<Product> products =  productRepo.getProducts(query, page, results, out total);
+            using (var strWriter = new StringWriter()) {
+                using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
+                    Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
+                    var resolver = new CustomContractResolver(include);
+                    var serializer = new JsonSerializer { ContractResolver = resolver,  ReferenceLoopHandling = ReferenceLoopHandling.Serialize};
+                    serializer.Serialize(jsonWriter, products);
+                }
+                data = strWriter.ToString();
+                dictionary.Add("data", data);
+            }
+            dictionary.Add("meta", total.ToString());
 
-            int queryPage;
-            bool parsedPage = int.TryParse(page, out queryPage);
-            int queryResults;
-            bool parsedResults = int.TryParse(results, out queryResults);
 
-            IEnumerable<Product> products = productRepo.getProducts(query,
-                parsedPage ? queryPage : defaultPage,
-                parsedResults ? queryResults : defaultPageResults);
-
-            return JsonConvert.SerializeObject(products);
+            return data;
         }
 
-    // GET: api/product
-    [HttpGet("{id}")]
-    public string Get(int id)
-    {
-        IQueryable<Product> products = _context.Product.Where<Product>(product => product.ID == id);
-        return JsonConvert.SerializeObject(products);
-    }
-
-
-    // POST api/values
-    [HttpPost]
-    public void Post([FromForm]string name, [FromForm]string description, [FromForm]string price, [FromForm]string body)
-    {
-        Product product = new Product();
-        try
+        // GET: api/product
+        [HttpGet("{id}")]
+        public string Get(int id)
         {
-            _context.Product.Add(product);
-            _context.SaveChanges();
+            return JsonConvert.SerializeObject(productRepo.getProductByID(id), serializerSettings);
         }
-        catch (Exception e)
+
+
+        // POST api/values
+        [HttpPost]
+        public void Post([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID", Prefix = "p")] Product product,
+                         [FromForm][Bind("Name,ID", Prefix = "b")]Brand newBrand,
+                         [FromForm][Bind("Name,ID", Prefix = "t")]ProductType newType)
         {
+            if (ModelState.IsValid)
+            {
+                productRepo.insertProduct(product, newType, newBrand);
+                productRepo.Save();
+            }
+            else {
+                Response.StatusCode = 400;
+            }
+        }
 
-        };
+        // PUT api/values/5
+        [HttpPut("{id}")]
+        public void Put([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID") ]Product product)
+        {
+            productRepo.updateProduct(product);
+            productRepo.Save();
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            productRepo.deleteProduct(id);
+            productRepo.Save();
+        }
     }
-
-    // PUT api/values/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromForm] string name, [FromForm] string description, [FromForm] string price)
-    {
-        Product product = _context.Product.Where<Product>(pSelect => pSelect.ID == id).Single();
-        _context.SaveChanges();
-    }
-
-    // DELETE api/values/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
-
-    }
-}
 }

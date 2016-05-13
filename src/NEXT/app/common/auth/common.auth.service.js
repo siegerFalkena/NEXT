@@ -10,16 +10,16 @@ angular.module('common.auth')
 
 function authServiceF($http, $log, $cookies, $window) {
     var authService = {};
-     /**
-     * authenticates user to server
-     *
-     * @method     doAuthF
-     * @param      string    username  
-     * @param      string    password  
-     * @param      Function  cb_result(boolean) callback function
-     * @memberof   authService
-     */
-    authService.auth =  function doAuthF(username, password, cb_result) {
+    /**
+    * authenticates user to server
+    *
+    * @method     doAuthF
+    * @param      string    username  
+    * @param      string    password  
+    * @param      Function  cb_result(boolean) callback function
+    * @memberof   authService
+    */
+    authService.auth =  function doAuthF(username, password, rememberMe,  cb_result) {
         function cb_success(response) {
             $log.info("authentication: " + response.status + "\t" + response.statusText);
             cb_result(true);
@@ -30,10 +30,17 @@ function authServiceF($http, $log, $cookies, $window) {
             cb_result(false);
         }
 
+        var item = {
+                url: 'api/authenticate/login',
+                data: { "username": username, "password": password, "isPersistent": rememberMe },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                method: 'POST'
+        };
+        $log.info(item)
         $http.defaults.headers.common.username = username;
         $http.defaults.headers.common.password = password;
         $http.defaults.headers.common.remember = true;
-        var temp = $http.post('api/auth', '').then(cb_success, cb_failure);
+        var temp = $http(item).then(cb_success, cb_failure);
         
         return temp;
     };

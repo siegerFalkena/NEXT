@@ -10,16 +10,18 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNet.StaticFiles;
 using Microsoft.Extensions.Logging;
-using NEXT.API.Models;
+using NEXT.DB.Models;
 using Microsoft.Data.Entity;
-using NEXT.API;
+using NEXT.DB;
 using NEXT.API.Repositories;
+using NEXT.API.Query;
+using AutoMapper;
 
 namespace NEXT
 {
     public class Startup
     {
-
+        
         public IConfigurationRoot Configuration { get; set; }
 
         public Startup(IHostingEnvironment env)
@@ -35,9 +37,16 @@ namespace NEXT
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server=localhost,1433;Database=NEXT;User ID=NEXT;Password=password31!;";
+            var connection = @"Server=localhost,1433;Database=NEXT;User ID=NEXT;Password=password31!;MultipleActiveResultSets=true;";
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
             services.AddSingleton<IProductRepository, ProductRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IProductTypeRepository, ProductTypeRepository>();
+
+            Func<IServiceProvider, MapperConfiguration> create = (x) => x.GetService(null) as MapperConfiguration;
+            services.AddSingleton<IMapperConfiguration,MapperConfiguration>( create);
+
+            services.AddAuthentication();
             services.AddRouting();
             services.AddMvc();
             services.AddSession();
@@ -55,7 +64,7 @@ namespace NEXT
             //var filetypeprovider = new FileExtensionContentTypeProvider();
             //filetypeprovider.Mappings.Add(".myapp", "application/x-msdownload");
             DefaultFilesOptions fileOptions = new DefaultFilesOptions();
-            
+
             //routes
             var routeBuilder = new RouteBuilder();
             routeBuilder.ServiceProvider = app.ApplicationServices;
@@ -64,25 +73,38 @@ namespace NEXT
             app.UseRouter(routeBuilder.Build());
 
             Console.WriteLine("The current directory is {0}", Directory.GetCurrentDirectory());
-            FileServerOptions fileServerOptions = new FileServerOptions() {
+            FileServerOptions fileServerOptions = new FileServerOptions()
+            {
                 RequestPath = new PathString("/app"),
                 EnableDirectoryBrowsing = true
             };
 
             app.UseFileServer(fileServerOptions);
-            
+
             fileOptions.DefaultFileNames.Clear();
             fileOptions.DefaultFileNames.Add("htmlpage.html");
-            app.UseDefaultFiles();                    
+            app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseCookieAuthentication(options => {
+            app.UseCookieAuthentication(options =>
+            {
                 options.AuthenticationScheme = "MyCookieMiddlewareInstance";
                 options.LoginPath = new PathString("/");
                 options.AutomaticAuthenticate = true;
                 options.AutomaticChallenge = true;
             });
 
-            if (env.IsDevelopment()) {
+            
+
+            app.UseCookieAuthentication(options =>
+            {
+                options.AuthenticationScheme = "NEXTAuthenticationScheme";
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
+            });
+
+
+            if (env.IsDevelopment())
+            {
                 app.UseRuntimeInfoPage();
                 app.UseDeveloperExceptionPage();
             }

@@ -19,6 +19,8 @@ var SRC = './app/',
     dist = DIST.substring(2, 100),
     ASSET = './assets/',
     asset = ASSET.substring(2, 100),
+    NPM = './node_modules/',
+    npm = NPM.substring(2, 100),
     DOC = './documentation/',
     doc = DOC.substring(2, 100),
     PORT = 4000,
@@ -30,20 +32,20 @@ var excludeBowerImports = ['!' + src + 'assets/bower/*.*',
 ];
 
 
-gulp.task('docs', function(){
+gulp.task('docs', function () {
     return sequence('cleanDocs', 'generateDocs');
 });
 
 
-gulp.task('build', ['components', 'docs'], function() {
+gulp.task('build', ['components', 'docs'], function () {
     util.log(excludeBowerImports);
     gulp.src([SRC + '**/*.*'
-        ])
+    ])
         .pipe(changed(DIST))
         .pipe(gulp.dest(DIST));
     return gulp.src([SRC + '*.*', '!' + SRC +
             'assets/*.*', '!**/*.css'
-        ])
+    ])
         .pipe(changed(DIST))
         .pipe(gulp.dest(DIST));
 })
@@ -67,13 +69,13 @@ gulp.task('devBuild', ['components'], function () {
 })
 
 
-gulp.task('components', function() {
-    return sequence('bower', 'copycomponents');
+gulp.task('components', function () {
+    return sequence(['copyCSS', 'copyImages', 'copyFonts', 'copycomponents']);
 });
 
 
-gulp.task('copycomponents', ['copyCSS', 'copyImages'],
-    function() {
+gulp.task('copycomponents',
+    function () {
         return gulp.src([
                 ASSET + 'bower/angular/angular.min.js',
                 ASSET + 'bower/angular-localization/angular-localization.js',
@@ -92,15 +94,19 @@ gulp.task('copycomponents', ['copyCSS', 'copyImages'],
                 ASSET + 'bower/angular-ui-router/release/angular-ui-router.min.js',
                 ASSET + 'bower/angular-bootstrap/ui-bootstrap-tpls.min.js',
                 ASSET + 'bower/oclazyload/dist/ocLazyLoad.min.js',
-                '/node_modules/quagga/dist/quagga.min.js'
-
-            ])
+                ASSET + 'bower/underscore/underscore.min.js',
+                ASSET + 'bower/angular-loading-bar/build/loading-bar.min.js',
+                NPM + 'quagga/dist/quagga.min.js',
+                NPM + 'angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+                NPM + 'angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js',
+                NPM + 'angular-bootstrap-datetimepicker/node_modules/moment/moment.js'
+        ])
             .pipe(changed(DIST + 'assets/js/'))
             .pipe(gulp.dest(DIST + 'assets/js/'));
     });
 
 
-gulp.task('copyCSS', ['copyFonts'], function() {
+gulp.task('copyCSS', function () {
     return gulp.src([
             ASSET + 'css/metro-bootstrap.css',
             ASSET + 'css/flags.css',
@@ -111,36 +117,38 @@ gulp.task('copyCSS', ['copyFonts'], function() {
             ASSET + 'bower/angular-ui-grid/ui-grid.min.css',
             ASSET + 'bower/angular-ui-grid/ui-grid.svg',
             ASSET + 'bower/angular-ui-grid/ui-grid.eot',
-            ASSET + 'css/stylesheet.css'
-        ])
+            ASSET + 'css/stylesheet.css',
+            ASSET + 'bower/angular-loading-bar/build/loading-bar.css',
+            NPM + 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css'
+    ])
         .pipe(changed(DIST + 'assets/css/'))
         .pipe(gulp.dest(DIST + 'assets/css/'));
 });
 
-gulp.task('copyFonts', function() {
+gulp.task('copyFonts', function () {
     return gulp.src([
             ASSET + 'fonts/*.*'
-        ])
+    ])
         .pipe(changed(DIST + 'assets/fonts/'))
         .pipe(gulp.dest(DIST + 'assets/fonts/'));
 });
 
-gulp.task('copyImages', function() {
+gulp.task('copyImages', function () {
     return gulp.src([
             ASSET + 'img/*.*'
-        ])
+    ])
         .pipe(changed(DIST + 'assets/img/'))
         .pipe(gulp.dest(DIST + 'assets/img/'));
 });
 
-gulp.task('bower', function() {
+gulp.task('bower', function () {
     return bower({
         cmd: 'install'
     });
 });
 
 var child_exec = require('child_process').exec;
-gulp.task('generateDocs', function(done) {
+gulp.task('generateDocs', function (done) {
     child_exec('node ./node_modules/jsdoc/jsdoc.js -r -d ./documentation -c jsdoc.conf', undefined, done);
 });
 
@@ -158,8 +166,8 @@ function reloadCB(event) {
 };
 
 
-gulp.task('cleanDocs', function(){
-    return gulp.src([DOC + '**/*.*', DOC + '*.*'], {read:false}).pipe(clean());
+gulp.task('cleanDocs', function () {
+    return gulp.src([DOC + '**/*.*', DOC + '*.*'], { read: false }).pipe(clean());
 });
 
 
@@ -167,7 +175,7 @@ gulp.task('cleanDist', function () {
     return gulp.src([DIST + '**/*.*', DIST + '*.*', DIST], { read: false }).pipe(clean());
 });
 
-gulp.task('buildWatcher', function() {
+gulp.task('buildWatcher', function () {
     util.log('watching ' + SRC + ' for build');
     return gulp.watch([SRC + '**/*.*', SRC + '*.*', '!' + SRC +
         '/assets/bower/**/*.*', excludeBowerImports[1]
@@ -189,7 +197,7 @@ gulp.task('reloadWatcher', function () {
 gulp.task('devEnv', function (cb) {
     lr.listen();
     console.log(lr)
-    return sequence( 'devBuild', [
+    return sequence('devBuild', [
         'buildWatcher', 'reloadWatcher'
     ]);
 });

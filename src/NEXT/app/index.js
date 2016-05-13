@@ -15,8 +15,14 @@ angular.module('concentrator', [
         'concentrator.controller.product',
         'common.localization',
         'common.auth',
-        'ngCookies'
-    ]).config(['$cookiesProvider', '$httpProvider', function($cookiesProvider, $httpProvider) {}])
+        'ngCookies',
+        'angular-loading-bar'
+])
+    .config(function (cfpLoadingBarProvider) {
+        cfpLoadingBarProvider.latencyThreshold = 300;
+        cfpLoadingBarProvider.includeSpinner = true;
+        cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    })
     .run(runInit)
     .controller('coreCtrl', ['$scope', 'auth', coreCtrl])
     .directive('loginscreen', loginscreen);
@@ -32,7 +38,7 @@ function coreCtrl($scope, auth) {
     if (auth.isAuth()) {
         $scope.loginscreen = false
     } else {
-        $scope.loginscreen = true
+        $scope.loginscreen = false
     }
 }
 

@@ -23,5 +23,6 @@
   "description": "beschrijving",
   "add": "toevoegen",
   "remove": "verwijderen",
-  "refresh":  "verversen"
+  "refresh": "verversen",
+  "rememberMe": "onthoud mij"
 }

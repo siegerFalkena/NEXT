@@ -23,5 +23,6 @@
   "description": "description",
   "add": "add",
   "remove": "remove",
-  "refresh": "refresh"
+  "refresh": "refresh",
+  "rememberMe":  "remember me"
 }

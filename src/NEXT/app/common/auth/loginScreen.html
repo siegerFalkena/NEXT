@@ -27,6 +27,11 @@
                             {{l10n.getLocalized('submit')}}  <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                         </button>
                     </div>
+                    <div class="input-group input-group-lg col-md-12 col-lg-12 col-sm-12 col-xs-12 checkbox padding ">
+                        <label>
+                            <input type="checkbox" id="rememberMe" ng-model="rememberMe" checked ng-click="scope()" /> {{l10n.getLocalized('rememberMe')}}
+                        </label>
+                    </div>
                 </div>
                 <div class="col-md-2 col-md-offset-8 padding bgtransparent">
                     <div class="list-group">
