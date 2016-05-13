@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -11,11 +12,13 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
-using NEXT.API.Models;
+using NEXT.DB.Models;
 using NEXT.API.Repositories;
+using AutoMapper;
+using AutoMapper.Mappers;
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace NEXT.API
+namespace NEXT.API.Controllers
 {
     [Route("api/user")]
     public class UserController : Controller
@@ -23,18 +26,17 @@ namespace NEXT.API
         JsonSerializer serializer = new JsonSerializer();
         JsonSerializerSettings serializerSettings = new JsonSerializerSettings() {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            
+
         };
         IUserRepository repository;
-        ICompanyRepository companyRepo;
 
         private NEXTContext _context;
-        public UserController(NEXTContext context, IUserRepository repository, ICompanyRepository companyRepo)
+        public UserController(NEXTContext context, IUserRepository repository)
         {
             this._context = context;
             this.repository = repository;
-            this.companyRepo = companyRepo;
         }
+
 
         private List<string> tempObjectStore = new List<string>();
         // GET: api/user
@@ -62,19 +64,7 @@ namespace NEXT.API
         [HttpPost]
         public void Post([FromForm]string firstName, [FromForm]string lastName, [FromForm]string userName, [FromForm]string password, [FromForm] string email, [FromForm]int companyID)
         {
-            User user = new User();
-            user.Firstname = firstName;
-            user.Lastname = lastName;
-            user.Username = userName;
-            user.Password = password;
-            user.Email = email;
-
-            Company company = companyRepo.getCompanyByID(companyID);
-            user.Company = company;
-            
-
-            repository.createUser(user);
-            repository.save();
+          
         }
 
         // PUT api/user/5

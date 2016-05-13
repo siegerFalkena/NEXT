@@ -15,10 +15,10 @@ angular.module('concentrator.controller.product', [
     'cfp.loadingBar',
     'ui.grid.pinning'
 ])
-.controller('productListCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', 'i18nService', '$http', '$httpParamSerializer', 'cfpLoadingBar', productListCtrl])
+.controller('productListCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', 'i18nService', '$http', '$httpParamSerializer', 'cfpLoadingBar', '$timeout', productListCtrl])
 .controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', productDetailCtrl]);
 
-function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, uiGridConstants, i18nService, $http, $httpParamSerializer, cfpLoadingBar) {
+function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, uiGridConstants, i18nService, $http, $httpParamSerializer, cfpLoadingBar, $timeout) {
     var parameters = {
         'orderBy': null,
         'ascending': true,
@@ -51,7 +51,10 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             { name: 'SKU' },
             { name: 'ExternalProductIdentifier' },
             {
-                name: 'Created', type: 'date', enableCellEdit: false, filters: [
+                name: 'Created',
+                type: 'date',
+                enableCellEdit: false,
+                filters: [
                 {
                     condition: uiGridConstants.filter.GREATER_THAN,
                     placeholder: 'greater than'
@@ -65,7 +68,11 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             //move these to sub object / subfield
             //{ name: 'CreatedBy' },
             {
-                name: 'LastModified', type: 'date', enableCellEdit: false, cellFilter: 'date:\'yyyy-MM-dd\'', filters: [
+                name: 'LastModified',
+                type: 'date',
+                enableCellEdit: false, 
+                cellFilter: 'date:\'yyyy-MM-dd\'', 
+                filters: [
                 {
                     condition: uiGridConstants.filter.GREATER_THAN,
                     placeholder: 'greater than'
@@ -85,7 +92,7 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         onRegisterApi: onRegister
     }
     var opts = {
-          lines: 17 // The number of lines to draw
+        lines: 17 // The number of lines to draw
         , length: 28 // The length of each line
         , width: 16 // The line thickness
         , radius: 42 // The radius of the inner circle
@@ -148,15 +155,23 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         });
     };
 
-
+    var waiting = false;
     var getPage = function getPageF() {
-        cfpLoadingBar.start();
-        var url = '/api/product?' + $httpParamSerializer(parameters);
-        $http.get(url).success(function (data) {
-            cfpLoadingBar.complete();
-            $scope.gridOptions.totalItems = data.meta;
-            $scope.gridOptions.data = data.data;
-        })
+        if (waiting == false) {
+            waiting = true;
+            $timeout(aftertimeout(), 300);
+            function aftertimeout() {
+                cfpLoadingBar.start();
+                var url = '/api/product?' + $httpParamSerializer(parameters);
+                $http.get(url).success(function (data) {
+                    cfpLoadingBar.complete();
+                    $scope.gridOptions.totalItems = data.meta;
+                    $log.info(data);
+                    $scope.gridOptions.data = data.data;
+                    waiting = false;
+                });
+            }
+        }
     }
 
 

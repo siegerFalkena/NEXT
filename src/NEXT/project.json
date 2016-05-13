@@ -27,7 +27,8 @@
     "EntityFramework.MicrosoftSqlServer.Design": "7.0.0-rc1-final",
     "Microsoft.AspNet.Owin": "1.0.0-rc1-final",
     "Newtonsoft.Json": "8.0.3",
-    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final"
+    "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
+    "AutoMapper": "4.2.1"
   },
 
   "commands": {
@@ -38,6 +39,7 @@
   "frameworks": {
     "dnx451": {
       "dependencies": {
+        "WebApi.Hal": "2.6.0"
       },
       "frameworkAssemblies": {
         "System.Web.Extensions": "4.0.0.0"

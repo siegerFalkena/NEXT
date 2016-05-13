@@ -10,17 +10,18 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNet.StaticFiles;
 using Microsoft.Extensions.Logging;
-using NEXT.API.Models;
+using NEXT.DB.Models;
 using Microsoft.Data.Entity;
-using NEXT.API;
+using NEXT.DB;
 using NEXT.API.Repositories;
 using NEXT.API.Query;
+using AutoMapper;
 
 namespace NEXT
 {
     public class Startup
     {
-
+        
         public IConfigurationRoot Configuration { get; set; }
 
         public Startup(IHostingEnvironment env)
@@ -40,9 +41,11 @@ namespace NEXT
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<ICompanyRepository, CompanyRepository>();
-            services.AddSingleton<IBrandRepository, BrandRepository>();
             services.AddSingleton<IProductTypeRepository, ProductTypeRepository>();
+
+            Func<IServiceProvider, MapperConfiguration> create = (x) => x.GetService(null) as MapperConfiguration;
+            services.AddSingleton<IMapperConfiguration,MapperConfiguration>( create);
+
             services.AddAuthentication();
             services.AddRouting();
             services.AddMvc();

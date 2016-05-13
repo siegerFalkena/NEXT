@@ -11,9 +11,10 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
-using NEXT.API.Models;
+using NEXT.DB.Models;
 using NEXT.API.Repositories;
 using NEXT.API.Query;
+using NEXT.API.Serializer;
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NEXT.API
@@ -27,12 +28,10 @@ namespace NEXT.API
         
         private IProductRepository productRepo;
         private IProductTypeRepository typeRepo;
-        private IBrandRepository brandRepo;
 
 
-        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo, IBrandRepository brandRepo)
+        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo)
         {
-            this.brandRepo = brandRepo;
             this.productRepo = productRepo;
             this.typeRepo = typeRepo;
         }
@@ -46,11 +45,23 @@ namespace NEXT.API
         public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU,orderBy,ascending")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
             int total;
+            string data = "";
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add("data", productRepo.getProducts(query, page, results, out total));
+            IEnumerable<Product> products =  productRepo.getProducts(query, page, results, out total);
+            using (var strWriter = new StringWriter()) {
+                using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
+                    Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
+                    var resolver = new CustomContractResolver(include);
+                    var serializer = new JsonSerializer { ContractResolver = resolver,  ReferenceLoopHandling = ReferenceLoopHandling.Serialize};
+                    serializer.Serialize(jsonWriter, products);
+                }
+                data = strWriter.ToString();
+                dictionary.Add("data", data);
+            }
             dictionary.Add("meta", total.ToString());
 
-            return JsonConvert.SerializeObject(dictionary, serializerSettings);
+
+            return data;
         }
 
         // GET: api/product
