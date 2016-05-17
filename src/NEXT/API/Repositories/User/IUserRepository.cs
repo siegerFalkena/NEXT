@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NEXT.DB.Models;
+using NEXT.API.Resource;
 
 namespace NEXT.API.Repositories
 {

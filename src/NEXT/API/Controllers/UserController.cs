@@ -12,7 +12,7 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
-using NEXT.DB.Models;
+using NEXT.API.Resource;
 using NEXT.API.Repositories;
 using AutoMapper;
 using AutoMapper.Mappers;
@@ -28,13 +28,11 @@ namespace NEXT.API.Controllers
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 
         };
-        IUserRepository repository;
+        IUserRepository userRepo;
 
-        private NEXTContext _context;
-        public UserController(NEXTContext context, IUserRepository repository)
+        public UserController(IUserRepository repository)
         {
-            this._context = context;
-            this.repository = repository;
+            this.userRepo = repository;
         }
 
 
@@ -48,14 +46,14 @@ namespace NEXT.API.Controllers
             query.firstNameContains = containsFirstName == null ? containsFirstName : null;
             query.lastNameContains = containsLastName == null ? containsLastName : null;
             int queryResults = results == 0 ? 25: results;
-            return JsonConvert.SerializeObject(repository.userQuery(query, queryResults, page), serializerSettings) ;
+            return JsonConvert.SerializeObject(userRepo.userQuery(query, queryResults, page), serializerSettings) ;
         }
 
         // GET: api/user
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return JsonConvert.SerializeObject(repository.getUserByID(id));
+            return JsonConvert.SerializeObject(userRepo.getUserByID(id));
         }
 
 
@@ -78,8 +76,8 @@ namespace NEXT.API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            repository.deleteUser(id);
-            repository.save();
+            userRepo.deleteUser(id);
+            userRepo.save();
         }
     }
 }

@@ -30,6 +30,9 @@ namespace NEXT
                 .ForMember(dest => dest.brandID, opt => opt.MapFrom(src => src.ID))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
+                cfg.CreateMap<DB.Models.Company, API.Resource.Company>();
+                cfg.CreateMap<DB.Models.User, API.Resource.User>();
+
 
                 //fromResource
                 cfg.CreateMap<API.Resource.Brand, DB.Models.Brand>();

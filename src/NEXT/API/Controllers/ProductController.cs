@@ -12,7 +12,7 @@ using System.Text;
 //using System.Web.Script.Serialization;
 using Newtonsoft;
 using System.IO;
-using NEXT.DB.Models;
+using NEXT.API.Resource;
 using NEXT.API.Repositories;
 using NEXT.API.Query;
 using NEXT.API.Serializer;
@@ -25,32 +25,28 @@ namespace NEXT.API
     {
 
         private static JsonSerializer serializer = new JsonSerializer();
-        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings {ReferenceLoopHandling= ReferenceLoopHandling.Ignore };
-        
+        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+
         private IProductRepository productRepo;
         private IProductTypeRepository typeRepo;
         private IMappingConfigProvider mapConfig;
 
 
-        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo, IMappingConfigProvider mapConfig)
+        public ProductController(IProductRepository productRepo, IProductTypeRepository typeRepo, IMappingConfigProvider mapConfig)
         {
             this.productRepo = productRepo;
             this.typeRepo = typeRepo;
             this.mapConfig = mapConfig;
-
         }
 
+
         // GET: api/category
-        private static int defaultPage = 0;
-        private static int defaultPageResults = 25;
-
-
         [HttpGet]
         public JsonResult Get([FromQuery][Bind]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
             int total;
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            IEnumerable<API.Resource.Product> products =  productRepo.getProducts(query, page, results, out total);
+            IEnumerable<API.Resource.Product> products = productRepo.getProducts(query, out total);
             //using (var strWriter = new StringWriter()) {
             //    using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
             //        Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
@@ -66,6 +62,7 @@ namespace NEXT.API
             dictionary.Add("results", total);
             return Json(dictionary);
         }
+
 
         // GET: api/product
         [HttpGet("{id}")]
@@ -86,18 +83,20 @@ namespace NEXT.API
                 productRepo.insertProduct(product, newType, newBrand);
                 productRepo.Save();
             }
-            else {
+            else
+            {
                 Response.StatusCode = 400;
             }
         }
 
+
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID") ]Product product)
+        public void Put([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID")]Product product)
         {
-            productRepo.updateProduct(product);
-            productRepo.Save();
+
         }
+
 
         // DELETE api/values/5
         [HttpDelete("{id}")]

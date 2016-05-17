@@ -15,7 +15,7 @@ namespace NEXT.API.Repositories
             this.context = context;
         }
         
-        void IUserRepository.createUser(User user)
+        void IUserRepository.createUser(API.Resource.User user)
         {
             context.User.Add(user);
         }

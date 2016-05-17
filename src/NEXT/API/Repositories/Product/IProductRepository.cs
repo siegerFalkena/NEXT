@@ -11,10 +11,10 @@ namespace NEXT.API.Repositories
     {
         API.Resource.Product getProductByID(int productID);
         IEnumerable<API.Resource.Product> getProducts(ProductQuery query, out int total);
-        void insertProduct(DB.Models.Product product, DB.Models.ProductType type, DB.Models.Brand brand);
-        void insertProduct(DB.Models.Product product, DB.Models.Brand brand);
-        void insertProduct(DB.Models.Product product, DB.Models.ProductType type);
-        void insertProduct(DB.Models.Product product);
+        void insertProduct(API.Resource.Product product, API.Resource.ProductType type, API.Resource.Brand brand);
+        void insertProduct(API.Resource.Product product, API.Resource.Brand brand);
+        void insertProduct(API.Resource.Product product, API.Resource.ProductType type);
+        void insertProduct(API.Resource.Product product);
         void deleteProduct(int productID);
         void updateProduct(DB.Models.Product product);
         void Save();
