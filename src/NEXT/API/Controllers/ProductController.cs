@@ -42,12 +42,12 @@ namespace NEXT.API
 
 
         [HttpGet]
-        public String Get([FromQuery][Bind("min_Created,max_Created,CreatedBy,ExternalProductIdentifier,min_LastModified,max_LastModified,LastModifiedBy,ParentProductID,ProductTypeID,SKU,orderBy,ascending")]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
+        public String Get([FromQuery][Bind]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
             int total;
             string data = "";
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            IEnumerable<Product> products =  productRepo.getProducts(query, page, results, out total);
+            IEnumerable<API.Resource.Product> products =  productRepo.getProducts(query, page, results, out total);
             using (var strWriter = new StringWriter()) {
                 using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
                     Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
@@ -59,8 +59,7 @@ namespace NEXT.API
                 dictionary.Add("data", data);
             }
             dictionary.Add("meta", total.ToString());
-
-
+            
             return data;
         }
 
@@ -74,7 +73,7 @@ namespace NEXT.API
 
         // POST api/values
         [HttpPost]
-        public void Post([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID", Prefix = "p")] Product product,
+        public void Post([FromForm][Bind] Product product,
                          [FromForm][Bind("Name,ID", Prefix = "b")]Brand newBrand,
                          [FromForm][Bind("Name,ID", Prefix = "t")]ProductType newType)
         {
