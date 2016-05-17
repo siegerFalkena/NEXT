@@ -8,7 +8,7 @@ using NEXT.DB.Models;
 
 namespace NEXT.API.Query
 {
-    public class ProductQuery
+    public class ProductQuery : AbstractQuery
     {
 
         public DateTime? min_Created { get; set; } = null;
@@ -19,7 +19,11 @@ namespace NEXT.API.Query
         public DateTime? min_LastModified { get; set; } = null;
         public DateTime? max_LastModified { get; set; } = null;
 
-        //range
+        public Brand brand { get; set; } = null;
+        public ProductType type { get; set; } = null;
+        public string productTypeName { get; set; } = null;
+        public string productBrandName { get; set; } = null;
+
         public int? LastModifiedBy { get; set; } = null;
 
         public int? ParentProductID { get; set; } = null;
@@ -74,6 +78,14 @@ namespace NEXT.API.Query
             if (CreatedBy != null) {
                 query = PredicateBuilder.And(query, (Product => Product.CreatedBy == CreatedBy));
             }
+            if (brand != null && brand.Name != null) {
+                query = PredicateBuilder.And(query, (Product => Product.Brand.Name.Contains(brand.Name)));
+            }
+            if (type != null && type.Name != null)
+            {
+                query = PredicateBuilder.And(query, (Product => Product.ProductType.Name.Contains(type.Name)));
+            }
+
             return query;
         }
 
@@ -89,6 +101,8 @@ namespace NEXT.API.Query
                 if (orderBy.Equals("ParentProductID")) return ascending ? queryable.OrderBy(product => product.ParentProductID) : queryable.OrderByDescending(brand => brand.ParentProductID);
                 if (orderBy.Equals("ProductTypeID")) return ascending ? queryable.OrderBy(product => product.ProductTypeID) : queryable.OrderByDescending(brand => brand.ProductTypeID);
                 if (orderBy.Equals("Created")) return ascending ? queryable.OrderBy(product => product.Created) : queryable.OrderByDescending(brand => brand.Created);
+                if (orderBy.Equals("brand.Name")) return ascending ? queryable.OrderBy(product => product.Brand.Name) : queryable.OrderByDescending(brand => brand.Brand.Name);
+                if (orderBy.Equals("type.Name")) return ascending ? queryable.OrderBy(product => product.ProductType.Name) : queryable.OrderByDescending(brand => brand.ProductType.Name);
             }
             return queryable;
         }

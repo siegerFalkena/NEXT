@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.Data.Entity;
 using NEXT.DB.Models;
 using NEXT.API.Query;
 using NEXT.API.Resource;
-using NEXT.API.Mappers;
+using AutoMapper;
+using AutoMapper.Mappers;
 
 namespace NEXT.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
         private NEXTContext _context;
-        private ProductMapping productMapping;
-        public ProductRepository(NEXTContext context) {
+        private IMappingConfigProvider _mapConfig;
+        private IMapper mapper;
+
+        public ProductRepository(NEXTContext context, IMappingConfigProvider mapConfig) {
             this._context = context;
-            productMapping = new ProductMapping();
+            this._mapConfig = mapConfig;
+            mapper = _mapConfig.getConfig().CreateMapper();
+        }
+
+
+        public void Dispose() {
         }
 
         public void deleteProduct(int productID)
@@ -25,35 +34,39 @@ namespace NEXT.API.Repositories
             _context.Product.Remove(tbd);
         }
 
-        public void Dispose()
-        {
-        }
 
         public API.Resource.Product getProductByID(int productID)
         {
              DB.Models.Product  product = _context.Product.Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID).Single();
-            return productMapping.map(product);
+            return mapper.Map<DB.Models.Product, API.Resource.Product>(product);
         }
 
-        public IEnumerable<API.Resource.Product> getProducts(ProductQuery query, int page, int results, out int total)
+
+        public IEnumerable<API.Resource.Product> getProducts(ProductQuery query, out int total)
         {
             Expression<Func<DB.Models.Product, bool>> queryAsExpre = query.asExpression();
-            total = 0;
-                //_context.Product.Where<Product>(queryAsExpre).Where(product => true).Count();
-            
-            IQueryable<DB.Models.Product> ProductQuery = _context.Product.Where<DB.Models.Product>(queryAsExpre);
-            IQueryable<DB.Models.Brand> BrandQuery = _context.Brand;
-            ProductQuery = ProductQuery.Join(_context.Brand, (i) => i.BrandID, o => o.ID, (o, i) => o.BrandID == i.ID ? o.Brand = i : o.Brand = null;);
-            ProductQuery = ProductQuery.Join()
-            
-            int pageSkip = page > 0 ? page : 0;
-            int resultSkip = results > 0 ? results : 25;
-            ProductQuery = query.getOrdering(ProductQuery);
-            IEnumerable<DB.Models.Product> products = ProductQuery.Skip(page * resultSkip).Take(resultSkip).ToList();
+            IQueryable<DB.Models.Product> productQuery = _context.Product
+            .Include(p => p.Brand)
+            .Include(p => p.ChannelProduct)
+            .Include(p => p.ProductAttributeOption)
+            .Include(p => p.ProductAttributeValue)
+            .Include(p => p.ProductType)
+            .Include(p => p.RelatedProduct)
+            .Include(p => p.RelatedProductNavigation)
+            .Include(p => p.VendorProduct)
+            .Where<DB.Models.Product>(queryAsExpre);
+            IQueryable<DB.Models.Product> newQuery = query.getOrdering(productQuery);
+            IEnumerable<DB.Models.Product> products = newQuery
+                .Skip(query.page * query.results)
+                .Take(query.results)
+                //.Select<IEnumerable<DB.Models.Product>, IEnumerable<API.Resource.Product>>((x)=> mapper.Map<IEnumerable<API.Resource.Product>>(x))
+                .ToList();
+
+            total = productQuery.Count();
 
             List<API.Resource.Product> retList = new List<Resource.Product>();
             foreach (DB.Models.Product prod in products) {
-                API.Resource.Product newprod = productMapping.map(prod);
+                API.Resource.Product newprod = mapper.Map<API.Resource.Product>(prod);
                 retList.Add(newprod);
             }
             return retList;
@@ -74,20 +87,27 @@ namespace NEXT.API.Repositories
             _context.Add(Product);
         }
 
+
         public void insertProduct(DB.Models.Product Product, DB.Models.ProductType type) {
             insertProduct(Product, type, null);
         }
+
+
         public void insertProduct(DB.Models.Product product , DB.Models.Brand brand) {
             insertProduct(product, null, brand);
         }
+
+
         public void insertProduct(DB.Models.Product product) {
             insertProduct(product, null, null);
         }
+
 
         public void Save()
         {
             _context.SaveChanges();
         }
+
 
         public void updateProduct(DB.Models.Product product)
         {

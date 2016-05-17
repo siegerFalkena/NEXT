@@ -17,17 +17,16 @@ namespace NEXT.API.Resource
         public int? LastModifiedBy { get; set; } = null;
         public string SKU { get; set; }
         public string description { get; set; } = null;
-        public int? brandID { get; set; } = null;
-        public string brandName { get; set; } = null;
 
         public ProductType type { get; set; } = null;
         public Brand brand { get; set; } = null;
         public Channel channel { get; set; } = null;
         public ICollection<ProductAttribute> attributes;
+        public ICollection<Product> relatedProduct;
+        public ICollection<Product> relatedProductNavigation;
 
-
+        //from attributes
         public string Name { get; set; } = null;
-
 
         public string toJson()
         {

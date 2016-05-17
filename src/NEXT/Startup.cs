@@ -14,6 +14,7 @@ using NEXT.DB.Models;
 using Microsoft.Data.Entity;
 using NEXT.DB;
 using NEXT.API.Repositories;
+
 using NEXT.API.Query;
 using AutoMapper;
 
@@ -42,10 +43,7 @@ namespace NEXT
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IProductTypeRepository, ProductTypeRepository>();
-
-            Func<IServiceProvider, MapperConfiguration> create = (x) => x.GetService(null) as MapperConfiguration;
-            services.AddSingleton<IMapperConfiguration,MapperConfiguration>( create);
-
+            services.AddSingleton<IMappingConfigProvider, Mapping>();
             services.AddAuthentication();
             services.AddRouting();
             services.AddMvc();

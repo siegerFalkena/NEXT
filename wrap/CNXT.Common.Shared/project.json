@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "dnx451": {
+      "bin": {
+        "assembly": "../../lib/dnx451/CNXT.Common.Shared.dll"
+      },
+      "dependencies": {
+        "CNXT.Data.Model": "1.0.0-*"
+      }
+    }
+  }
+}

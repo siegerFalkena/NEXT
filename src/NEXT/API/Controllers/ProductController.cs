@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text;
@@ -28,12 +29,15 @@ namespace NEXT.API
         
         private IProductRepository productRepo;
         private IProductTypeRepository typeRepo;
+        private IMappingConfigProvider mapConfig;
 
 
-        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo)
+        public ProductController( IProductRepository productRepo, IProductTypeRepository typeRepo, IMappingConfigProvider mapConfig)
         {
             this.productRepo = productRepo;
             this.typeRepo = typeRepo;
+            this.mapConfig = mapConfig;
+
         }
 
         // GET: api/category
@@ -42,25 +46,25 @@ namespace NEXT.API
 
 
         [HttpGet]
-        public String Get([FromQuery][Bind]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
+        public JsonResult Get([FromQuery][Bind]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
         {
             int total;
-            string data = "";
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             IEnumerable<API.Resource.Product> products =  productRepo.getProducts(query, page, results, out total);
-            using (var strWriter = new StringWriter()) {
-                using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
-                    Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
-                    var resolver = new CustomContractResolver(include);
-                    var serializer = new JsonSerializer { ContractResolver = resolver,  ReferenceLoopHandling = ReferenceLoopHandling.Serialize};
-                    serializer.Serialize(jsonWriter, products);
-                }
-                data = strWriter.ToString();
-                dictionary.Add("data", data);
-            }
-            dictionary.Add("meta", total.ToString());
-            
-            return data;
+            //using (var strWriter = new StringWriter()) {
+            //    using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
+            //        Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
+            //        var resolver = new CustomContractResolver(include);
+            //        var serializer = new JsonSerializer { ContractResolver = resolver,  ReferenceLoopHandling = ReferenceLoopHandling.Serialize};
+            //        serializer.Serialize(jsonWriter, products);
+            //    }
+            //    data = strWriter.ToString();
+            //    dictionary.Add("data", data);
+            //}
+            //dictionary.Add("meta", total.ToString());
+            dictionary.Add("data", products);
+            dictionary.Add("results", total);
+            return Json(dictionary);
         }
 
         // GET: api/product

@@ -13,6 +13,7 @@ namespace NEXT.API.Resource
         public string value { get; set; } = null;
         public int? valueID { get; set; } = null;
 
+        public int? vendorID { get; set; } = null;
         public string contentType { get; set; } = null;
 
 

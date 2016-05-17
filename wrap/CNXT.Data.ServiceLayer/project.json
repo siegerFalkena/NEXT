@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "dnx451": {
+      "bin": {
+        "assembly": "../../lib/dnx451/CNXT.Data.ServiceLayer.dll"
+      },
+      "dependencies": {
+        "CNXT.Common.Shared": "1.0.0-*",
+        "CNXT.Data.Context": "1.0.0-*",
+        "CNXT.Data.Model": "1.0.0-*"
+      }
+    }
+  }
+}

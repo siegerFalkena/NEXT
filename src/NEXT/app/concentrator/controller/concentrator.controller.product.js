@@ -30,12 +30,81 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         'max_LastModified': null,
         'ParentProductID': null,
         'ProductTypeID': null,
-        'SKU': null
+        'SKU': null,
+        'brand': null,
+        'productTypeName': null,
+        'productBrandName': null
     }
+    var columnDefs = [
+        {
+            displayName: "SKU",
+            enableCellEdit: true,
+            visible: true,
+            field: "SKU"
+        },
+        {
+            displayName: "brandName",
+            enableCellEdit: false,
+            visible: true,
+            field: "brand.Name"
+        },
+        {
+            displayName: "productType",
+            enableCellEdit: true,
+            visible: true,
+            field: "type.Name"
+        },
+        {
+            displayName: "Created",
+            enableCellEdit: false,
+            visible: true,
+            field: "Created",
+            filters: [
+                {
+                    condition: uiGridConstants.filter.GREATER_THAN,
+                    placeholder: 'greater than'
+                },
+                {
+                    condition: uiGridConstants.filter.LESS_THAN,
+                    placeholder: 'less than'
+                }
+            ]
+        },
+        {
+            displayName: "CreatedBy",
+            enableCellEdit: false,
+            visible: true,
+            field: "CreatedBy"
+        },
+        {
+            displayName: "LastModified",
+            enableCellEdit: false,
+            visible: true,
+            field: "LastModified",
+            filters: [
+                 {
+                     condition: uiGridConstants.filter.GREATER_THAN,
+                     placeholder: 'greater than'
+                 },
+                {
+                    condition: uiGridConstants.filter.LESS_THAN,
+                    placeholder: 'less than'
+                }
+            ]
+
+        },
+        {
+            displayName: "ExternalID",
+            enableCellEdit: false,
+            visible: true,
+            field: "ExternalProductIdentifier"
+        },
+    ]
+
+
     //product resource class
     var Product = productResources.getClass();
     var query = Product.query(parameters);
-    var promise = query.$promise;
     $scope.gridOptions = {
         shwoTreeExpandNoChildren: true,
         enableFiltering: true,
@@ -47,75 +116,14 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         useExternalPagination: true,
         useExternalSorting: true,
         useExternalFiltering: true,
-        columnDefs: [
-            { name: 'SKU' },
-            { name: 'ExternalProductIdentifier' },
-            {
-                name: 'Created',
-                type: 'date',
-                enableCellEdit: false,
-                filters: [
-                {
-                    condition: uiGridConstants.filter.GREATER_THAN,
-                    placeholder: 'greater than'
-                },
-                {
-                    condition: uiGridConstants.filter.LESS_THAN,
-                    placeholder: 'less than'
-                }
-                ],
-            },
-            //move these to sub object / subfield
-            //{ name: 'CreatedBy' },
-            {
-                name: 'LastModified',
-                type: 'date',
-                enableCellEdit: false, 
-                cellFilter: 'date:\'yyyy-MM-dd\'', 
-                filters: [
-                {
-                    condition: uiGridConstants.filter.GREATER_THAN,
-                    placeholder: 'greater than'
+        onRegisterApi: onRegister,
+        columnDefs: columnDefs,
+        data: [],
+        totalItems: 0
+    }
 
-                },
-                {
-                    condition: uiGridConstants.filter.LESS_THAN,
-                    placeholder: 'less than'
-                }
-                ],
-            }
-            //{ name: 'LastModifiedBy' }
-            //{ name: 'BrandID' },
-            //{ name: 'ParentProductID' },
-            //{ name: 'ProductTypeID' }
-        ],
-        onRegisterApi: onRegister
-    }
-    var opts = {
-        lines: 17 // The number of lines to draw
-        , length: 28 // The length of each line
-        , width: 16 // The line thickness
-        , radius: 42 // The radius of the inner circle
-        , scale: 10 // Scales overall size of the spinner
-        , corners: 0 // Corner roundness (0..1)
-        , color: '#000' // #rgb or #rrggbb or array of colors
-        , opacity: 0.25 // Opacity of the lines
-        , rotate: 90 // The rotation offset
-        , direction: 1 // 1: clockwise, -1: counterclockwise
-        , speed: 1 // Rounds per second
-        , trail: 10 // Afterglow percentage
-        , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-        , zIndex: 2e9 // The z-index (defaults to 2000000000)
-        , className: 'spinner' // The CSS class to assign to the spinner
-        , top: '50%' // Top position relative to parent
-        , left: '50%' // Left position relative to parent
-        , shadow: false // Whether to render a shadow
-        , hwaccel: true // Whether to use hardware acceleration
-        , position: 'absolute' // Element positioning
-    }
 
     function onRegister(gridApi) {
-        $log.info(gridApi);
         $scope.gridApi = gridApi;
 
         //Sorting
@@ -125,14 +133,12 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             } else {
                 parameters.orderBy = sortColumns[0].field;
                 parameters.ascending = sortColumns[0].sort.direction === uiGridConstants.ASC ? true : false;
-                $log.info(sortColumns);
             }
             getPage();
         });
 
         //Pagination
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
-            $log.info('pagination changed');
             parameters.page = newPage - 1;
             parameters.results = pageSize;
             getPage();
@@ -144,8 +150,8 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             function columnIterate(column) {
                 function iterateFilters(filter) {
                     if (filter.term != undefined) {
-                        $log.info(parameters);
                         parameters[column.field] = filter.term;
+                        $log.info(parameters);
                         getPage();
                     }
                 }
@@ -159,37 +165,24 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
     var getPage = function getPageF() {
         if (waiting == false) {
             waiting = true;
-            $timeout(aftertimeout(), 300);
+            $timeout(aftertimeout(), 800);
             function aftertimeout() {
                 cfpLoadingBar.start();
                 var url = '/api/product?' + $httpParamSerializer(parameters);
-                $http.get(url).success(function (data) {
+                $http.get(url).then(function (data) {
                     cfpLoadingBar.complete();
-                    $scope.gridOptions.totalItems = data.meta;
+                    $scope.gridOptions.totalItems = data.data.results;
                     $log.info(data);
-                    $scope.gridOptions.data = data.data;
+                    $scope.gridOptions.data = data.data.data;
                     waiting = false;
+                }, function (response) {
+                    cfpLoadingBar.complete();
+                    $log.info("probably failed" + response);
                 });
             }
         }
     }
-
-
-    function removeSelection() {
-    }
-
-    function cb_success(resolvedValue) {
-        $scope.gridOptions.data = resolvedValue.data;
-        $log.info(resolvedValue);
-    }
-    function cb_failure(response) {
-        $log.error(response);
-    }
-    function cb_notify(notification) {
-        $log.error(notification);
-    }
-    promise.then(cb_success, cb_failure, cb_notify);
-
+    getPage();
     $scope.l10n = l10n;
 };
 

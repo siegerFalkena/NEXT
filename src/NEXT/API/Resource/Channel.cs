@@ -9,6 +9,7 @@ namespace NEXT.API.Resource
     {
         int? channelID { get; set; } = null;
         int? parentChannelID { get; set; } = null;
+
         string Name { get; set; } = null;
 
         public string toJson()

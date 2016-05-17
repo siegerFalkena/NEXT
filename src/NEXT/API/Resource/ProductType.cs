@@ -7,7 +7,8 @@ namespace NEXT.API.Resource
 {
     public class ProductType : IResource
     {
-        public int? ProductTypeID;
+        public int? ID { get; set; }
+        public string Name { get; set; } 
 
 
         public string toJson()
