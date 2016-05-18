@@ -28,14 +28,12 @@ namespace NEXT.API
         private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 
         private IProductRepository productRepo;
-        private IProductTypeRepository typeRepo;
         private IMappingConfigProvider mapConfig;
 
 
-        public ProductController(IProductRepository productRepo, IProductTypeRepository typeRepo, IMappingConfigProvider mapConfig)
+        public ProductController(IProductRepository productRepo, IMappingConfigProvider mapConfig)
         {
             this.productRepo = productRepo;
-            this.typeRepo = typeRepo;
             this.mapConfig = mapConfig;
         }
 

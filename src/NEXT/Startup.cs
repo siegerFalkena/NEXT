@@ -42,7 +42,6 @@ namespace NEXT
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
             services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IProductTypeRepository, ProductTypeRepository>();
             services.AddSingleton<IMappingConfigProvider, Mapping>();
             services.AddAuthentication();
             services.AddRouting();

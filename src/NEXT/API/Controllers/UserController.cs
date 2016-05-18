@@ -46,7 +46,7 @@ namespace NEXT.API.Controllers
             query.firstNameContains = containsFirstName == null ? containsFirstName : null;
             query.lastNameContains = containsLastName == null ? containsLastName : null;
             int queryResults = results == 0 ? 25: results;
-            return JsonConvert.SerializeObject(userRepo.userQuery(query, queryResults, page), serializerSettings) ;
+            return JsonConvert.SerializeObject(userRepo.userQuery(query), serializerSettings) ;
         }
 
         // GET: api/user

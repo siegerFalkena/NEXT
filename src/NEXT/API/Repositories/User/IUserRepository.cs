@@ -13,7 +13,7 @@ namespace NEXT.API.Repositories
         User getUserByID(int ID);
         User getUserByName(string name);
         void updateUser(User user);
-        List<User> userQuery(UserQuery query, int results, int skipPages);
+        List<User> userQuery(UserQuery query);
         void save();
     }
 }

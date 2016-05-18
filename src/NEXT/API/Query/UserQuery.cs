@@ -8,7 +8,7 @@ using NEXT.API.Query;
 
 namespace NEXT.API.Repositories
 {
-    public class UserQuery
+    public class UserQuery : AbstractQuery
     {
         public int? email = null;
         public string firstNameContains = null;
