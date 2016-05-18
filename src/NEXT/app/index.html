@@ -5,11 +5,12 @@
     <link rel="stylesheet" type="text/css" href="assets/css/ui-grid.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/metro-bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/flags.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/loading-bar.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/angular-gridster.min.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" />
 </head>
-<body ng-app="concentrator" ng-controller="coreCtrl" class="fullscreen">
+<body ng-app="concentrator" ng-controller="coreCtrl" class="fullscreen" style="background: rgb(200, 200, 200)">
     <div ng-if="!loginscreen">
         <navbar></navbar>
         </hr>
@@ -38,12 +39,15 @@
 <script src="assets/js/underscore-min.js"></script>
 <script src="assets/js/ui-grid.min.js"></script>
 <script src="assets/js/loading-bar.min.js"></script>
+<script src="assets/js/jquery.resize.js"></script>
+<script src="assets/js/angular-gridster.min.js"></script>
 
 <!--MODELS-->
 <script src="index.js"></script>
 <script src="concentrator/model/product/concentrator.model.product.js"></script>
 <script src="concentrator/model/product/concentrator.model.product.resource.js"></script>
 <script src="concentrator/controller/concentrator.controller.product.js"></script>
+<script src="concentrator/controller/controller.product.detail.js"></script>
 <script src="routes.js"></script>
 <script src="common/directives.js"></script>
 <script src="common/components/navbar/navbar.js"></script>
@@ -54,10 +58,12 @@
 <script src="common/components/searchFilter/searchFilter.js"></script>
 <script src="common/components/searchFilter/searchFilterDirectives.js"></script>
 <script src="common/components/messageList/messageListDirectives.js"></script>
+
 <!--LOCALIZATION-->
 <script src="common/localization/common.localization.js"></script>
 <script src="common/localization/common.localization.service.js"></script>
 <script src="common/localization/common.localization.directive.js"></script>
+
 <!--AUTHORIZATION-->
 <script src="common/auth/common.auth.js"></script>
 <script src="common/auth/common.auth.controller.js"></script>

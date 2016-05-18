@@ -8,24 +8,10 @@ function productResources($resourceProvider) {
 }
 
 function productAPI($resource, $log) {
-    var Product = $resource('/api/product/:ID', { ID: '@ID' }, {
+    var Product = $resource('/api/product/:productID', { productID: '@id' }, {
     });
 
     this.getClass = function() {
         return Product;
     };
-
-    this.newProduct = function(name, description, price, callback) {
-        var product = new Product({
-            name: name,
-            description: description,
-            price: price
-        });
-        product.name = name;
-        product.price = price;
-        product.description = description;
-        product.$save();
-        return product;
-    };
-
 };

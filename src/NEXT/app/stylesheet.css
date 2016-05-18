@@ -19,7 +19,7 @@
 }
 
 
-@media (min-width: 800px) and (max-width: 1000px) {
+@media (max-width: 850px) {
    .collapse {
        display: none !important;
    }
@@ -32,6 +32,9 @@ body,
     padding: 0;
     height: 100%;
     overflow-x:hidden;
+    /*background: #004756;*/
+    color: #fff;
+
 }
 
 div {
@@ -84,7 +87,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 
 
 .niceinput {
-    background: none;
     background: rgba(255, 255, 255, 0.8);
     /* -webkit-box-shadow: inset 0px 3px 2px 10px #dddddd;
     -moz-box-shadow: inset 0px 3px 2px 10px #dddddd;
@@ -97,10 +99,24 @@ h4, .submitbutton {
 }
 
 
-.list-group-item {
-    border: none;
-}
-
 .grid {
     width:100%;
 }
+
+.gridster-loaded .gridster-item {
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+    color: #000000;
+    background: wheat;
+    padding: 10px;
+}
+
+.list-group .list-group-item {
+    background: none;
+        border: none;
+}
+
+
+
+

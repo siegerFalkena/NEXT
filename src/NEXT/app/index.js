@@ -20,7 +20,7 @@ angular.module('concentrator', [
 ])
     .config(function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.latencyThreshold = 300;
-        cfpLoadingBarProvider.includeSpinner = true;
+        cfpLoadingBarProvider.includeSpinner = false;
         cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     })
     .run(runInit)

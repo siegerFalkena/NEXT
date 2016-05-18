@@ -24,5 +24,11 @@
   "add": "toevoegen",
   "remove": "verwijderen",
   "refresh": "verversen",
-  "rememberMe": "onthoud mij"
+  "rememberMe": "onthoud mij",
+  "brandID": "Brand Identifier",
+  "brandName": "Brand Name",
+  "createDate": "created",
+  "createdBy": "Created by user",
+  "ExternalID": "External Identifier",
+  "productID": "Product Identifier"
 }

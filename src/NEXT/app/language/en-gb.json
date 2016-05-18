@@ -24,5 +24,12 @@
   "add": "add",
   "remove": "remove",
   "refresh": "refresh",
-  "rememberMe":  "remember me"
+  "rememberMe": "remember me",
+  "brandID": "Brand Identifier",
+  "brandName": "Brand Name",
+  "createDate": "created",
+  "createdBy":  "Created by user",
+  "ExternalID": "External Identifier",
+  "productID": "Product Identifier"
+
 }

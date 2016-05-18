@@ -1,0 +1,9 @@
+﻿<div class="list-group" ng-init="edit=false" ng-mouseover="edit = true" ng-mouseleave="edit = false">
+    <div class="list-group-item">
+       <p class="list-group-item-text text-justify">{{l10n.getLocalized('ExternalID')}}</p>
+        <h3 class="list-group-item-heading">{{product.ExternalProductIdentifier}}</h3>
+        <div class="btn-group" role="group" aria-label="..." ng-hide="!edit" ng-show="edit">
+            <button type="button" class="btn btn-default">{{l10n.getLocalized('edit')}}</button>
+        </div>
+    </div>
+</div>

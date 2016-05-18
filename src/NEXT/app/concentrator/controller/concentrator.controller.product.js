@@ -13,10 +13,11 @@ angular.module('concentrator.controller.product', [
     'ui.grid.autoResize',
     'ui.grid.moveColumns',
     'cfp.loadingBar',
-    'ui.grid.pinning'
+    'ui.grid.pinning',
+    'gridster',
+    'ui.bootstrap.alert'
 ])
-.controller('productListCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', 'i18nService', '$http', '$httpParamSerializer', 'cfpLoadingBar', '$timeout', productListCtrl])
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', productDetailCtrl]);
+.controller('productListCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', 'i18nService', '$http', '$httpParamSerializer', 'cfpLoadingBar', '$timeout', productListCtrl]);
 
 function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, uiGridConstants, i18nService, $http, $httpParamSerializer, cfpLoadingBar, $timeout) {
     var parameters = {
@@ -184,27 +185,4 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
     }
     getPage();
     $scope.l10n = l10n;
-};
-
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, uiGridConstants) {
-    var stateParams = $rootScope.$stateParams;
-    $scope.l10n = l10n;
-    $scope.edit = false;
-
-    var Product = productResources.getClass();
-
-    $log.info(stateParams.id);
-    if (stateParams.id == '') {
-        $log.info('logo');
-        $scope.edit = true;
-    } else {
-        $scope.edit = false;
-        var productPromise = Product.get({ productId: stateParams.id }, function (object) {
-            $log.info(object);
-            $scope.product = object;
-        }, function (errorEvent) {
-            $log.error(errorEvent);
-        });
-    }
-
 };
