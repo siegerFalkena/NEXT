@@ -18,14 +18,16 @@ namespace NEXT.API.Repositories
         private IMappingConfigProvider _mapConfig;
         private IMapper mapper;
 
-        public ProductRepository(NEXTContext context, IMappingConfigProvider mapConfig) {
+        public ProductRepository(NEXTContext context, IMappingConfigProvider mapConfig)
+        {
             this._context = context;
             this._mapConfig = mapConfig;
             mapper = _mapConfig.getConfig().CreateMapper();
         }
 
 
-        public void Dispose() {
+        public void Dispose()
+        {
         }
 
         public void deleteProduct(int productID)
@@ -37,7 +39,17 @@ namespace NEXT.API.Repositories
 
         public API.Resource.Product getProductByID(int productID)
         {
-             DB.Models.Product  product = _context.Product.Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID).Single();
+            DB.Models.Product product = _context.Product
+               .Include(p => p.Brand)
+               .Include(p => p.ChannelProduct)
+               .Include(p => p.ProductType)
+               .Include(p => p.RelatedProduct)
+               .Include(p => p.RelatedProductNavigation)
+               .Include(p => p.VendorProduct)
+               .Include(p => p.ProductAttributeOption)
+               .Include(p => p.ProductAttributeValue)
+               .Include(p => p.ParentProduct)
+               .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID).Single();
             return mapper.Map<DB.Models.Product, API.Resource.Product>(product);
         }
 
@@ -65,38 +77,44 @@ namespace NEXT.API.Repositories
             total = productQuery.Count();
 
             List<API.Resource.Product> retList = new List<Resource.Product>();
-            foreach (DB.Models.Product prod in products) {
+            foreach (DB.Models.Product prod in products)
+            {
                 API.Resource.Product newprod = mapper.Map<API.Resource.Product>(prod);
                 retList.Add(newprod);
             }
             return retList;
         }
 
-        
-        public void insertProduct(API.Resource.Product product, API.Resource.ProductType type, API.Resource.Brand brand )
+
+        public void insertProduct(API.Resource.Product product, API.Resource.ProductType type, API.Resource.Brand brand)
         {
             DB.Models.Product insertProduct = mapper.Map<DB.Models.Product>(product);
             _context.Product.Add(insertProduct);
-            if (type != null && type.ID == 0) {
+            if (type != null && type.ID == 0)
+            {
                 _context.ProductType.Add(mapper.Map<DB.Models.ProductType>(type));
             }
-            if (brand != null && brand.brandID == 0) {
+            if (brand != null && brand.brandID == 0)
+            {
                 _context.Brand.Add(mapper.Map<DB.Models.Brand>(brand));
             }
         }
 
 
-        public void insertProduct(API.Resource.Product Product, API.Resource.ProductType type) {
+        public void insertProduct(API.Resource.Product Product, API.Resource.ProductType type)
+        {
             insertProduct(Product, type, null);
         }
 
 
-        public void insertProduct(API.Resource.Product product , API.Resource.Brand brand) {
+        public void insertProduct(API.Resource.Product product, API.Resource.Brand brand)
+        {
             insertProduct(product, null, brand);
         }
 
 
-        public void insertProduct(API.Resource.Product product) {
+        public void insertProduct(API.Resource.Product product)
+        {
             insertProduct(product, null, null);
         }
 
