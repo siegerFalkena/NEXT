@@ -42,12 +42,16 @@ namespace NEXT.API.Repositories
             DB.Models.Product product = _context.Product
                .Include(p => p.Brand)
                .Include(p => p.ChannelProduct)
+               .ThenInclude( cp => cp.Channel)
                .Include(p => p.ProductType)
                .Include(p => p.RelatedProduct)
                .Include(p => p.RelatedProductNavigation)
                .Include(p => p.VendorProduct)
+               .ThenInclude( vp => vp.Vendor )
                .Include(p => p.ProductAttributeOption)
+               .ThenInclude( pao => pao.AttributeOption)
                .Include(p => p.ProductAttributeValue)
+               .ThenInclude(pao => pao.Attribute)
                .Include(p => p.ParentProduct)
                .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID).Single();
             return mapper.Map<DB.Models.Product, API.Resource.Product>(product);
@@ -66,6 +70,7 @@ namespace NEXT.API.Repositories
             .Include(p => p.RelatedProduct)
             .Include(p => p.RelatedProductNavigation)
             .Include(p => p.VendorProduct)
+            .Include(p => p.VendorProduct.Select( vp=> vp.ProductID == p.ID))
             .Where<DB.Models.Product>(queryAsExpre);
             IQueryable<DB.Models.Product> newQuery = query.getOrdering(productQuery);
             IEnumerable<DB.Models.Product> products = newQuery

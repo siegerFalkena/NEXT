@@ -10,7 +10,7 @@ namespace NEXT.API.Resource
         public int? vendorID { get; set; } = null;
         public string name { get; set; } = null;
 
-        public string toJson()
+        public override Dictionary<string, string> meta(string relationship)
         {
             throw new NotImplementedException();
         }

@@ -8,10 +8,10 @@ namespace NEXT.API.Resource
     public class ProductType : IResource
     {
         public int? ID { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
 
 
-        public string toJson()
+        public override Dictionary<string, string> meta(string relationship)
         {
             throw new NotImplementedException();
         }

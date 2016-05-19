@@ -25,7 +25,10 @@ namespace NEXT.API
     {
 
         private static JsonSerializer serializer = new JsonSerializer();
-        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            NullValueHandling = NullValueHandling.Ignore
+        };
 
         private IProductRepository productRepo;
         private IMappingConfigProvider mapConfig;
@@ -58,7 +61,7 @@ namespace NEXT.API
             //dictionary.Add("meta", total.ToString());
             dictionary.Add("data", products);
             dictionary.Add("results", total);
-            return Json(dictionary);
+            return Json(dictionary,serializerSettings);
         }
 
 

@@ -15,7 +15,7 @@ namespace NEXT.API.Resource
         public ICollection<User> User { get; set; }
         public ICollection<Vendor> Vendor { get; set; }
 
-        public string toJson()
+        public override Dictionary<string, string> meta(string relationship)
         {
             throw new NotImplementedException();
         }

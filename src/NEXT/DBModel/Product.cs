@@ -26,6 +26,7 @@ namespace NEXT.DB.Models
         public int ProductTypeID { get; set; }
         public string SKU { get; set; }
 
+
         public virtual ICollection<ChannelProduct> ChannelProduct { get; set; }
         public virtual ICollection<ProductAttributeOption> ProductAttributeOption { get; set; }
         public virtual ICollection<ProductAttributeValue> ProductAttributeValue { get; set; }

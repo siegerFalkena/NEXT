@@ -12,7 +12,7 @@ namespace NEXT.API.Resource
 
         string Name { get; set; } = null;
 
-        public string toJson()
+        public override Dictionary<string, string> meta(string relationship)
         {
             throw new NotImplementedException();
         }

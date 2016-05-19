@@ -20,7 +20,7 @@ namespace NEXT.API.Resource
 
         public Company Company { get; set; }
 
-        public string toJson()
+        public override Dictionary<string, string> meta(string relationship)
         {
             throw new NotImplementedException();
         }

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace NEXT.API.Resource
 {
-    public interface IResource
+    public abstract class IResource
     {
-        string toJson();
+      public abstract Dictionary<string, string> meta(string relationship);
     }
 }
