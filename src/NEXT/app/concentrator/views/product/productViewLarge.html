@@ -1,6 +1,6 @@
 ﻿<div ng-controller="productDetailCtrl">
-    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12" style="">
-        <ul class="nav nav-stacked affix hidden-xs hidden-sm" style="">
+    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12">
+        <ul class="nav nav-stacked affix hidden-xs hidden-sm">
             <li>
                 <a ng-click="context = 'BASE'; decomposeProduct(product);">
                     <h3><span class="glyphicon glyphicon-chevron-up"></span> {{l10n.getLocalized('BASE')}}</h3>
@@ -28,13 +28,13 @@
         <div class="row">
             <div gridster="gridsterOpts" >
                 <ul>
-                    <li gridster-item size-x="item.size.x" size-y="item.size.y" ng-repeat="basicitem in items" style="background: {{basicitem.background ? basicitem.background : 'wheat'}}; color: {{basicitem.color}};">
-                        <attribute-value type="{{basicitem.type}}" obj="basicitem.obj" edit="{{basicitem.editable}}" title="{{basicitem.title}}"></attribute-value>
+                    <li gridster-item size-x="basicitem.size.x" size-y="basicitem.size.y" ng-repeat="basicitem in items"  style="background: {{basicitem.background ? basicitem.background : 'wheat'}}; color: {{basicitem.color}};">
+                        <property type="{{basicitem.type}}" obj="basicitem.obj" edit="{{basicitem.editable}}" title="{{basicitem.title}}"></property>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
             <div gridster="gridsterOpts">
                 <ul>
                     <li gridster-item size-x="item.size.x" size-y="item.size.y" ng-repeat="attribute in product.attributeValues" style="background: {{attribute.background ? attribute.background : 'wheat'}}; color: {{attribute.color}};">
@@ -42,6 +42,6 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>

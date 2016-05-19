@@ -1,25 +1,50 @@
 ﻿<div>
-    <div ng-if="type === 'brand'" >
-        <ng-include src="'concentrator/partials/product/brandPartial.html'"></ng-include>
+    <div ng-if="type == 'brand'">
+        <div class="list-group">
+            <div class="list-group-item">
+                <p class="list-group-item-text">
+                    {{l10n.getLocalized('BrandName')}}
+                </p>
+                <h3 class="list-group-item-heading">
+                    {{obj.Name}}
+                </h3>
+            </div>
+            <div class="list-group-item">
+                <p class="list-group-item-text">
+                    {{l10n.getLocalized('brand')}}
+                </p>
+                <h3 class="list-group-item-heading">
+                    {{obj.brandID}}
+                </h3>
+            </div>
+        </div>
+
     </div>
 
-    <div ng-if="type === 'SKU'" >
-        <ng-include src="'concentrator/partials/product/SKUPartial.html'"></ng-include>
+    <div ng-if="type == 'SKU'">
+        <div class="list-group">
+            <div class="list-group-item">
+                <p class="list-group-item-text">
+                    {{l10n.getLocalized('SKU')}}
+                </p>
+                <h3 class="list-group-item-heading">{{obj}}</h3>
+            </div>
+        </div>
     </div>
 
-    <div ng-if="type === 'attribute'" >
+    <div ng-if="type == 'attribute'">
         <ng-include src="'concentrator/partials/product/AttributePartial.html'"></ng-include>
     </div>
 
-    <div ng-if="type === 'externalID'" >
+    <div ng-if="type == 'externalID'">
         <ng-include src="'concentrator/partials/product/IdentifierPartial.html'"></ng-include>
     </div>
 
-    <div ng-if="type === 'LastModified'" >
+    <div ng-if="type == 'LastModified'">
         <ng-include src="'concentrator/partials/product/datePartial.html'"></ng-include>
     </div>
 
-    <div ng-if="type === 'ProductID'" >
+    <div ng-if="type == 'ProductID'">
         <ng-include src="'concentrator/partials/product/datePartial.html'"></ng-include>
     </div>
 </div>

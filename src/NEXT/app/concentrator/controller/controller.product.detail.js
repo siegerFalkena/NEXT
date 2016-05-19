@@ -1,29 +1,18 @@
 ﻿'use strict';
 angular.module('concentrator.controller.product')
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', 'attributeComponentService', productDetailCtrl])
-.component('attributePartial', {
-    templateUrl: 'concentrator/partials/product/AttributeSelector.html',
+.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', productDetailCtrl])
+.component('property', {
+    templateUrl: '/concentrator/partials/product/propertySelector.html',
     controller: attributeComponentCtrl,
     bindings: {
-        obj: '='
+        obj: '=',
+        type: '@',
+        edit: '@'
     }
-})
-.component('attributePartial', {
-    templateUrl: 'concentrator/partials/product/AttributeSelector.html',
-    controller: attributeComponentCtrl,
-    bindings: {
-        obj: '='
-    }
-})
-//TODO remove magic
-.factory('attributeComponentService', ['$http', '$log', '$cookies', '$window', function () {
-    function determineOrigin(productAttribute) {
+});
 
-    }
-    return {};
-}])
 
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, componentService) {
+function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar) {
     var $stateParams = $rootScope.$stateParams;
     $scope.l10n = l10n;
     $scope.context = 'BASE';
@@ -55,47 +44,20 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             color: 'black'
         });
         $scope.items.push({
-            type: 'ProductID',
-            obj: product.productID,
-            editable: false,
-            background: 'lightyellow',
-            color: 'black'
-        });
-        $scope.items.push({
-            type: 'LastModifed',
-            obj: product.LastModified,
-            editable: false,
-            background: 'lightyellow',
-            color: 'black'
-        });
-        $scope.items.push({
-            type: 'Created',
-            title: l10n.getLocalized('productID'),
-            obj: product.LastModified,
-            editable: false,
-            background: 'lightyellow',
-            color: 'black'
-        });
-        $scope.items.push({
-            type: 'ProductID',
-            obj: product.productID,
-            editable: false,
-            background: 'lightyellow',
-            color: 'black'
-        });
-        $scope.items.push({
-            type: 'externalID',
-            obj: product.ExternalProductIdentifier,
-            editable: false,
-            background: 'lightyellow',
-            color: 'black'
-        });
-        $scope.items.push({
+            size: {x: 2, y: 2},
             type: 'brand',
-            obj: product.SKU,
+            obj: product.brand,
             editable: false,
-            background: 'lightyellow',
-            color: 'black'
+            background: 'magenta',
+            color: 'yellow'
+        });
+        $scope.items.push({
+            size: { x: 1, y: 2 },
+            type: 'brand',
+            obj: product.brand,
+            editable: false,
+            background: 'wheat',
+            color: 'darkbrown'
         });
     };
 
@@ -131,9 +93,10 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     };
 };
 
-function attributeComponentCtrl($log, $scope) {
+function attributeComponentCtrl($log, $scope, l10n) {
     var editable = editable ? editable : false;
     $log.info(this);
+    $scope.l10n = l10n
     $scope.type = this.type;
     $scope.obj = this.obj;
     $scope.edit = this.edit;
