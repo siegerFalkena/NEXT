@@ -29,6 +29,7 @@ namespace NEXT.API.Serializer
                                                shouldSerialize(obj));
             return property;
         }
+        
 
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NEXT.API.Resource
 {
-    public class User : IResource
+    public class User : AbstractResource
     {
         public int ID { get; set; }
         public int CompanyID { get; set; }
@@ -20,11 +20,14 @@ namespace NEXT.API.Resource
 
         public Company Company { get; set; }
 
-        public override Dictionary<string, string> meta(string relationship)
+        public override Dictionary<string, string> generateMeta(string relationship)
         {
-            throw new NotImplementedException();
+            Dictionary<string, string> newMeta = new Dictionary<string, string>();
+            newMeta.Add("ID", ID.ToString());
+            newMeta.Add("link", "/api/brand/" + ID);
+            if (relationship != null) newMeta.Add("rel", relationship);
+            return newMeta;
         }
 
-        public string resourceID; 
     }
 }

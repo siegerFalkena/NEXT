@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace NEXT.API.Resource
 {
-    public abstract class IResource
+    public abstract class AbstractResource
     {
-      public abstract Dictionary<string, string> meta(string relationship);
+        public Dictionary<string, string> metadata;
+        public abstract Dictionary<string, string> generateMeta(string relationship);
     }
 }

@@ -50,8 +50,11 @@ namespace NEXT.API.Repositories
                .ThenInclude( vp => vp.Vendor )
                .Include(p => p.ProductAttributeOption)
                .ThenInclude( pao => pao.AttributeOption)
+               .ThenInclude(pao => pao.Attribute)
+               .ThenInclude(pao => pao.AttributeType)
                .Include(p => p.ProductAttributeValue)
                .ThenInclude(pao => pao.Attribute)
+               .ThenInclude(pao => pao.AttributeType)
                .Include(p => p.ParentProduct)
                .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID).Single();
             return mapper.Map<DB.Models.Product, API.Resource.Product>(product);

@@ -21,8 +21,12 @@ namespace NEXT
             {
                 config = new MapperConfiguration(cfg =>
                {
-                //toResource
-                cfg.CreateMap<DB.Models.ProductType, API.Resource.ProductType>();
+                   //toResource
+                   cfg.CreateMap<DB.Models.ProductType, API.Resource.ProductType>();
+
+                   cfg.CreateMap<DB.Models.ProductAttributeValue, API.Resource.Attribute>()
+                   .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
+                   .ForMember(dest => dest.AttributeType, opt => opt.MapFrom(src => src.Attribute.AttributeType.Name));
 
                    cfg.CreateMap<DB.Models.Vendor, API.Resource.Vendor>();
                    cfg.CreateMap<DB.Models.Product, API.Resource.Product>()
@@ -32,6 +36,9 @@ namespace NEXT
                    .ForMember(dest => dest.relatedProduct, opt => opt.MapFrom(src => src.RelatedProduct))
                    .ForMember(dest => dest.LastModified, opt => opt.MapFrom(src => src.LastModified))
                    .ForMember(dest => dest.LastModifiedBy, opt => opt.MapFrom(src => src.LastModifiedBy))
+                   .ForMember(dest => dest.attributeValues, opt => opt.MapFrom(src => src.ProductAttributeValue))
+                   .ForMember(dest => dest.attributeValues, opt => opt.MapFrom(src => src.ProductAttributeValue))
+                   .ForMember(dest => dest.attributeOptions, opt => opt.MapFrom(src => src.ProductAttributeOption))
                    .ForMember(dest => dest.relatedProductNavigation, opt => opt.MapFrom(src => src.RelatedProductNavigation));
 
                    cfg.CreateMap<DB.Models.Brand, API.Resource.Brand>()
@@ -42,8 +49,12 @@ namespace NEXT
                    cfg.CreateMap<DB.Models.User, API.Resource.User>();
 
 
-                //fromResource
-                cfg.CreateMap<API.Resource.Brand, DB.Models.Brand>();
+
+                   cfg.CreateMap<DB.Models.ProductAttributeOption, API.Resource.Attribute>();
+
+
+                   //fromResource
+                   cfg.CreateMap<API.Resource.Brand, DB.Models.Brand>();
 
                    cfg.CreateMap<API.Resource.ProductType, DB.Models.ProductType>();
 

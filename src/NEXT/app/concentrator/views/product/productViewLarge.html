@@ -1,28 +1,44 @@
 ﻿<div ng-controller="productDetailCtrl">
-    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12" style="z-index:10000;">
-        <ul class="nav nav-stacked affix hidden-xs hidden-sm">
+    <div class="col-lg-2 col-md-2 col-xs-12 col-sm-12" style="">
+        <ul class="nav nav-stacked affix hidden-xs hidden-sm" style="">
+            <li>
+                <a ng-click="context = 'BASE'; decomposeProduct(product);">
+                    <h3><span class="glyphicon glyphicon-chevron-up"></span> {{l10n.getLocalized('BASE')}}</h3>
+                </a>
+            </li>
+            <li><a ng-click="context = 'channel'">
+                <h3><span class="glyphicon glyphicon-chevron-up"></span> {{l10n.getLocalized('CHANNEL')}}</h3></a></li>
+            <li><a ng-click="context = 'vendor'">
+                <h3><span class="glyphicon glyphicon-chevron-down"></span>{{l10n.getLocalized('VENDOR')}}</h3></a></li>
+            <li><a ng-click="context = 'attributes'">
+                <h3><span class="glyphicon glyphicon-floppy-save"></span>{{l10n.getLocalized('ATTRIBUTES')}}</h3></a></li>
+            <li><a ng-click="context = 'related products'">
+                <h3><span class="glyphicon glyphicon-remove"></span>{{l10n.getLocalized('RELATEDPRODUCTS')}}</h3></a></li>
+            <li><a ng-click="context = 'attributes'">
+                <h3><span class="glyphicon glyphicon-tower"></span>{{l10n.getLocalized('CHILDREN')}}</h3></a></li>
             <li><a href="">
-                <h3><span class="glyphicon glyphicon-chevron-up"></span> {{l10n.getLocalized('backToTop')}}</h3></a></li>
-            <li><a href="">
-                <h3><span class="glyphicon glyphicon-chevron-down"></span>{{l10n.getLocalized('nextItem')}}</h3></a></li>
-            <li><a href="">
-                <h3><span class="glyphicon glyphicon-floppy-save"></span>{{l10n.getLocalized('Edit')}}</h3></a></li>
-            <li><a href="">
-                <h3><span class="glyphicon glyphicon-remove"></span>{{l10n.getLocalized('Delete')}}</h3></a></li>
-            <li><a href="">
-                <h3><span class="glyphicon glyphicon-tower"></span>Tower</h3></a></li>
-            <li><a href="">
-                <h3><span class="glyphicon glyphicon-fire"></span>Fire</h3></a></li>
+                <h3><span class="glyphicon glyphicon-fire"></span>{{l10n.getLocalized('SOMEOTHERCONTEXT')}}</h3></a></li>
         </ul>
     </div>
+
     <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
         <div class="row">
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="15000" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
         </div>
         <div class="row">
+            <div gridster="gridsterOpts" >
+                <ul>
+                    <li gridster-item size-x="item.size.x" size-y="item.size.y" ng-repeat="basicitem in items" style="background: {{basicitem.background ? basicitem.background : 'wheat'}}; color: {{basicitem.color}};">
+                        <attribute-value type="{{basicitem.type}}" obj="basicitem.obj" edit="{{basicitem.editable}}" title="{{basicitem.title}}"></attribute-value>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
             <div gridster="gridsterOpts">
                 <ul>
-                    <li gridster-item size-x="item.size.x" size-y="item.size.y" ng-include="item.template" ng-repeat="item in items" ng-model="product" style="background: {{item.background}}; color: {{item.color}};">
+                    <li gridster-item size-x="item.size.x" size-y="item.size.y" ng-repeat="attribute in product.attributeValues" style="background: {{attribute.background ? attribute.background : 'wheat'}}; color: {{attribute.color}};">
+                        <attribute-value type="{{attribute.type}}" obj="attribute.obj" edit="{{attribute.editable}}" title="{{attribute.title}}"></attribute-value>
                     </li>
                 </ul>
             </div>

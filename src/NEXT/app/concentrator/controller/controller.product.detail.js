@@ -1,10 +1,32 @@
 ﻿'use strict';
 angular.module('concentrator.controller.product')
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', productDetailCtrl]);
+.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', 'attributeComponentService', productDetailCtrl])
+.component('attributePartial', {
+    templateUrl: 'concentrator/partials/product/AttributeSelector.html',
+    controller: attributeComponentCtrl,
+    bindings: {
+        obj: '='
+    }
+})
+.component('attributePartial', {
+    templateUrl: 'concentrator/partials/product/AttributeSelector.html',
+    controller: attributeComponentCtrl,
+    bindings: {
+        obj: '='
+    }
+})
+//TODO remove magic
+.factory('attributeComponentService', ['$http', '$log', '$cookies', '$window', function () {
+    function determineOrigin(productAttribute) {
 
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar) {
+    }
+    return {};
+}])
+
+function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, componentService) {
     var $stateParams = $rootScope.$stateParams;
     $scope.l10n = l10n;
+    $scope.context = 'BASE';
 
     $scope.gridsterOpts = {
         mobileBreakPoint: 800,
@@ -22,52 +44,60 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
         draggable: { enabled: false }
     }
 
-
-    $scope.items = [
-    ];
-
+    $scope.items = [];
     function decomposeProduct(product) {
-        $scope.item = [];
+        $scope.items.splice(0, $scope.items.length);
         $scope.items.push({
-            size: { x: 2, y: 0 },
-            position: [0, 0],
-            template: 'concentrator/partials/product/brandPartial.html',
-            background: 'wheat',
+            type: 'SKU',
+            obj: product.SKU,
+            editable: false,
+            background: 'lightyellow',
             color: 'black'
         });
         $scope.items.push({
-            size: { x: 0, y: 0 },
-            position: [0, 0],
-            template: 'concentrator/partials/product/SKUPartial.html',
-            background: 'papayawhip',
+            type: 'ProductID',
+            obj: product.productID,
+            editable: false,
+            background: 'lightyellow',
             color: 'black'
         });
         $scope.items.push({
-            size: { x: 0, y: 0 },
-            position: [0, 0],
-            template: 'concentrator/partials/product/ExternalIDPartial.html',
-            background: 'lavender',
+            type: 'LastModifed',
+            obj: product.LastModified,
+            editable: false,
+            background: 'lightyellow',
             color: 'black'
         });
         $scope.items.push({
-            template: 'concentrator/partials/product/datePartial.html',
-            background: 'blanchedalmond',
+            type: 'Created',
+            title: l10n.getLocalized('productID'),
+            obj: product.LastModified,
+            editable: false,
+            background: 'lightyellow',
             color: 'black'
         });
         $scope.items.push({
-            template: 'concentrator/partials/product/lastModifiedPartial.html',
-            background: 'aliceblue',
+            type: 'ProductID',
+            obj: product.productID,
+            editable: false,
+            background: 'lightyellow',
             color: 'black'
         });
-        //for (var i = 0; i < 60; i++) {
-        //    $scope.items.push({
-        //        template: 'concentrator/partials/product/datePartial.html',
-        //        background: 'blanchedalmond',
-        //        color: 'black'
-        //    });
-        //}
-
-    }
+        $scope.items.push({
+            type: 'externalID',
+            obj: product.ExternalProductIdentifier,
+            editable: false,
+            background: 'lightyellow',
+            color: 'black'
+        });
+        $scope.items.push({
+            type: 'brand',
+            obj: product.SKU,
+            editable: false,
+            background: 'lightyellow',
+            color: 'black'
+        });
+    };
 
     //ALERTS
     $scope.alerts = [];
@@ -79,6 +109,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
         });
     };
 
+    //Model
     var Product = productResources.getClass();
     if ($stateParams.id == '') {
         $log.info('logo');
@@ -89,8 +120,8 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
         var productPromise =
         Product.get({ productID: $stateParams.id }, function (object) {
             cfpLoadingBar.complete();
-            $log.info(object);
             $scope.product = object;
+            $log.info(object);
             decomposeProduct(object);
         }, function (errorEvent) {
             cfpLoadingBar.complete();
@@ -99,3 +130,11 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
         });
     };
 };
+
+function attributeComponentCtrl($log, $scope) {
+    var editable = editable ? editable : false;
+    $log.info(this);
+    $scope.type = this.type;
+    $scope.obj = this.obj;
+    $scope.edit = this.edit;
+}

@@ -33,7 +33,6 @@ namespace NEXT.API
         private IProductRepository productRepo;
         private IMappingConfigProvider mapConfig;
 
-
         public ProductController(IProductRepository productRepo, IMappingConfigProvider mapConfig)
         {
             this.productRepo = productRepo;
@@ -48,17 +47,20 @@ namespace NEXT.API
             int total;
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             IEnumerable<API.Resource.Product> products = productRepo.getProducts(query, out total);
-            //using (var strWriter = new StringWriter()) {
-            //    using (var jsonWriter = new CustomJsonTextWriter(strWriter)) {
+
+            //using (var strWriter = new StringWriter())
+            //{
+            //    using (var jsonWriter = new CustomJsonTextWriter(strWriter))
+            //    {
             //        Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
             //        var resolver = new CustomContractResolver(include);
-            //        var serializer = new JsonSerializer { ContractResolver = resolver,  ReferenceLoopHandling = ReferenceLoopHandling.Serialize};
+            //        var serializer = new JsonSerializer { ContractResolver = resolver, ReferenceLoopHandling = ReferenceLoopHandling.Serialize };
             //        serializer.Serialize(jsonWriter, products);
             //    }
-            //    data = strWriter.ToString();
+            //    string data = strWriter.ToString();
             //    dictionary.Add("data", data);
             //}
-            //dictionary.Add("meta", total.ToString());
+            dictionary.Add("meta", total.ToString());
             dictionary.Add("data", products);
             dictionary.Add("results", total);
             return Json(dictionary,serializerSettings);
@@ -93,7 +95,7 @@ namespace NEXT.API
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put([FromForm][Bind("SKU,BrandID,Created,CreatedBy,ExternalProductIdentifier,LastModified,LastModifiedBy,ParentProductID,ProductTypeID")]Product product)
+        public void Put([FromForm][Bind]Product product)
         {
 
         }
