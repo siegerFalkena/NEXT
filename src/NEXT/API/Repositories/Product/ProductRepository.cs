@@ -39,7 +39,7 @@ namespace NEXT.API.Repositories
 
         public API.Resource.Product getProductByID(int productID)
         {
-            DB.Models.Product product = _context.Product
+                IQueryable<DB.Models.Product> productQuery = _context.Product
                .Include(p => p.Brand)
                .Include(p => p.ChannelProduct)
                .ThenInclude( cp => cp.Channel)
@@ -56,8 +56,9 @@ namespace NEXT.API.Repositories
                .ThenInclude(pao => pao.Attribute)
                .ThenInclude(pao => pao.AttributeType)
                .Include(p => p.ParentProduct)
-               .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID).Single();
-            return mapper.Map<DB.Models.Product, API.Resource.Product>(product);
+               .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID);
+            DB.Models.Product product = productQuery.FirstOrDefault();
+            return product != null ? mapper.Map<DB.Models.Product, API.Resource.Product>(product) : null;
         }
 
 

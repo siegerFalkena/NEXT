@@ -48,7 +48,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             type: 'brand',
             obj: product.brand,
             editable: false,
-            background: 'magenta',
+            background: 'violet',
             color: 'yellow'
         });
         $scope.items.push({
@@ -59,7 +59,24 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             background: 'wheat',
             color: 'darkbrown'
         });
+        $scope.items.push({
+            size: { x: 1, y: 2 },
+            type: 'brand',
+            obj: product.brand,
+            editable: false,
+            background: 'wheat',
+            color: 'darkbrown'
+        });
+        $scope.items.push({
+            size: { x: 1, y: 2 },
+            type: 'brand',
+            obj: product.brand,
+            editable: false,
+            background: 'wheat',
+            color: 'darkbrown'
+        });
     };
+
 
     //ALERTS
     $scope.alerts = [];
