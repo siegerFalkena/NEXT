@@ -1,6 +1,5 @@
 angular.module('concentrator.component.navbar')
     .directive('dropdown', navbarDropdown)
-    .directive('brand', brand)
     .directive('navbar', navbar)
     .directive('navbarTabs', navbarTabs)
     .service('navbarConfig', config);

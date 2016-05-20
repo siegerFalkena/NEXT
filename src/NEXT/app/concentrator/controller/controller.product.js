@@ -15,6 +15,7 @@ angular.module('concentrator.controller.product', [
     'ui.grid.moveColumns',
     'cfp.loadingBar',
     'ui.grid.pinning',
-    'gridster',
-    'ui.bootstrap.alert'
+    'dynamicLayout',
+    'ui.bootstrap.alert',
+    'concentrator.component.product'
 ])

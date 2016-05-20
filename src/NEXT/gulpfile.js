@@ -51,21 +51,14 @@ gulp.task('build', ['components', 'docs'], function () {
 })
 
 
-gulp.task('devBuild', ['components'], function () {
-    var liveReloadConfig = {
-        port: LIVERELOAD_PORT,
-        host: 'http://127.0.0.1',
-        script: 'livereload.js'
-    };
+gulp.task('devBuild', function () {
     gulp.src([SRC + '**/*.*'])
         .pipe(changed(DIST))
         .pipe(gulp.dest(DIST));
     gulp.src([SRC + 'index.js'])
         .pipe(changed(DIST + 'app'))
         .pipe(gulp.dest(DIST));
-    return gulp.src(SRC + 'index.html')
-        //.pipe(injectReload(liveReloadConfig))
-        .pipe(gulp.dest(DIST));
+    return;
 })
 
 
@@ -77,6 +70,8 @@ gulp.task('components', function () {
 gulp.task('copycomponents',
     function () {
         return gulp.src([
+                ASSET + 'bower/**/*.js', ASSET + 'bower/**/*.min.js',
+                NPM + 'bower/**/*.js', NPM + 'bower/**/*.min.js',
                 ASSET + 'bower/angular/angular.min.js',
                 ASSET + 'bower/angular-localization/angular-localization.js',
                 ASSET + 'bower/angular-sanitize/angular-sanitize.min.js',
@@ -175,7 +170,7 @@ gulp.task('cleanDocs', function () {
 
 
 gulp.task('cleanDist', function () {
-    return gulp.src([DIST + '**/*.*', DIST + '*.*', DIST], { read: false }).pipe(clean());
+    return gulp.src([DIST + '**/*.*', DIST + '*.*', DIST, '!*.config'], { read: false }).pipe(clean());
 });
 
 gulp.task('buildWatcher', function () {
@@ -183,7 +178,7 @@ gulp.task('buildWatcher', function () {
     return gulp.watch([SRC + '**/*.*', SRC + '*.*', '!' + SRC +
         '/assets/bower/**/*.*', excludeBowerImports[1]
     ], [
-        'devBuild', 'docs'
+        'devBuild'
     ]);
 });
 
@@ -198,8 +193,6 @@ gulp.task('reloadWatcher', function () {
 
 
 gulp.task('devEnv', function (cb) {
-    lr.listen();
-    console.log(lr)
     return sequence('devBuild', [
         'buildWatcher', 'reloadWatcher'
     ]);

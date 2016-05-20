@@ -1,7 +1,7 @@
 ﻿<div ng-controller="productDetailCtrl" class="fullscreen container-fluid" style="height:100%">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="z-index: 3">
-            <ul class="nav affix nav-tabs submenu" >
+            <ul class="nav affix nav-tabs submenu">
                 <li role="presentation" class="active"><a href="">Base</a></li>
                 <li role="presentation"><a href="">Parent</a></li>
                 <li role="presentation"><a href="">Messages</a></li>
@@ -12,19 +12,6 @@
         <div class="row">
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="15000" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
         </div>
-        <div class="row fullscreen" style="height:100%">
-            <div gridster="gridsterOpts">
-                <ul>
-                    <li gridster-item data-row="basicitem.position[0]" data-col="basicitem.position[1]" data-sizex="basicitem.size.x" data-sizey="basicitem.size.y" ng-model="basicitem" ng-repeat="basicitem in items" style="background: {{basicitem.background ? basicitem.background : 'wheat'}}; color: {{basicitem.color}};">
-                        <brand-component class="animate-if" ng-if="basicitem.type == 'brand'" object="basicitem"></brand-component>
-                        <attribute-component class="animate-if" ng-if="basicitem.type == 'attribute'" object="basicitem"></attribute-component>
-                        <sku-component class="animate-if" ng-if="basicitem.type == 'SKU'" object="basicitem"></sku-component>
-                        <id-component class="animate-if" ng-if="basicitem.type == 'productID'" object="basicitem"></id-component>
-                        <external-id-component class="animate-if" ng-if="basicitem.type == 'ExternalID'" object="basicitem"></external-id-component>
-                        <last-modified-component class="animate-if" ng-if="basicitem.type == 'LastModified'" object="basicitem"></last-modified-component>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <div dynamic-layout items="cards"></div>
     </div>
 </div>

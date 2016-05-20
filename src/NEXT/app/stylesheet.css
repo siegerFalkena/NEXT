@@ -20,25 +20,36 @@
 
 
 @media (max-width: 850px) {
-   .collapse {
-       display: none !important;
-   }
+    .collapse {
+        display: none !important;
+    }
 }
 
 html,
 body,
-.fullscreen {
-    margin: 0;
-    padding: 0;
+.fullscreen,
+.gridster-loaded
+{
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     height: 100%;
-    overflow-x:hidden;
-    /*background: #004756;*/
-    color: #fff;
+    overflow-x: hidden;
+}
 
+.gridster,
+.gridster-loaded {
+    overflow-y: hidden;
+    z-index: 1;
+}
+
+.submenu {
+    width: 100%;
+    z-index: 2;
+    background: cyan;
 }
 
 div {
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 
 .navbar-brand {
@@ -56,12 +67,11 @@ div {
 }
 
 .logo-bg {
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&0+0,0.8+30,0.8+70,0+100 */
-background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 30%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 30%,rgba(255,255,255,0.8) 70%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 30%,rgba(255,255,255,0.8) 70%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
-
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&0+0,0.8+30,0.8+70,0+100 */
+    background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 30%, rgba(255,255,255,0.8) 70%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 30%,rgba(255,255,255,0.8) 70%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 30%,rgba(255,255,255,0.8) 70%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
 }
 
 .padding {
@@ -100,23 +110,12 @@ h4, .submitbutton {
 
 
 .grid {
-    width:100%;
+    width: 100%;
 }
 
-.gridster-loaded .gridster-item {
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
-    color: #000000;
-    background: wheat;
-    padding: 10px;
-}
+
 
 .list-group .list-group-item {
     background: none;
-        border: none;
+    border: none;
 }
-
-
-
-
