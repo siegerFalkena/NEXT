@@ -141,9 +141,31 @@ namespace NEXT.API.Repositories
         }
 
 
-        public void updateProduct(DB.Models.Product product)
+        public void updateProduct(API.Resource.Product product)
         {
-            _context.Product.Update(product);
+            DB.Models.Product frProduct = _context.Product.Include(p => p.Brand)
+        .Include(p => p.ChannelProduct)
+        .ThenInclude(cp => cp.Channel)
+        .Include(p => p.ProductType)
+        .Include(p => p.RelatedProduct)
+        .Include(p => p.RelatedProductNavigation)
+        .Include(p => p.VendorProduct)
+        .ThenInclude(vp => vp.Vendor)
+        .Include(p => p.ProductAttributeOption)
+        .ThenInclude(pao => pao.AttributeOption)
+        .ThenInclude(pao => pao.Attribute)
+        .ThenInclude(pao => pao.AttributeType)
+        .Include(p => p.ProductAttributeValue)
+        .ThenInclude(pao => pao.Attribute)
+        .ThenInclude(pao => pao.AttributeType)
+        .Include(p => p.ParentProduct).SingleOrDefault(p => p.ID == product.productID);
+            if (frProduct != null) {
+                DB.Models.Product upProduct = mapper.Map<API.Resource.Product, DB.Models.Product>(product, frProduct);
+                frProduct.SKU = product.SKU;
+                frProduct.ExternalProductIdentifier = product.ExternalProductIdentifier;
+                _context.Update(frProduct, GraphBehavior.SingleObject);
+                _context.SaveChanges();
+            }
         }
     }
 }

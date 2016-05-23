@@ -3,9 +3,11 @@
         <div class="col-lg-1 col-md-2 col-xs-2 " style="height:100%">
 
             <ul class="nav affix nav-pills nav-stacked submenu" style="height:100%; background:aliceblue;">
-                <li role="presentation" class="active"><a href="">Base</a></li>
-                <li role="presentation"><a href="">Parent</a></li>
-                <li role="presentation"><a href="">Messages</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Details'}"><a ng-click="state='Details'">Details</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Parent'}"><a ng-click="state='Parent'">Parent</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Inherited'}"><a ng-click="state='Inherited'">Inherited</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Create'}"><a ng-click="state='Create'">Create New</a></li>
+
             </ul>
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
         </div>

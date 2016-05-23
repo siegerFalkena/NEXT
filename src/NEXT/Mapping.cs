@@ -26,9 +26,14 @@ namespace NEXT
 
                    cfg.CreateMap<DB.Models.ProductAttributeValue, API.Resource.Attribute>()
                    .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
+                   .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Attribute.Code))
+                   .ForMember(dest => dest.LanguageID, opt => opt.MapFrom(src => src.LanguageID))
+                   .ForMember(dest => dest.AttributeID, opt => opt.MapFrom(src => src.AttributeID))
+                   .ForMember(dest => dest.VendorID, opt => opt.MapFrom(src => src.VendorID))
                    .ForMember(dest => dest.AttributeType, opt => opt.MapFrom(src => src.Attribute.AttributeType.Name));
 
                    cfg.CreateMap<DB.Models.Vendor, API.Resource.Vendor>();
+
                    cfg.CreateMap<DB.Models.Product, API.Resource.Product>()
                    .ForMember(dest => dest.productID, opt => opt.MapFrom(src => src.ID))
                    .ForMember(dest => dest.brand, opt => opt.MapFrom(src => src.Brand))
@@ -46,9 +51,8 @@ namespace NEXT
                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
                    cfg.CreateMap<DB.Models.Company, API.Resource.Company>();
+
                    cfg.CreateMap<DB.Models.User, API.Resource.User>();
-
-
 
                    cfg.CreateMap<DB.Models.ProductAttributeOption, API.Resource.Attribute>();
 
@@ -56,11 +60,15 @@ namespace NEXT
                    //fromResource
                    cfg.CreateMap<API.Resource.Brand, DB.Models.Brand>();
 
+                   cfg.CreateMap<API.Resource.Attribute, DB.Models.ProductAttributeValue>()
+                   .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value));
+
                    cfg.CreateMap<API.Resource.ProductType, DB.Models.ProductType>();
 
                    cfg.CreateMap<API.Resource.Product, DB.Models.Product>()
+                   .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.productID))
+                   .ForMember(dest => dest.ProductAttributeValue, opt => opt.MapFrom(src => src.attributeValues))
                    .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.brand))
-                   .ForMember(dest => dest.ChannelProduct, opt => opt.MapFrom(src => src.channel))
                    .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType))
                    .ForMember(dest => dest.RelatedProduct, opt => opt.MapFrom(src => src.relatedProduct))
                    .ForMember(dest => dest.RelatedProductNavigation, opt => opt.MapFrom(src => src.relatedProductNavigation));

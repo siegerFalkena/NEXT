@@ -5,6 +5,7 @@ angular.module('concentrator.controller.product', [
     'common.localization',
     'ngAnimate',
     'ngTouch',
+    'ngResource',
     'ui.grid',
     'ui.grid.pagination',
     'ui.grid.selection',

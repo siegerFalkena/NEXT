@@ -1,38 +1,24 @@
 ﻿'use strict';
 angular.module('concentrator.controller.product')
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', productDetailCtrl]);
+.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', '$resource', productDetailCtrl]);
 
 
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar) {
+function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, $resource) {
     var $stateParams = $rootScope.$stateParams;
     $scope.l10n = l10n;
     $scope.context = 'BASE';
+    $scope.$log = $log;
+    $scope.state = 'Details';
+    var Product = productResources.getClass();
 
-    $scope.gridsterOpts = {
-        isMobile: true,
-        mobileBreakPoint: 860,
-        mobileModeEnabled: true,
-        floating: true,
-        width: 'auto',
-        height: 'auto',
-        minSizeX: 2,
-        minSizeY: 1,
-        defaultSizeX: 2,
-        defaultSizeY: 1,
-        resizable: { enabled: true, handles: [] },
-        draggable: { enabled: true, handles: [] }
-    }
-    var j = 0;
     $scope.cards = [];
 
     function decomposeProduct(product) {
         var i = 0;
         $scope.cards.splice(0, $scope.cards.length);
         $scope.cards.push({
-            id: i++,
-            color: 'red',
-            bgColor: 'wheat',
             template: "concentrator/partials/product/datePartial.html",
+            edit: true,
             data: {
                 ID: product.productID,
                 Created: product.Created,
@@ -40,52 +26,39 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                 LastModified: product.LastModified,
                 LastModifiedBy: product.LastModifiedBy,
                 SKU: product.SKU,
-                ExternalProductIdentifier: product.ExternalProductIdentifier
+                ExternalProductIdentifier: product.ExternalProductIdentifier,
+                product: product
             },
-            added: 1444871272105
+            save: function (data) {
+                $log.info($scope.product);
+                $scope.product.$save();
+            }
         });
         $scope.cards.push({
-            id: i++,
-            color: 'green',
-            bgColor: 'aliceblue',
-            template: "concentrator/partials/product/datePartial.html",
-            data: {
-                ID: product.productID,
-                Created: product.Created,
-                CreatedBy: product.CreatedBy,
-                LastModified: product.LastModified,
-                LastModifiedBy: product.LastModifiedBy,
-                SKU: product.SKU,
-                ExternalProductIdentifier: product.ExternalProductIdentifier
-            },
-            added: 1444871272105
-        });
-        $scope.cards.push({
-            id: i++,
-            color: 'green',
-            bgColor: 'aliceblue',
             template: "concentrator/partials/brand/brandPartial.html",
             data: {
                 brand: product.brand
-            },
-            added: 1444871272105
+            }
+        });
+        $scope.cards.push({
+            template: "concentrator/partials/product/productTypePartial.html",
+            edit: true,
+            data: {
+                ProductType: product.ProductType
+            }
         });
         _.each($scope.product.attributeValues, function (attribute) {
-            return {
-                id: i++,
-                color: 'green',
-                bgColor: 'aliceblue',
-                template: "concentrator/partials/product/datePartial.html",
+            $scope.cards.push({
+                template: "concentrator/partials/attribute/AttributePartial.html",
                 data: {
-                    ID: product.productID,
-                    Created: product.Created,
-                    CreatedBy: product.CreatedBy,
-                    LastModified: product.LastModified,
-                    LastModifiedBy: product.LastModifiedBy,
-                    SKU: product.SKU,
-                    ExternalProductIdentifier: product.ExternalProductIdentifier
-                },
-                added: 1444871272105
+                    Attribute: attribute
+                }
+            });
+        });
+        $scope.cards.push({
+            template: "concentrator/partials/buttonSet.html",
+            data: {
+                log: $log
             }
         });
     };
@@ -102,7 +75,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     };
 
     //Model
-    var Product = productResources.getClass();
+
     if ($stateParams.id == '') {
         $log.info('logo');
         $scope.edit = true;

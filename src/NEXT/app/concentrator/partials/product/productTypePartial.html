@@ -1,0 +1,15 @@
+﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-6"><h2 class="panel-title">{{externalScope().l10n.getLocalized('ProductType')}}</h2></div><div class="col-xs-6 "><button class="btn btn-default pull-right" ng-click="">{{externalScope().l10n.getLocalized('Edit')}}</button></div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <p class="list-group-item-text text-right small">{{externalScope().l10n.getLocalized('ProductTypeID')}}</p>
+            <h4 class="list-group-item-heading">{{it.data.ProductType.ID}}</h4>
+            <p class="list-group-item-text text-right small">{{externalScope().l10n.getLocalized('ProductTypeName')}}</p>
+            <h4 class="list-group-item-heading">{{it.data.ProductType.Name}}</h4>
+        </div>
+    </div>
+</div>

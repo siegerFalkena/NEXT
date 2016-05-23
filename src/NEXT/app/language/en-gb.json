@@ -35,6 +35,10 @@
   "AttributeName": "Attribute Name",
   "AttributeValue": "Attribute Value",
   "LastModified": "Last Modified Date",
-  "LastModifiedBy":  "Last Modified by "
+  "LastModifiedBy": "Last Modified by ",
+  "ProductTypeID": "Product Type Identifier",
+  "ProductTypeName": "Product Type Name",
+  "ProductType": "Product Type",
+  "Edit":  "Modify.."
 
 }

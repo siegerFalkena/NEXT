@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.WebUtilities;
+using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
+using System.Reflection;
 using System.Diagnostics;
 using System.Text;
 //using System.Web.Script.Serialization;
@@ -39,10 +42,34 @@ namespace NEXT.API
             this.mapConfig = mapConfig;
         }
 
+        private JsonResult getFunctions() {
+            MethodInfo[] methodInfos = Type.GetType(typeof(ProductController).ToString()).GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
+            Dictionary<string, object> toBeSerialized = new Dictionary<string, object>();
+            ParameterInfo[] tempPInfo = methodInfos[1].GetParameters();
+            Dictionary<string, Dictionary<string, string>> methodDict = new Dictionary<string, Dictionary<string, string>>();
+            foreach (MethodInfo mInfo in methodInfos)
+            {
+                ParameterInfo[] pInfos = mInfo.GetParameters();
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                foreach (ParameterInfo pInfo in pInfos)
+                {
+                    parameters.Add(pInfo.Name, pInfo.ParameterType.Name);
+                }
+                methodDict.Add(mInfo.Name, parameters);
+            };
+            return Json(
+                methodDict
+                );
+        }
 
-        // GET: api/category
         [HttpGet]
-        public JsonResult Get([FromQuery][Bind]ProductQuery query, [FromQuery]int page, [FromQuery]int results)
+        public JsonResult Root() {
+            return getFunctions();
+        }
+
+        // GET: api/product/query
+        [HttpGet("query", Name = "query")]
+        public JsonResult List([FromQuery][Bind]ProductQuery query)
         {
             int total;
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -63,28 +90,27 @@ namespace NEXT.API
             dictionary.Add("meta", total.ToString());
             dictionary.Add("data", products);
             dictionary.Add("results", total);
-            return Json(dictionary,serializerSettings);
+            return Json(dictionary, serializerSettings);
         }
 
 
         // GET: api/product
         [HttpGet("{id}")]
-        public string Get(int id)
+        public JsonResult GetByID(int id)
         {
-            return JsonConvert.SerializeObject(productRepo.getProductByID(id), serializerSettings);
+            return Json(productRepo.getProductByID(id), serializerSettings);
         }
 
 
         // POST api/values
         [HttpPost]
-        public void Post([FromForm][Bind] Product product,
-                         [FromForm][Bind("Name,ID", Prefix = "b")]Brand newBrand,
-                         [FromForm][Bind("Name,ID", Prefix = "t")]ProductType newType)
+        public void Post([FromBody][Bind] Product product)
         {
             if (ModelState.IsValid)
             {
-                productRepo.insertProduct(product, newType, newBrand);
-                productRepo.Save();
+                HttpContext _ctx = HttpContext;
+                productRepo.updateProduct(product);
+                
             }
             else
             {
@@ -95,7 +121,7 @@ namespace NEXT.API
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put([FromForm][Bind]Product product)
+        public void Put([FromBody][Bind]Product product)
         {
 
         }

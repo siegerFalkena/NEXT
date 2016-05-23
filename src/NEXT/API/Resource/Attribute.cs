@@ -10,9 +10,11 @@ namespace NEXT.API.Resource
         public int ID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string AttributeType { get; set; }
         public string Value { get; set; }
-
+        public string AttributeType { get; set; }
+        public int AttributeID { get; set; }
+        public int LanguageID { get; set; }
+        public int VendorID { get; set; }
 
         public override Dictionary<string, string> generateMeta(string relationship)
         {

@@ -1,25 +1,33 @@
-﻿<div class="col-md-1 col-lg-1 col-sm-1 col-xs-1">
-    <div class="list-group">
-        <div class="list-group-item">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="list-group-item-text">
-                        {{AttributeName}}
-                    </p>
-                </div>
-                <div class="col-md-6"><p class="text-right"><small>{{object.ID}}</small></p></div>
+﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards">
+    <div class="panel panel-default">
+        <div class="list-group" style="background: {{it.bgColor}}">
+            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeID')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Attribute.AttributeID}}</h4>
             </div>
-            <h3 class="list-group-item-heading">
-                {{object.AttributeType}}
-            </h3>
-        </div>
-        <div class="list-group-item">
-            <p class="list-group-item-text text-right">
-                {{AttributeValue}}
-            </p>
-            <h3 class="list-group-item-heading">
-                {{object.Value}}
-            </h3>
+            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Code')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Attribute.Code}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeType')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Attribute.AttributeType}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Value')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Attribute.Value}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('VendorID')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Attribute.VendorID}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Language')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Attribute.LanguageID}}</h4>
+            </div>
+            <div class="panel-footer" ng-show='showingMoreText'>
+                <small class="pull-left">Created on {{it.added | date:'medium'}}</small>
+            </div>
         </div>
     </div>
 </div>

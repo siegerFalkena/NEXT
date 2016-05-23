@@ -16,7 +16,7 @@ namespace NEXT.API.Repositories
         void insertProduct(API.Resource.Product product, API.Resource.ProductType type);
         void insertProduct(API.Resource.Product product);
         void deleteProduct(int productID);
-        void updateProduct(DB.Models.Product product);
+        void updateProduct(API.Resource.Product product);
         void Save();
     }
 }
