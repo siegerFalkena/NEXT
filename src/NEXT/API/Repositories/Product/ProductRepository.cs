@@ -39,24 +39,24 @@ namespace NEXT.API.Repositories
 
         public API.Resource.Product getProductByID(int productID)
         {
-                IQueryable<DB.Models.Product> productQuery = _context.Product
-               .Include(p => p.Brand)
-               .Include(p => p.ChannelProduct)
-               .ThenInclude( cp => cp.Channel)
-               .Include(p => p.ProductType)
-               .Include(p => p.RelatedProduct)
-               .Include(p => p.RelatedProductNavigation)
-               .Include(p => p.VendorProduct)
-               .ThenInclude( vp => vp.Vendor )
-               .Include(p => p.ProductAttributeOption)
-               .ThenInclude( pao => pao.AttributeOption)
-               .ThenInclude(pao => pao.Attribute)
-               .ThenInclude(pao => pao.AttributeType)
-               .Include(p => p.ProductAttributeValue)
-               .ThenInclude(pao => pao.Attribute)
-               .ThenInclude(pao => pao.AttributeType)
-               .Include(p => p.ParentProduct)
-               .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID);
+            IQueryable<DB.Models.Product> productQuery = _context.Product
+           .Include(p => p.Brand)
+           .Include(p => p.ChannelProduct)
+           .ThenInclude(cp => cp.Channel)
+           .Include(p => p.ProductType)
+           .Include(p => p.RelatedProduct)
+           .Include(p => p.RelatedProductNavigation)
+           .Include(p => p.VendorProduct)
+           .ThenInclude(vp => vp.Vendor)
+           .Include(p => p.ProductAttributeOption)
+           .ThenInclude(pao => pao.AttributeOption)
+           .ThenInclude(pao => pao.Attribute)
+           .ThenInclude(pao => pao.AttributeType)
+           .Include(p => p.ProductAttributeValue)
+           .ThenInclude(pao => pao.Attribute)
+           .ThenInclude(pao => pao.AttributeType)
+           .Include(p => p.ParentProduct)
+           .Where<DB.Models.Product>(dbProduct => dbProduct.ID == productID);
             DB.Models.Product product = productQuery.FirstOrDefault();
             return product != null ? mapper.Map<DB.Models.Product, API.Resource.Product>(product) : null;
         }
@@ -66,18 +66,25 @@ namespace NEXT.API.Repositories
         {
             Expression<Func<DB.Models.Product, bool>> queryAsExpre = query.asExpression();
             IQueryable<DB.Models.Product> productQuery = _context.Product
-            .Include(p => p.Brand)
-            .Include(p => p.ChannelProduct)
-            .Include(p => p.ProductAttributeOption)
-            .Include(p => p.ProductAttributeValue)
-            .Include(p => p.ProductType)
-            .Include(p => p.RelatedProduct)
-            .Include(p => p.RelatedProductNavigation)
-            .Include(p => p.VendorProduct)
-            .Include(p => p.VendorProduct.Select( vp=> vp.ProductID == p.ID))
+          .Include(p => p.Brand)
+        .Include(p => p.ChannelProduct)
+        .ThenInclude(cp => cp.Channel)
+        .Include(p => p.ProductType)
+        .Include(p => p.RelatedProduct)
+        .Include(p => p.RelatedProductNavigation)
+        .Include(p => p.VendorProduct)
+        .ThenInclude(vp => vp.Vendor)
+        .Include(p => p.ProductAttributeOption)
+        .ThenInclude(pao => pao.AttributeOption)
+        .ThenInclude(pao => pao.Attribute)
+        .ThenInclude(pao => pao.AttributeType)
+        .Include(p => p.ProductAttributeValue)
+        .ThenInclude(pao => pao.Attribute)
+        .ThenInclude(pao => pao.AttributeType)
+        .Include(p => p.ParentProduct)
             .Where<DB.Models.Product>(queryAsExpre);
             IQueryable<DB.Models.Product> newQuery = query.getOrdering(productQuery);
-            IEnumerable<DB.Models.Product> products = newQuery
+            List<DB.Models.Product> products = newQuery
                 .Skip(query.page * query.results)
                 .Take(query.results)
                 //.Select<IEnumerable<DB.Models.Product>, IEnumerable<API.Resource.Product>>((x)=> mapper.Map<IEnumerable<API.Resource.Product>>(x))
