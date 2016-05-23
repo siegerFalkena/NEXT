@@ -26,13 +26,15 @@
   "refresh": "refresh",
   "rememberMe": "remember me",
   "brandID": "Brand Identifier",
-  "brandName": "Brand Name",
-  "createDate": "created",
-  "createdBy":  "Created by user",
-  "ExternalID": "External Identifier",
+  "brandName": "Brand name",
+  "Created": "Creation date",
+  "CreatedBy":  "Created by user",
+  "ExternalProductIdentifier": "External Identifier",
   "productID": "Product Identifier",
-  "StoreKeepingUnit": "Store Keeping Unit",
+  "SKU": "Store Keeping Unit",
   "AttributeName": "Attribute Name",
-  "AttributeValue":  "Attribute Value"
+  "AttributeValue": "Attribute Value",
+  "LastModified": "Last Modified Date",
+  "LastModifiedBy":  "Last Modified by "
 
 }

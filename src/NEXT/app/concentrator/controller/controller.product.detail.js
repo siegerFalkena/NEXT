@@ -23,17 +23,71 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
         draggable: { enabled: true, handles: [] }
     }
     var j = 0;
-    $scope.cards = [{
-        id: j++,
-        template: "concentrator/partials/product/datePartial.html",
-        tabs: ["home", "work"],
-        data: {
-            "position": "Web Developer",
-            "company": "Hacker Inc."
-        },
-        added: 1444871272105,
-    }];
+    $scope.cards = [];
+
     function decomposeProduct(product) {
+        var i = 0;
+        $scope.cards.splice(0, $scope.cards.length);
+        $scope.cards.push({
+            id: i++,
+            color: 'red',
+            bgColor: 'wheat',
+            template: "concentrator/partials/product/datePartial.html",
+            data: {
+                ID: product.productID,
+                Created: product.Created,
+                CreatedBy: product.CreatedBy,
+                LastModified: product.LastModified,
+                LastModifiedBy: product.LastModifiedBy,
+                SKU: product.SKU,
+                ExternalProductIdentifier: product.ExternalProductIdentifier
+            },
+            added: 1444871272105
+        });
+        $scope.cards.push({
+            id: i++,
+            color: 'green',
+            bgColor: 'aliceblue',
+            template: "concentrator/partials/product/datePartial.html",
+            data: {
+                ID: product.productID,
+                Created: product.Created,
+                CreatedBy: product.CreatedBy,
+                LastModified: product.LastModified,
+                LastModifiedBy: product.LastModifiedBy,
+                SKU: product.SKU,
+                ExternalProductIdentifier: product.ExternalProductIdentifier
+            },
+            added: 1444871272105
+        });
+        $scope.cards.push({
+            id: i++,
+            color: 'green',
+            bgColor: 'aliceblue',
+            template: "concentrator/partials/brand/brandPartial.html",
+            data: {
+                brand: product.brand
+            },
+            added: 1444871272105
+        });
+        _.each($scope.product.attributeValues, function (attribute) {
+            return {
+                id: i++,
+                color: 'green',
+                bgColor: 'aliceblue',
+                template: "concentrator/partials/product/datePartial.html",
+                data: {
+                    ID: product.productID,
+                    Created: product.Created,
+                    CreatedBy: product.CreatedBy,
+                    LastModified: product.LastModified,
+                    LastModifiedBy: product.LastModifiedBy,
+                    SKU: product.SKU,
+                    ExternalProductIdentifier: product.ExternalProductIdentifier
+                },
+                added: 1444871272105
+            }
+        });
     };
 
 

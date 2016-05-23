@@ -4,18 +4,22 @@
 <head>
     <link rel="stylesheet" type="text/css" href="assets/css/ui-grid.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/metro-bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.min.css" />
+    <!--<link rel="stylesheet" type="text/css" href="assets/css/bootmetro-icons.min.css" />-->
+    <!--<link rel="stylesheet" type="text/css" href="assets/css/bootmetro-responsive.min.css" />-->
+    <!--<link rel="stylesheet" type="text/css" href="assets/css/bootmetro-ui-light.min.css" />-->
     <link rel="stylesheet" type="text/css" href="assets/css/flags.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/datetimepicker.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/loading-bar.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/angular-gridster.min.css" />
-    <link rel="stylesheet" type="text/css" href="stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
 </head>
-<body ng-app="concentrator" ng-controller="coreCtrl" style="background: rgb(225, 225, 225)">
-        <div ng-if="!loginscreen" class="container-fluid fullscreen" style="padding-top: 70px">
+<body ng-app="concentrator" ng-controller="coreCtrl">
+        <div ng-if="!loginscreen" class="fullscreen">
             <navbar></navbar>
             <div ui-view class="fullscreen" ></div>
         </div>
-        <div ng-if="loginscreen" class="fullscreen">
+        <div ng-if="loginscreen" class="container-fluid fullscreen">
             <loginscreen locale="l10n" class="fullscreen"></loginscreen>
         </div>
 </body>

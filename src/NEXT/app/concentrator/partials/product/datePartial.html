@@ -1,36 +1,37 @@
 ﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards">
     <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-            <h3 class="panel-title pull-left">Work Experience</h3>
-            <a class="btn btn-default pull-right" href="#" ng-click='externalScope().deleteCard(it.id)'>
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
-        </div>
-        <div class="list-group">
-            <div class="list-group-item">
-                <p class="list-group-item-text">Position</p>
-                <h4 class="list-group-item-heading">{{it.data.position}}</h4>
+        <div class="list-group" style="background: {{it.bgColor}}">
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('productID')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.ID}}</h4>
             </div>
-            <div class="list-group-item">
-                <p class="list-group-item-text">Company</p>
-                <h4 class="list-group-item-heading">{{it.data.company}}</h4>
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('SKU')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.SKU}}</h4>
             </div>
-            <div class="list-group-item">
-                <p class="list-group-item-text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mauris tellus, vehicula ut tellus id, suscipit dapibus tortor. Integer viverra turpis ac fringilla hendrerit. Sed faucibus posuere felis et pellentes <span ng-show='!showingMoreText'>...</span>
-                    <span ng-show='showingMoreText'>
-                        que let me illustrate how an item expands and how other items rearrange around it.
-                        Cras varius tortor vitae molestie tempor. Proin ut viverra elit, ac gravida tortor.
-                    </span>
-                </p>
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('ExternalProductIdentifier')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.ExternalProductIdentifier}}</h4>
             </div>
-        </div>
-        <div class="panel-footer" ng-show='showingMoreText'>
-            <small class="pull-left">Created on {{it.added | date:'medium'}}</small>
-        </div>
-        <div class="panel-footer">
-            <button class="pull-left btn btn-default" ng-show='!showingMoreText' ng-click='toggleText()'>Show more</button>
-            <button class="pull-left btn btn-default" ng-show='showingMoreText' ng-click='toggleText()'>Less</button>
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Created')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.Created | date:'dd/MMM/yyyy HH:mm'}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('CreatedBy')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.CreatedBy}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('LastModified')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.LastModified | date:'dd/MMM/yyyy HH:mm'}}</h4>
+            </div>
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('LastModifiedBy')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.LastModifiedBy}}</h4>
+            </div>
+            <div class="panel-footer" ng-show='showingMoreText'>
+                <small class="pull-left">Created on {{it.added | date:'medium'}}</small>
+            </div>
         </div>
     </div>
 </div>

@@ -19,27 +19,74 @@
 }
 
 
-@media (max-width: 850px) {
+@media (min-width: 1024px) {
+    [dynamic-layout] {
+        width: 1024px;
+        margin-top: 20px;
+    }
+
+    .dynamic-layout-col-4 {
+        width: 240px;
+    }
+
+    .dynamic-layout-col-8 {
+        width: 480px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+    [dynamic-layout] {
+        width: auto;
+    }
+
+    .dynamic-layout-col-4 {
+        width: 240px;
+    }
+
+    .dynamic-layout-col-8 {
+        width: 480px;
+    }
+
     .collapse {
         display: none !important;
     }
 }
 
+@media (max-width: 480px) {
+    [dynamic-layout] {
+        width: 300px;
+    }
+
+    .dynamic-layout-col-4 {
+        width: 240px;
+    }
+
+    .dynamic-layout-col-8 {
+        width: 480px;
+    }
+
+    .collapse {
+        display: none !important;
+    }
+}
+
+
+[dynamic-layout] {
+    float: left;
+    position: relative;
+}
+
+.dynamic-layout-item {
+    padding: 5px;
+}
+
 html,
 body,
-.fullscreen,
-.gridster-loaded
-{
+.fullscreen {
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
     height: 100%;
     overflow-x: hidden;
-}
-
-.gridster,
-.gridster-loaded {
-    overflow-y: hidden;
-    z-index: 1;
 }
 
 .submenu {
@@ -48,14 +95,11 @@ body,
     background: cyan;
 }
 
-div {
-    overflow-x: hidden;
-}
-
 .navbar-brand {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
 
 .message {
     color: #000000;
@@ -95,6 +139,9 @@ div {
     border: none;
 }
 
+.navbar-header {
+    height: 71px;
+}
 
 .niceinput {
     background: rgba(255, 255, 255, 0.8);
@@ -103,17 +150,13 @@ div {
     box-shadow: inset 0px 3px 2px 10px #dddddd; */
 }
 
-
 h4, .submitbutton {
     font-family: Verdana, Geneva, sans-serif;
 }
 
-
 .grid {
     width: 100%;
 }
-
-
 
 .list-group .list-group-item {
     background: none;

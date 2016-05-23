@@ -1,17 +1,18 @@
-﻿<div ng-controller="productDetailCtrl" class="fullscreen container-fluid" style="height:100%">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" style="z-index: 3">
-            <ul class="nav affix nav-tabs submenu">
+﻿<div ng-controller="productDetailCtrl" class="container-fluid" style="height:100%; padding-left: 0px; ">
+    <div class="row" style="height:100%">
+        <div class="col-lg-1 col-md-2 col-xs-2 " style="height:100%">
+
+            <ul class="nav affix nav-pills nav-stacked submenu" style="height:100%; background:aliceblue;">
                 <li role="presentation" class="active"><a href="">Base</a></li>
                 <li role="presentation"><a href="">Parent</a></li>
                 <li role="presentation"><a href="">Messages</a></li>
             </ul>
+            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
         </div>
-    </div>
-    <div class="fullscreen col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:40px; height:100%">
-        <div class="row">
-            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" dismiss-on-timeout="15000" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
+        <div class="col-md-10 col-xs-10">
+            <div class="container-fluid">
+                <div dynamic-layout items="cards"></div>
+            </div>
         </div>
-        <div dynamic-layout items="cards"></div>
     </div>
 </div>

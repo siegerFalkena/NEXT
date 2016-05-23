@@ -1,13 +1,9 @@
-﻿<div class="col-md-1 col-lg-1 col-sm-1 col-xs-1" >
-    <div class="container" style="background: yellow">
-        <div class="list-group">
-            <div class="list-group-item">
-                <p class="list-group-item-text text-right">
-                    {{title}}
-                </p>
-                <h3 class="list-group-item-heading">
-                    {{obj}}
-                </h3>
+﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards">
+    <div class="panel panel-default">
+        <div class="list-group" style="background: {{it.bgColor}}">
+            <div class="list-group-item" style="color: {{it.color}}">
+                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('brandName')}}</p>
+                <h4 class="list-group-item-heading">{{it.data.brand.Name}}</h4>
             </div>
         </div>
     </div>

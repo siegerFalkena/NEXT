@@ -105,6 +105,7 @@ gulp.task('copycomponents',
 
 gulp.task('copyCSS', function () {
     return gulp.src([
+        ASSET + 'css/*.css', ASSET + 'css/*.min.css',
             ASSET + 'css/metro-bootstrap.css',
             ASSET + 'css/flags.css',
             ASSET + 'css/ui-grid.css',
@@ -176,14 +177,15 @@ gulp.task('cleanDist', function () {
 gulp.task('buildWatcher', function () {
     util.log('watching ' + SRC + ' for build');
     return gulp.watch([SRC + '**/*.*', SRC + '*.*', '!' + SRC +
-        '/assets/bower/**/*.*', excludeBowerImports[1]
+        '/assets/bower/**/*.*', excludeBowerImports[1], ASSET + 'css/*.min.css', ASSET + 'css/*.css'
     ], [
-        'devBuild'
+        'devBuild', 'copyCSS', 'copyFonts'
     ]);
 });
 
 
 gulp.task('reloadWatcher', function () {
+    //NOTE BROKEN
     util.log('watching ' + DIST + 'for builds');
     return gulp.watch([DIST + '**/*.*', DIST +
         '*.*'
@@ -194,6 +196,6 @@ gulp.task('reloadWatcher', function () {
 
 gulp.task('devEnv', function (cb) {
     return sequence('devBuild', [
-        'buildWatcher', 'reloadWatcher'
+        'buildWatcher'
     ]);
 });
