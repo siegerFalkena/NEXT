@@ -1,13 +1,29 @@
-﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards">
+﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards" ng-controller="brandPartialController">
     <div class="panel panel-success">
         <div class="panel-heading">
             <div class="row">
-                <div class="col-xs-6"><h4 class="panel-title" style="color:navajowhite">{{externalScope().l10n.getLocalized('Brand')}}</h4></div><div class="col-xs-6 "><button class="btn btn-default pull-right" ng-click="">{{externalScope().l10n.getLocalized('Edit')}}</button></div>
+                <h4 class="panel-title" style="color:white">{{l10n.getLocalized('Brand')}}</h4>
             </div>
         </div>
         <div class="panel-body">
-            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('brandName')}}</p>
-            <h4 class="list-group-item-heading">{{it.data.brand.Name}}</h4>
+            <ng-hide ng-hide="select">
+                <p class="list-group-item-text text-right">{{l10n.getLocalized('brandID')}}</p>
+                <h4 ng-hide="edit" class="list-group-item-heading"><a href="#/brand/{{brand.brandID}}">{{brand.brandID}}</a></h4>
+                <p class="list-group-item-text text-right">{{l10n.getLocalized('brandName')}}</p>
+                <h4 ng-hide="edit" class="list-group-item-heading"><a href="#/brand/{{brand.brandID}}">{{brand.Name}}</a></h4>
+                <input type="text"  class="form-control" ng-show="edit" ng-model="brand.Name" />
+            </ng-hide>
+            <ng-show ng-show="select">
+                <input class="form-control input-lg" type="text" ng-model="selectorItems" uib-typeahead="brand for brand in dropdownSelector($viewValue)" typeahead-loading="loadingLocations" placeholder="{{l10n.getLocalized('BrandName');}}"/>
+            </ng-show>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group">
+                <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{l10n.getLocalized('Edit')}}</button>
+                <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{l10n.getLocalized('Save')}}</button>
+                <button ng-show="savebtn" class="btn btn-primary" ng-click="cancel()">{{externalScope().l10n.getLocalized('Cancel')}}</button>
+                <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{l10n.getLocalized('Select')}}</button>
+            </div>
         </div>
     </div>
 </div>

@@ -7,8 +7,9 @@ namespace NEXT.API.Resource
 {
     public class Vendor : AbstractResource
     {
-        public int? vendorID { get; set; } = null;
-        public string name { get; set; } = null;
+        public int vendorID { get; set; }
+        public int CompanyID { get; set; }
+        public string Name { get; set; }
 
         public override Dictionary<string, string> generateMeta(string relationship)
         {

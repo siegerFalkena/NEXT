@@ -7,11 +7,11 @@ using NEXT.DB.Models;
 using AutoMapper;
 namespace NEXT.API.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class BrandRepository : IBrandRepository
     {
         private NEXTContext context;
         private IMapper mapper;
-        public UserRepository(NEXTContext context, IMappingConfigProvider mapperConfigProvider)
+        public BrandRepository(NEXTContext context, IMappingConfigProvider mapperConfigProvider)
         {
             this.context = context;
             mapper = mapperConfigProvider.getConfig().CreateMapper();

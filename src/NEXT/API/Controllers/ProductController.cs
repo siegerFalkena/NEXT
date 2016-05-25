@@ -93,12 +93,56 @@ namespace NEXT.API
             return Json(dictionary, serializerSettings);
         }
 
+        [HttpGet("{id}/attributes")]
+        public JsonResult productAttribute(int id) {
+            return Json(productRepo.getAttributes(id));
+        }
+
+        [HttpGet("{id}/brand")]
+        public JsonResult getBrand(int id)
+        {
+            return Json(productRepo.getBrand(id));
+        }
+
+        [HttpPost("{id}/brand")]
+        public JsonResult setBrand([FromBody][Bind]Brand brand, int id)
+        {
+            return Json(productRepo.setBrand(id, brand));
+        }
+
+
+        [HttpGet("{id}/type")]
+        public JsonResult productType(int id)
+        {
+            return Json(productRepo.getType(id));
+        }
+
+        [HttpPost("{id}/type")]
+        public JsonResult setType([FromBody][Bind] ProductType type,  int id)
+        {
+            return Json(productRepo.setType(id, type));
+        }
+
 
         // GET: api/product
         [HttpGet("{id}")]
         public JsonResult GetByID(int id)
         {
             return Json(productRepo.getProductByID(id), serializerSettings);
+        }
+
+        // GET: api/product
+        [HttpGet("{id}/channels")]
+        public JsonResult getChannelsByID(int id)
+        {
+            return Json(productRepo.getChannels(id), serializerSettings);
+        }
+
+        // GET: api/product
+        [HttpGet("{id}/vendors")]
+        public JsonResult getVendorsByID(int id)
+        {
+            return Json(productRepo.getVendors(id), serializerSettings);
         }
 
 
@@ -117,6 +161,7 @@ namespace NEXT.API
                 Response.StatusCode = 400;
             }
         }
+
 
 
         // PUT api/values/5

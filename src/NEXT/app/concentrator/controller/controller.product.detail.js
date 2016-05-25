@@ -1,68 +1,150 @@
 ﻿'use strict';
 angular.module('concentrator.controller.product')
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', '$resource', productDetailCtrl]);
+.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', 'brandResources', productDetailCtrl]);
 
 
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, $resource) {
+function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, brandResource) {
     var $stateParams = $rootScope.$stateParams;
     $scope.l10n = l10n;
     $scope.context = 'BASE';
-    $scope.$log = $log;
     $scope.state = 'Details';
     var Product = productResources.getClass();
 
+
     $scope.cards = [];
 
-    function decomposeProduct(product) {
-        var i = 0;
-        $scope.cards.splice(0, $scope.cards.length);
-        $scope.cards.push({
-            template: "concentrator/partials/product/datePartial.html",
-            edit: true,
-            data: {
-                ID: product.productID,
-                Created: product.Created,
-                CreatedBy: product.CreatedBy,
-                LastModified: product.LastModified,
-                LastModifiedBy: product.LastModifiedBy,
-                SKU: product.SKU,
-                ExternalProductIdentifier: product.ExternalProductIdentifier,
-                product: product
-            },
-            save: function (data) {
-                $log.info($scope.product);
-                $scope.product.$save();
-            }
-        });
-        $scope.cards.push({
-            template: "concentrator/partials/brand/brandPartial.html",
-            data: {
-                brand: product.brand
-            }
-        });
-        $scope.cards.push({
-            template: "concentrator/partials/product/productTypePartial.html",
-            edit: true,
-            data: {
-                ProductType: product.ProductType
-            }
-        });
-        _.each($scope.product.attributeValues, function (attribute) {
-            $scope.cards.push({
-                template: "concentrator/partials/attribute/AttributePartial.html",
-                data: {
-                    Attribute: attribute
-                }
+
+    var i = 0;
+    $scope.cards.splice(0, $scope.cards.length);
+
+    function attributes() {
+        var tempcards = [];
+        productResources.ProductAttributes().query({ productID: $stateParams.id }, function (attributes) {
+            _.each(attributes, function (attribute) {
+                tempcards.push({
+                    template: "concentrator/partials/attribute/AttributePartial.html",
+                    edit: true,
+                    select: false,
+                    remove: false,
+                    data: attribute
+                });
             });
-        });
-        $scope.cards.push({
-            template: "concentrator/partials/buttonSet.html",
-            data: {
-                log: $log
-            }
+        }, function (fail) {
+            $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
         });
     };
 
+    function loadChannels() {
+        var tempcards = [];
+        productResources.ProductChannels().query({ productID: $stateParams.id }, function (channels) {
+            _.each(channels, function (channel) {
+                tempcards.push({
+                    template: "concentrator/partials/channel/channelPartial.html",
+                    edit: false,
+                    select: false,
+                    remove: false,
+                    data: channel
+                });
+            });
+
+        }, function (fail) {
+            $log.info('failed');
+            $scope.alerts.push({ type: 'warning', msg: 'could not get channel! statusText: ' + fail.statusText });
+        });
+        return tempcards;
+    };
+
+    function vendors() {
+        var tempCards = [];
+        productResources.ProductVendors().query({ productID: $stateParams.id }, function (vendors) {
+            _.each(vendors, function (vendor) {
+                tempCards.push({
+                    template: "concentrator/partials/vendor/vendorPartial.html",
+                    edit: false,
+                    select: false,
+                    remove: false,
+                    data: vendor
+                });
+            });
+
+        }, function (fail) {
+            $scope.alerts.push({ type: 'warning', msg: 'could not get channel! statusText: ' + fail.statusText });
+        })
+    }
+
+
+    function productType() {
+        productResources.ProductType().get({ productID: $stateParams.id }, function (productType) {
+            return {
+                template: "concentrator/partials/productType/productTypePartial.html",
+                edit: false,
+                select: true,
+                ProductTypeResource: productResources.ProductType(),
+                remove: false,
+                data: productType
+            }
+        }, function (fail) {
+            $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
+        });
+    };
+
+    function brandCore() {
+        productResources.ProductBrand().get({ productID: $stateParams.id }, function (brand) {
+            return {
+                template: "concentrator/partials/brand/brandPartial.html",
+                edit: false,
+                select: true,
+                brandResource: brandResource.Brand(),
+                remove: false,
+                data: brand
+            };
+        }, function (fail) {
+            $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
+        });
+    }
+
+    function productCore() {
+        productResources.getClass().get({ productID: $stateParams.id }, function (product) {
+            return {
+                template: "concentrator/partials/product/productPartial.html",
+                edit: true,
+                select: false,
+                remove: false,
+                data: product
+            };
+        }, function (fail) {
+            $scope.alerts.push({ type: 'warning', msg: 'could not get product! statusText: ' + fail.statusText });
+        });
+    };
+    //attributes();
+    //productType();
+    //brandCore();
+    //vendors();
+    //loadChannels();
+    //productCore();
+
+    $scope.refresh = function (strState) {
+        var tempcards = [];
+        if (strState == 'Overview') {
+            tempcards.push(attributes());
+            tempcards.push(productType());
+            tempcards.push(brandCore());
+            tempcards.push(vendors());
+            _.each(vendors(), function (vendor) {
+                tempcards.push(vendor);
+            });
+            _.each(loadChannels(), function (channel) {
+                tempcards.push(channel);
+            });
+            tempcards.push(productCore());
+        } else if (strState == 'Children') {
+
+        } else if (strState == 'Channels') {
+        } else if (strState == 'Vendors') {
+
+        };
+
+    }
 
     //ALERTS
     $scope.alerts = [];
@@ -76,25 +158,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
 
     //Model
 
-    if ($stateParams.id == '') {
-        $log.info('logo');
-        $scope.edit = true;
-    } else {
-        $scope.edit = false;
-        cfpLoadingBar.start();
-        var productPromise =
-        Product.get({ productID: $stateParams.id }, function (object) {
-            cfpLoadingBar.complete();
-            $scope.product = object;
-            $log.info(object);
-            decomposeProduct(object);
-        }, function (errorEvent) {
-            cfpLoadingBar.complete();
-            $scope.alerts.push({ type: 'danger', msg: 'could not connect to backend! statusText: ' + errorEvent.statusText });
-            $log.error(errorEvent);
-        });
-    };
-    $log.info($scope);
+    //$log.info($scope);
 };
 
 function attributeComponentCtrl($log, $scope, l10n) {

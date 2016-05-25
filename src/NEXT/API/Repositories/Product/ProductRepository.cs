@@ -10,6 +10,7 @@ using NEXT.API.Resource;
 using AutoMapper;
 using AutoMapper.Mappers;
 
+//TODO validation
 namespace NEXT.API.Repositories
 {
     public class ProductRepository : IProductRepository
@@ -18,6 +19,8 @@ namespace NEXT.API.Repositories
         private IMappingConfigProvider _mapConfig;
         private IMapper mapper;
 
+
+        //TODO pagination and resultselection on related
         public ProductRepository(NEXTContext context, IMappingConfigProvider mapConfig)
         {
             this._context = context;
@@ -28,6 +31,7 @@ namespace NEXT.API.Repositories
 
         public void Dispose()
         {
+            //nothing to dispose
         }
 
         public void deleteProduct(int productID)
@@ -159,13 +163,132 @@ namespace NEXT.API.Repositories
         .ThenInclude(pao => pao.Attribute)
         .ThenInclude(pao => pao.AttributeType)
         .Include(p => p.ParentProduct).SingleOrDefault(p => p.ID == product.productID);
-            if (frProduct != null) {
+            if (frProduct != null)
+            {
                 DB.Models.Product upProduct = mapper.Map<API.Resource.Product, DB.Models.Product>(product, frProduct);
                 frProduct.SKU = product.SKU;
                 frProduct.ExternalProductIdentifier = product.ExternalProductIdentifier;
                 _context.Update(frProduct, GraphBehavior.SingleObject);
                 _context.SaveChanges();
             }
+        }
+
+        public ICollection<API.Resource.Attribute> getAttributes(int productID)
+        {
+            List<API.Resource.Attribute> attributes = new List<Resource.Attribute>();
+            DB.Models.Product product = _context.Product.Include(p => p.ProductAttributeOption)
+                .ThenInclude(p => p.AttributeOption).ThenInclude(ap => ap.Attribute).ThenInclude(at => at.AttributeType)
+                .Include(p => p.ProductAttributeValue).ThenInclude(p => p.Attribute).ThenInclude(at => at.AttributeType).Where(p => p.ID == productID).SingleOrDefault();
+            if (product == null) { return attributes; };
+            foreach (DB.Models.ProductAttributeValue pod in product.ProductAttributeValue)
+            {
+                attributes.Add(mapper.Map<API.Resource.Attribute>(pod));
+            }
+            foreach (DB.Models.ProductAttributeOption pod in product.ProductAttributeOption)
+            {
+                attributes.Add(mapper.Map<API.Resource.Attribute>(pod));
+            }
+            return attributes;
+        }
+
+
+        public Resource.Product getParent(int id)
+        {
+            DB.Models.Product product = _context.Product.Include(p => p.ParentProduct).Where(p => p.ID == id).SingleOrDefault();
+            API.Resource.Product retProduct = null;
+            if (product != null)
+            {
+                retProduct = mapper.Map<API.Resource.Product>(product);
+            }
+            return retProduct;
+        }
+
+        public Resource.Brand getBrand(int id)
+        {
+            //not null
+            DB.Models.Brand productBrand = _context.Product.Include(p => p.Brand).Where(p => p.ID == id).Select(p => p.Brand).SingleOrDefault();
+            _context.Dispose();
+            return mapper.Map<API.Resource.Brand>(productBrand);
+
+        }
+
+
+        public ICollection<Resource.Product> getRelatedProducts(int id, int results, int page)
+        {
+            DB.Models.Product product = _context.Product.Include(p => p.RelatedProduct).ThenInclude(p => p.Product).Where(p => p.ID == id).SingleOrDefault();
+            if (product == null) { return null; };
+            IEnumerable<DB.Models.Product> relatedProducts = product.RelatedProduct.Select(p => p.Product);
+            if (relatedProducts.Count() == 0) { return null; }
+            ICollection<DB.Models.Product> Products = relatedProducts.ToList();
+            return mapper.Map<ICollection<API.Resource.Product>>(Products);
+        }
+
+
+        //NOTE inverse of related?
+        public ICollection<Resource.Product> getRelatedNavigationProducts(int id, int results, int page)
+        {
+            int queryResults = results > 0 ? results : 25;
+            DB.Models.Product product = _context.Product.Include(p => p.RelatedProduct).ThenInclude(p => p.Product).Where(p => p.ID == id).SingleOrDefault();
+            if (product == null) { return null; };
+            IEnumerable<DB.Models.Product> relatedProducts = product.RelatedProduct.Select(p => p.Product).Skip(queryResults * page).Take(results);
+            if (relatedProducts.Count() == 0) { return null; }
+            ICollection<DB.Models.Product> Products = relatedProducts.ToList();
+            return mapper.Map<ICollection<API.Resource.Product>>(Products);
+        }
+
+        public ICollection<Resource.Product> getChildren(int id, int results, int page)
+        {
+            int queryResults = results == 0 ? results : 25;
+            DB.Models.Product dbProduct = _context.Product.Include(p => p.InverseParentProduct).Where(p => p.ID == id).SingleOrDefault();
+            if (dbProduct == null) { return null; };
+            return mapper.Map<ICollection<API.Resource.Product>>(dbProduct.InverseParentProduct);
+
+        }
+
+        public ICollection<API.Resource.Vendor> getVendors(int productID)
+        {
+            DB.Models.Product product = _context.Product.Include(p => p.VendorProduct).ThenInclude(vp => vp.Vendor).Where(p => p.ID == productID).SingleOrDefault();
+            if (product == null) { return null; };
+            ICollection<DB.Models.Vendor> vendors = product.VendorProduct.Select(vp => vp.Vendor).ToList();
+            return mapper.Map<ICollection<API.Resource.Vendor>>(vendors);
+
+        }
+
+        public ICollection<API.Resource.Channel> getChannels(int productID)
+        {
+            DB.Models.Product product = _context.Product.Include(p => p.ChannelProduct).ThenInclude(vp => vp.Channel).Where(p => p.ID == productID).SingleOrDefault();
+            if (product == null) { return null; };
+            ICollection<DB.Models.Channel> channels = product.ChannelProduct.Select(vp => vp.Channel).ToList();
+            return mapper.Map<ICollection<API.Resource.Channel>>(channels);
+        }
+
+        public Resource.ProductType getType(int productID)
+        {
+            //TODO not null defense
+            DB.Models.ProductType productBrand = _context.Product.Include(p => p.ProductType).Where(p => p.ID == productID).Select(p => p.ProductType).SingleOrDefault();
+            return mapper.Map<API.Resource.ProductType>(productBrand);
+        }
+
+        public int setBrand(int productID, API.Resource.Brand brand)
+        {
+            DB.Models.Brand dbBrand = mapper.Map<DB.Models.Brand>(brand);
+            DB.Models.Product product = _context.Product.Where(p => p.ID == productID).SingleOrDefault();
+            if (product == null) { return 0; }
+            _context.Attach(dbBrand);
+            product.Brand = dbBrand;
+            _context.Update(product);
+            return _context.SaveChanges();
+        }
+
+        public int setType(int productID, Resource.ProductType type)
+        {
+            DB.Models.ProductType dbProductType = mapper.Map<DB.Models.ProductType>(type);
+            DB.Models.Product product = _context.Product.Where(p => p.ID == productID).SingleOrDefault();
+            if (product == null) { return 0; }
+            _context.Attach(dbProductType);
+            product.ProductType = dbProductType;
+            _context.Update(product);
+            return _context.SaveChanges();
         }
     }
 }

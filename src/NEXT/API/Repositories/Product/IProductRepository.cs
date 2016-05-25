@@ -9,14 +9,26 @@ namespace NEXT.API.Repositories
 {
     public interface IProductRepository: IDisposable
     {
-        API.Resource.Product getProductByID(int productID);
-        IEnumerable<API.Resource.Product> getProducts(ProductQuery query, out int total);
-        void insertProduct(API.Resource.Product product, API.Resource.ProductType type, API.Resource.Brand brand);
-        void insertProduct(API.Resource.Product product, API.Resource.Brand brand);
-        void insertProduct(API.Resource.Product product, API.Resource.ProductType type);
-        void insertProduct(API.Resource.Product product);
+        Product getProductByID(int productID);
+        IEnumerable<Product> getProducts(ProductQuery query, out int total);
+        void insertProduct(Product product, ProductType type, Brand brand);
+        void insertProduct(Product product, Brand brand);
+        void insertProduct(Product product, ProductType type);
+        void insertProduct(Product product);
         void deleteProduct(int productID);
-        void updateProduct(API.Resource.Product product);
+        void updateProduct(Product product);
+        ICollection<API.Resource.Attribute> getAttributes(int id);
+        ICollection<Product> getRelatedProducts(int id, int results, int page);
+        ICollection<Product> getRelatedNavigationProducts(int id, int results, int page);
+        ICollection<Product> getChildren(int id, int results, int page);
+        Product getParent(int id);
+        Brand getBrand(int productID);
+        int setBrand(int productId, Brand brand);
+        ProductType getType(int productID);
+        int setType(int productID, ProductType type);
+        ICollection<Vendor> getVendors(int productID);
+        ICollection<Channel> getChannels(int productID);
+
         void Save();
     }
 }

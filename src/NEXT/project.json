@@ -28,12 +28,15 @@
     "Microsoft.AspNet.Owin": "1.0.0-rc1-final",
     "Newtonsoft.Json": "8.0.3",
     "Microsoft.AspNet.Identity.EntityFramework": "3.0.0-rc1-final",
-    "AutoMapper": "4.2.1"
+    "AutoMapper": "4.2.1",
+    "xunit": "2.1.0",
+    "xunit.runner.dnx": "2.1.0-rc1-build204"
   },
 
   "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel",
-    "ef": "EntityFramework.Commands"
+    "ef": "EntityFramework.Commands",
+    "test": "xunit.runner.dnx"
   },
 
   "frameworks": {

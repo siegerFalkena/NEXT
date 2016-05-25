@@ -3,11 +3,10 @@
         <div class="col-lg-1 col-md-2 col-xs-2 " style="height:100%">
 
             <ul class="nav affix nav-pills nav-stacked submenu" style="height:100%; background:aliceblue;">
-                <li role="presentation" ng-class="{'active' : state == 'Details'}"><a ng-click="state='Details'">Details</a></li>
-                <li role="presentation" ng-class="{'active' : state == 'Parent'}"><a ng-click="state='Parent'">Parent</a></li>
-                <li role="presentation" ng-class="{'active' : state == 'Inherited'}"><a ng-click="state='Inherited'">Inherited</a></li>
-                <li role="presentation" ng-class="{'active' : state == 'Create'}"><a ng-click="state='Create'">Create New</a></li>
-
+                <li role="presentation" ng-class="{'active' : state == 'Overview'}"><a ng-click="state='Overview'; refresh(state);">{{l10n.getLocalized('Overview')}}</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Children'}"><a ng-click="state='Children'; refresh(state);">{{l10n.getLocalized('Children')}}</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Channels'}"><a ng-click="state='Channels'; refresh(state);">{{l10n.getLocalized('Channels')}}</a></li>
+                <li role="presentation" ng-class="{'active' : state == 'Vendors'}"><a ng-click="state='Vendors'; refresh(state);">{{l10n.getLocalized('Vendors')}}</a></li>
             </ul>
             <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
         </div>

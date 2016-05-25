@@ -28,17 +28,23 @@
   "brandID": "Brand Identifier",
   "brandName": "Brand name",
   "Created": "Creation date",
-  "CreatedBy":  "Created by user",
+  "CreatedBy": "Created by user",
   "ExternalProductIdentifier": "External Identifier",
   "productID": "Product Identifier",
   "SKU": "Store Keeping Unit",
+  "Attribute": "Attribute",
   "AttributeName": "Attribute Name",
+  "attributeID": "Attribute Identifier",
+  "AttributeType": "Attribute Type",
+  "AttributeCode": "Attribute Code",
+  "ID": "Identifier",
+  "Vendor": "Vendor",
   "AttributeValue": "Attribute Value",
   "LastModified": "Last Modified Date",
   "LastModifiedBy": "Last Modified by ",
   "ProductTypeID": "Product Type Identifier",
   "ProductTypeName": "Product Type Name",
   "ProductType": "Product Type",
-  "Edit":  "Modify.."
+  "Edit": "Modify.."
 
 }

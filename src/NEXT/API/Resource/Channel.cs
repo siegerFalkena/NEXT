@@ -7,10 +7,10 @@ namespace NEXT.API.Resource
 {
     public class Channel : AbstractResource
     {
-        int? channelID { get; set; } = null;
-        int? parentChannelID { get; set; } = null;
+        public int channelID { get; set; }
+        public int parentChannelID { get; set; } 
 
-        string Name { get; set; } = null;
+        public string Name { get; set; } = null;
 
         public override Dictionary<string, string> generateMeta(string relationship)
         {

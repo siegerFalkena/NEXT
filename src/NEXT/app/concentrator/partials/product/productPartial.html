@@ -1,0 +1,49 @@
+﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards" ng-controller="productPartialController">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="row">
+                <h2 class="panel-title">{{l10n.getLocalized('Product') + product.ID}}</h2>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div ng-if="isRoot">
+                <a href="#/product/{{product.ParentProductID}}">{{l10n.getLocalized('ParentProduct')}}</a>
+            </div>
+            <div ng-if="!isRoot">
+                <p>{{l10n.getLocalized('rootProduct')}}</p>
+            </div>
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('productID')}}</p>
+            <h4 class="list-group-item-heading">{{product.productID}}</h4>
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('SKU')}}</p>
+            <h4 class="list-group-item-heading" ng-hide="clicked" ng-show="!clicked">{{product.SKU}}</h4>
+            <input type="text" class="form-control" ng-show="clicked" ng-hide="!clicked" required ng-trim="false" ng-model="product.SKU" />
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('ExternalProductIdentifier')}}</p>
+            <h4 class="list-group-item-heading" ng-hide="clicked" ng-show="!clicked">{{product.ExternalProductIdentifier}}</h4>
+            <input type="text" class="form-control" ng-show="clicked" ng-hide="!clicked" required ng-trim="false" ng-model="product.ExternalProductIdentifier" />
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModifiedBy')}}</p>
+            <h4 class="list-group-item-heading">{{product.LastModifiedBy}}</h4>
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModified')}}</p>
+            <h4 class="list-group-item-heading">{{product.LastModified | date:'dd/MMM/yyyy HH:mm'}}</h4>
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('CreatedBy')}}</p>
+            <h4 class="list-group-item-heading">{{product.CreatedBy}}</h4>
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('Created')}}</p>
+            <h4 class="list-group-item-heading">{{product.Created | date:'dd/MMM/yyyy HH:mm'}}</h4>
+
+
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group">
+                <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{l10n.getLocalized('Edit')}}</button>
+                <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{l10n.getLocalized('Save')}}</button>
+                <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{l10n.getLocalized('Select')}}</button>
+            </div>
+        </div>
+    </div>
+</div>

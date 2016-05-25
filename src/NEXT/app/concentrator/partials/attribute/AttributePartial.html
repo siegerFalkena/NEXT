@@ -1,32 +1,37 @@
-﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards">
-    <div class="panel panel-default">
-        <div class="list-group" style="background: {{it.bgColor}}">
-            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
-                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeID')}}</p>
-                <h4 class="list-group-item-heading">{{it.data.Attribute.AttributeID}}</h4>
+﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards" ng-controller="attributePartialController">
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <h2 class="panel-title">{{externalScope().l10n.getLocalized('Attribute')}}</h2>
             </div>
-            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
-                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Code')}}</p>
-                <h4 class="list-group-item-heading">{{it.data.Attribute.Code}}</h4>
-            </div>
-            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
-                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeType')}}</p>
-                <h4 class="list-group-item-heading">{{it.data.Attribute.AttributeType}}</h4>
-            </div>
-            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
-                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Value')}}</p>
-                <h4 class="list-group-item-heading">{{it.data.Attribute.Value}}</h4>
-            </div>
-            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
-                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('VendorID')}}</p>
-                <h4 class="list-group-item-heading">{{it.data.Attribute.VendorID}}</h4>
-            </div>
-            <div class="list-group-item" style="color: {{it.color}}; background: {{it.bgColor}}">
-                <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Language')}}</p>
-                <h4 class="list-group-item-heading">{{it.data.Attribute.LanguageID}}</h4>
-            </div>
-            <div class="panel-footer" ng-show='showingMoreText'>
-                <small class="pull-left">Created on {{it.added | date:'medium'}}</small>
+        </div>
+        <div class="panel-body">
+
+            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('attributeID')}}</p>
+            <h4 class="list-group-item-heading">{{attribute.AttributeID}}</h4>
+
+            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeType')}}</p>
+            <h4 class="list-group-item-heading" ng-hide="externalScope().clicked" ng-show="!externalScope().clicked">{{attribute.AttributeType}}</h4>
+            <input type="text" class="form-control" ng-show="externalScope().clicked" ng-hide="!externalScope().clicked" required ng-trim="false" />
+
+            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeCode')}}</p>
+            <h4 class="list-group-item-heading">{{attribute.Code}}</h4>
+
+            <!--//TODO include language-->
+            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeValue')}}</p>
+            <h4 ng-hide="edit" class="list-group-item-heading">{{attribute.Value}}</h4>
+            <input type="text" ng-show="edit" ng-model="attribute.Value" /> 
+
+
+            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Vendor')}}</p>
+            <a href="#/vendor/{{attribute.vendorID}}"><h4 class="list-group-item-heading">{{attribute.VendorID}}</h4></a>
+        </div>
+        <div class="panel-footer">
+            <div class="btn-group">
+                <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{externalScope().l10n.getLocalized('Edit')}}</button>
+                <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{externalScope().l10n.getLocalized('Save')}}</button>
+                <button ng-show="savebtn" class="btn btn-primary" ng-click="cancel()">{{externalScope().l10n.getLocalized('Cancel')}}</button>
+                <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{externalScope().l10n.getLocalized('Select')}}</button>
             </div>
         </div>
     </div>

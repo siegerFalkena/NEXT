@@ -2,6 +2,8 @@
 
 angular.module('concentrator.controller.product', [
     'concentrator.model.product',
+    'concentrator.model.brand',
+    'concentrator.component',
     'common.localization',
     'ngAnimate',
     'ngTouch',
@@ -17,6 +19,5 @@ angular.module('concentrator.controller.product', [
     'cfp.loadingBar',
     'ui.grid.pinning',
     'dynamicLayout',
-    'ui.bootstrap.alert',
-    'concentrator.component.product'
+    'ui.bootstrap.alert'
 ])
