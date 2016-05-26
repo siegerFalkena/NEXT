@@ -3,44 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using NEXT.API.Repositories;
+using NEXT.API.Query;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NEXT.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/brand")]
     public class BrandController : Controller
     {
+
+        IBrandRepository _brandRepo;
+        public BrandController(IBrandRepository brandRepo) {
+            _brandRepo = brandRepo;
+        }
+
         // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("query", Name = "brandQuery")]
+        public JsonResult Query([FromQuery][Bind]BrandQuery query)
         {
-            return new string[] { "value1", "value2" };
+            
+            return Json(_brandRepo.query(query));
         }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }

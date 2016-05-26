@@ -10,7 +10,7 @@ function productResources($resourceProvider) {
 
 function productAPI($resource, $log) {
 
-    this.getClass = function() {
+    this.getClass = function () {
         return $resource('/api/product/:productID', { productID: '@id' }, {
             'query': {
                 method: 'GET', params: {
@@ -33,36 +33,84 @@ function productAPI($resource, $log) {
                     orderBy: null,
                     ascending: null
                 }, isArray: true
+            },
+            'brand': {
+                method: 'get',
+                url: 'api/product/:productID/brand',
+                params: {
+                    productID: '@productID'
+                }
+            },
+            'type': {
+                method: 'get',
+                url: 'api/product/:productID/type',
+                params: {
+                    productID: '@productID'
+                }
+            },
+            'vendor': {
+                method: 'get',
+                url: 'api/product/:productID/vendors/:productVendorID',
+                params: {
+                    productID: '@productID', vendorID: '@productVendorID'
+                }
+            },
+            'vendors': {
+                method: 'get',
+                url: 'api/product/:productID/vendors',
+                params: {
+                    results: null,
+                    page: null,
+                    Name: null
+                },
+                isArray: true
+            },
+            'children': {
+                method: 'get',
+                url: 'api/product/:productID/children',
+                params: {
+                    results: 25,
+                    page: 0
+                },
+                isArray: true
+            },
+            'channel': {
+                method: 'get',
+                url: 'api/product/:productID/channels/:productChannelID',
+                params: {
+                    productChannelID: '@productChannelID'
+                }
+            },
+            'channels': {
+                method: 'get',
+                url: 'api/product/:productID/channels',
+                params: {
+                    Name: null,
+                    Results: null,
+                    Page: null
+                },
+                isArray: true
+            },
+            'attribute': {
+                method: 'get',
+                url: 'api/product/:productID/attributes/:attributeID',
+                params: {
+                    type: '@productType',
+                    Value: '@value'
+
+                }
+            },
+            'attributes': {
+                method: 'get',
+                url: 'api/product/:productID/attributes',
+                param: {
+                    //query things
+                    Type: null,
+                    Code: null,
+                    Value: null
+                },
+                isArray: true
             }
-        });
-    };
-    
-    this.ProductBrand = function () {
-        return  $resource('/api/product/:productID/brand/:brandID', { productID: '@productID', brandID: '@brandID' }, {
-        
-        });
-    }
-
-    this.ProductType = function () {
-        return $resource('/api/product/:productID/type/:typeID', { productID: '@productID', typeID: '@typeID' }, {
-
-        });
-    };
-
-    this.ProductAttributes = function () {
-        return $resource('/api/product/:productID/attributes/:attributeID', { productID: '@productID', attributeID: '@attributeID' }, {
-            add: { method: 'POST', params: {}, isArray:false}
-        });
-    };
-
-    this.ProductVendors = function () {
-        return $resource('/api/product/:productID/vendors/:vendorID', { productID: '@productID', vendorID: '@vendorID' }, {
-            addNew: { method: 'POST', params: {}, isArray: false }
-        });
-    }
-
-    this.ProductChannels = function () {
-        return $resource('/api/product/:productID/channels/:ChannelID', { productID: '@productID', ChannelID: '@ChannelID' }, {
 
         });
     };

@@ -1,8 +1,16 @@
 ﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards" ng-controller="channelPartialController">
-    <div class="panel panel-success">
+    <div class="panel panel-danger">
         <div class="panel-heading">
             <div class="row">
-                <a href="#/channel/{{channel.channelID}}"><h2 class="panel-title">{{l10n.getLocalized('Channel')}} {{channel.Name}}</h2></a>
+                <div class="col-xs-6">
+                    <a href="#/channel/{{channel.channelID}}"><h4 class="panel-title">{{l10n.getLocalized('Channel')}}</h4></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="#/channel/{{channel.channelID}}"><small>{{channel.channelID}}</small></a>
+                </div>
+                <div class="col-xs-1">
+                    <i class="fa fa-2x fa-exchange" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
         <div class="panel-body">

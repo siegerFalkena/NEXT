@@ -1,8 +1,20 @@
 ﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards" ng-controller="productPartialController">
     <div class="panel panel-info">
-        <div class="panel-heading">
+        <div class="panel-heading" >
             <div class="row">
-                <h2 class="panel-title">{{l10n.getLocalized('Product') + product.ID}}</h2>
+                <div class="col-xs-5">
+                    <a href="#/product/{{product.productID}}">
+                        <h4 class="panel-title" style="color: lightblue">{{l10n.getLocalized('Product')}}</h4>
+                    </a>
+                </div>
+                <div class="col-xs-5">
+                    <a href="#/product/{{product.productID}}">
+                        <h2 class="panel-title"><small>{{product.productID}}</small></h2>
+                    </a>
+                </div>
+                <div class="col-xs-1">
+                    <i class="fa fa-2x fa-gift text-right" aria-hidden="true" style="color:lightblue"></i>
+                </div>
             </div>
         </div>
         <div class="panel-body">
@@ -17,12 +29,12 @@
             <h4 class="list-group-item-heading">{{product.productID}}</h4>
 
             <p class="list-group-item-text text-right">{{l10n.getLocalized('SKU')}}</p>
-            <h4 class="list-group-item-heading" ng-hide="clicked" ng-show="!clicked">{{product.SKU}}</h4>
-            <input type="text" class="form-control" ng-show="clicked" ng-hide="!clicked" required ng-trim="false" ng-model="product.SKU" />
+            <h4 class="list-group-item-heading" ng-hide="edit">{{product.SKU}}</h4>
+            <input type="text" class="form-control" ng-show="edit" required ng-trim="false" ng-model="product.SKU" />
 
             <p class="list-group-item-text text-right">{{l10n.getLocalized('ExternalProductIdentifier')}}</p>
-            <h4 class="list-group-item-heading" ng-hide="clicked" ng-show="!clicked">{{product.ExternalProductIdentifier}}</h4>
-            <input type="text" class="form-control" ng-show="clicked" ng-hide="!clicked" required ng-trim="false" ng-model="product.ExternalProductIdentifier" />
+            <h4 class="list-group-item-heading" ng-hide="edit">{{product.ExternalProductIdentifier}}</h4>
+            <input type="text" class="form-control" ng-show="edit" required ng-trim="false" ng-model="product.ExternalProductIdentifier" />
 
             <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModifiedBy')}}</p>
             <h4 class="list-group-item-heading">{{product.LastModifiedBy}}</h4>
@@ -41,6 +53,7 @@
         <div class="panel-footer">
             <div class="btn-group">
                 <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{l10n.getLocalized('Edit')}}</button>
+                <button ng-if="it.delete" ng-hide="savebtn" class="btn btn-default" ng-click="toggleDelete()">{{l10n.getLocalized('Delete')}}</button>
                 <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{l10n.getLocalized('Save')}}</button>
                 <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{l10n.getLocalized('Select')}}</button>
             </div>

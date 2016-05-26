@@ -41,6 +41,16 @@ namespace NEXT.API.Repositories
         }
 
 
+        public ICollection<API.Resource.Product> getChildren(int productID, int results, int page)
+        {
+            int queryResults = results == 0 ? 25 : results;
+            DB.Models.Product product = _context.Product.Include(p => p.InverseParentProduct)
+                .Where(p => p.ID == productID).SingleOrDefault();
+                ICollection<DB.Models.Product> products = product.InverseParentProduct;
+            return mapper.Map<ICollection<DB.Models.Product>, ICollection<API.Resource.Product>>(products);
+        }
+
+
         public API.Resource.Product getProductByID(int productID)
         {
             IQueryable<DB.Models.Product> productQuery = _context.Product
@@ -147,31 +157,14 @@ namespace NEXT.API.Repositories
 
         public void updateProduct(API.Resource.Product product)
         {
-            DB.Models.Product frProduct = _context.Product.Include(p => p.Brand)
-        .Include(p => p.ChannelProduct)
-        .ThenInclude(cp => cp.Channel)
-        .Include(p => p.ProductType)
-        .Include(p => p.RelatedProduct)
-        .Include(p => p.RelatedProductNavigation)
-        .Include(p => p.VendorProduct)
-        .ThenInclude(vp => vp.Vendor)
-        .Include(p => p.ProductAttributeOption)
-        .ThenInclude(pao => pao.AttributeOption)
-        .ThenInclude(pao => pao.Attribute)
-        .ThenInclude(pao => pao.AttributeType)
-        .Include(p => p.ProductAttributeValue)
-        .ThenInclude(pao => pao.Attribute)
-        .ThenInclude(pao => pao.AttributeType)
-        .Include(p => p.ParentProduct).SingleOrDefault(p => p.ID == product.productID);
-            if (frProduct != null)
-            {
-                DB.Models.Product upProduct = mapper.Map<API.Resource.Product, DB.Models.Product>(product, frProduct);
-                frProduct.SKU = product.SKU;
-                frProduct.ExternalProductIdentifier = product.ExternalProductIdentifier;
-                _context.Update(frProduct, GraphBehavior.SingleObject);
-                _context.SaveChanges();
-            }
+            DB.Models.Product upProduct = mapper.Map<API.Resource.Product, DB.Models.Product>(product);
+            DB.Models.Product frProduct = _context.Product.Where(p => p.ID == upProduct.ID).SingleOrDefault();
+            frProduct.SKU = upProduct.SKU;
+            frProduct.ExternalProductIdentifier = upProduct.ExternalProductIdentifier;
+            _context.Update(frProduct, GraphBehavior.SingleObject);
+            _context.SaveChanges();
         }
+
 
         public ICollection<API.Resource.Attribute> getAttributes(int productID)
         {
@@ -236,14 +229,6 @@ namespace NEXT.API.Repositories
             return mapper.Map<ICollection<API.Resource.Product>>(Products);
         }
 
-        public ICollection<Resource.Product> getChildren(int id, int results, int page)
-        {
-            int queryResults = results == 0 ? results : 25;
-            DB.Models.Product dbProduct = _context.Product.Include(p => p.InverseParentProduct).Where(p => p.ID == id).SingleOrDefault();
-            if (dbProduct == null) { return null; };
-            return mapper.Map<ICollection<API.Resource.Product>>(dbProduct.InverseParentProduct);
-
-        }
 
         public ICollection<API.Resource.Vendor> getVendors(int productID)
         {

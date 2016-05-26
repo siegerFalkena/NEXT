@@ -4,7 +4,6 @@
 function attributePartialController($scope, l10n, $log, productResources, loadingBar) {
     $scope.attribute = $scope.$parent.$parent.it.data;
     $log.info($scope.attribute);
-    var vendorSelection = productResources.ProductAttributes();
     $scope.selectorItems = [];
     $scope.edit = false;
     $scope.select = false;

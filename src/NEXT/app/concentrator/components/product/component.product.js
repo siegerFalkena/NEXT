@@ -7,10 +7,33 @@ function productPartialController($scope, l10n, $log, productResources, loadingB
     $scope.l10n = l10n;
     $scope.isRoot = ($scope.product.ParentProduct != undefined);
     $scope.selectorItems = [];
+
+
     $scope.edit = false;
     $scope.select = false;
+    $scope.remove = false;
+    $scope.savebtn = false;
+
+
+    $scope.save = function () {
+        $scope.product.$save();
+    };
+
+
     $scope.toggleSelect = function () {
         $scope.select = !$scope.select;
+        $scope.savebtn = !$scope.savebtn;
+    }
+
+
+    $scope.toggleEdit = function () {
+        $scope.edit = !$scope.edit;
+        $scope.savebtn = !$scope.savebtn;
+    }
+
+    $scope.toggleDelete = function () {
+        $scope.delete = !$scope.delete;
+        $scope.savebtn = !$scope.savebtn;
     }
 
     $scope.dropdownSelector = function (nameInput) {

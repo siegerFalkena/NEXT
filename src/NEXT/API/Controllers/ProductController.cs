@@ -62,6 +62,12 @@ namespace NEXT.API
                 );
         }
 
+        [HttpGet("{productID}/children")]
+        public JsonResult getChildren(int productID, [FromQuery]int results, [FromQuery]int page ) {
+            return Json(productRepo.getChildren(productID, results, page));
+        }
+
+
         [HttpGet]
         public JsonResult Root() {
             return getFunctions();

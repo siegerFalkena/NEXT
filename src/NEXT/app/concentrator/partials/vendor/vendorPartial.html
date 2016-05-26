@@ -2,7 +2,15 @@
     <div class="panel panel-success">
         <div class="panel-heading">
             <div class="row">
-                <a href="#/vendor/{{vendor.vendorID}}"><h2 class="panel-title">{{l10n.getLocalized('Vendor')}} {{vendor.Name}}</h2></a>
+                <div class="col-xs-6">
+                    <a href="#/vendor/{{vendor.vendorID}}"><h4 class="panel-title">{{l10n.getLocalized('Vendor')}}</h4></a>
+                </div>
+                <div class="col-xs-4">
+                    <a href="#/vendor/{{vendor.vendorID}}"><small>{{vendor.vendorID}}</small></a>
+                </div>
+                <div class="col-xs-1">
+                    <i class="fa fa-2x fa-credit-card" aria-hidden="true"></i>
+                </div>
             </div>
         </div>
         <div class="panel-body">

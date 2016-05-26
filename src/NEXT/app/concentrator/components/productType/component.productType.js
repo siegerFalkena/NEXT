@@ -3,7 +3,7 @@
 
 function productTypePartialController($scope, l10n, $log, productResources, loadingBar) {
     $scope.productType = $scope.$parent.$parent.it.data;
-    var productTypeSelection = productResources.ProductType();
+    var productTypeSelection = productResources.getClass();
     $scope.selectorItems = [];
 
     $scope.edit = false;

@@ -19,5 +19,6 @@ angular.module('concentrator.controller.product', [
     'cfp.loadingBar',
     'ui.grid.pinning',
     'dynamicLayout',
-    'ui.bootstrap.alert'
+    'ui.bootstrap.alert',
+    'ui.bootstrap.typeahead'
 ])

@@ -10,10 +10,23 @@
     /* IE6-9 */
 }
 
-
-@media (min-width: 992px) {
+@media (min-width: 1900px) {
     [dynamic-layout] {
-        width: 992px;
+        width: 1700px;
+    }
+
+    .dynamic-layout-col-4 {
+        width: 300px;
+    }
+
+    .dynamic-layout-col-8 {
+        width: 600px;
+    }
+}
+
+@media (min-width: 1300px) and (max-width: 1900px) {
+    [dynamic-layout] {
+        width: 1200px;
     }
 
     .dynamic-layout-col-4 {
@@ -24,14 +37,15 @@
         width: 600px;
     }
 
-    .collapse {
+    /*.collapse {
         display: none !important;
-    }
+    }*/
 }
 
-@media (min-width: 480px) and (max-width: 992px) {
+
+@media (min-width: 1024px) and (max-width: 1300px) {
     [dynamic-layout] {
-        width: 768px;
+        width: 900px;
     }
 
     .dynamic-layout-col-4 {
@@ -41,15 +55,15 @@
     .dynamic-layout-col-8 {
         width: 600px;
     }
-    .collapse {
+
+    /*.collapse {
         display: none !important;
-    }
-    
+    }*/
 }
 
-@media (max-width: 480px) {
+@media (min-width: 768px) and (max-width: 1024px) {
     [dynamic-layout] {
-        width: 380px;
+        width: 600px;
     }
 
     .dynamic-layout-col-4 {
@@ -59,9 +73,28 @@
     .dynamic-layout-col-8 {
         width: 300px;
     }
-    .collapse {
+    /*.collapse {
         display: none !important;
+    }*/
+
+}
+
+
+@media (max-width: 768px) {
+    [dynamic-layout] {
+        width: 300px;
     }
+
+    .dynamic-layout-col-4 {
+        width: 300px;
+    }
+
+    .dynamic-layout-col-8 {
+        width: 300px;
+    }
+    /*.collapse {
+        display: none !important;
+    }*/
 
 }
 
@@ -81,7 +114,6 @@ body,
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
     height: 100%;
-    overflow-x: hidden;
 }
 
 .navbar-default {
@@ -103,6 +135,10 @@ body {
     display: block;
     padding: 5px 15px;
     padding-top: 10px;
+}
+
+.fullscreen {
+    
 }
 
 .navbar-default .navbar-toggle {

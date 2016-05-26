@@ -2,7 +2,7 @@
     .controller('channelPartialController', ['$scope', 'l10n', '$log', 'productResources', 'cfpLoadingBar', vendorPartialController]);
 
 function vendorPartialController($scope, l10n, $log, productResources, loadingBar) {
-    var vendorSelection = productResources.ProductChannels();
+    var vendorSelection = productResources.getClass();
     $scope.channel = $scope.$parent.$parent.it.data;
     $scope.l10n = l10n;
 

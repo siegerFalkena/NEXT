@@ -1,15 +1,21 @@
 ﻿'use strict';
 angular.module('concentrator.controller.product')
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', 'brandResources', productDetailCtrl]);
+.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', productDetailCtrl]);
 
 
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, brandResource) {
+function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar) {
     var $stateParams = $rootScope.$stateParams;
     $scope.l10n = l10n;
-    $scope.context = 'BASE';
-    $scope.state = 'Details';
     var Product = productResources.getClass();
 
+    $scope.states = {
+        overview: true,
+        base: true,
+        children: false,
+        channel: false,
+        vendors: false,
+        attributes: false
+    };
 
     $scope.cards = [];
 
@@ -17,11 +23,10 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     var i = 0;
     $scope.cards.splice(0, $scope.cards.length);
 
-    function attributes() {
-        var tempcards = [];
-        productResources.ProductAttributes().query({ productID: $stateParams.id }, function (attributes) {
+    function attributes(cb_attributes) {
+        productResources.getClass().attributes({ productID: $stateParams.id }, function (attributes) {
             _.each(attributes, function (attribute) {
-                tempcards.push({
+                $scope.cards.push({
                     template: "concentrator/partials/attribute/AttributePartial.html",
                     edit: true,
                     select: false,
@@ -34,11 +39,11 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
         });
     };
 
-    function loadChannels() {
-        var tempcards = [];
-        productResources.ProductChannels().query({ productID: $stateParams.id }, function (channels) {
+    function channels(cb_channels) {
+        productResources.getClass().channels({ productID: $stateParams.id }, function (channels) {
+            $log.info(channels);
             _.each(channels, function (channel) {
-                tempcards.push({
+                $scope.cards.push({
                     template: "concentrator/partials/channel/channelPartial.html",
                     edit: false,
                     select: false,
@@ -51,14 +56,12 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             $log.info('failed');
             $scope.alerts.push({ type: 'warning', msg: 'could not get channel! statusText: ' + fail.statusText });
         });
-        return tempcards;
     };
 
-    function vendors() {
-        var tempCards = [];
-        productResources.ProductVendors().query({ productID: $stateParams.id }, function (vendors) {
+    function vendors(cb_vendors) {
+        productResources.getClass().vendors({ productID: $stateParams.id }, function (vendors) {
             _.each(vendors, function (vendor) {
-                tempCards.push({
+                $scope.cards.push({
                     template: "concentrator/partials/vendor/vendorPartial.html",
                     edit: false,
                     select: false,
@@ -73,92 +76,105 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     }
 
 
-    function productType() {
-        productResources.ProductType().get({ productID: $stateParams.id }, function (productType) {
-            return {
+    function productType(cb_types) {
+        productResources.getClass().type({ productID: $stateParams.id }, function (productType) {
+            $scope.cards.push({
                 template: "concentrator/partials/productType/productTypePartial.html",
                 edit: false,
                 select: true,
-                ProductTypeResource: productResources.ProductType(),
                 remove: false,
                 data: productType
-            }
+            })
         }, function (fail) {
             $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
         });
     };
 
-    function brandCore() {
-        productResources.ProductBrand().get({ productID: $stateParams.id }, function (brand) {
-            return {
+    function brandCore(cb_brand) {
+        productResources.getClass().brand({ productID: $stateParams.id }, function (brand) {
+            $scope.cards.push({
                 template: "concentrator/partials/brand/brandPartial.html",
                 edit: false,
                 select: true,
-                brandResource: brandResource.Brand(),
                 remove: false,
                 data: brand
-            };
+            });
         }, function (fail) {
+            $log.error('could not get brand!' + fail);
             $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
         });
     }
 
-    function productCore() {
+    function productCore(cb_core) {
         productResources.getClass().get({ productID: $stateParams.id }, function (product) {
-            return {
+            $scope.product = product;
+            $scope.cards.push({
                 template: "concentrator/partials/product/productPartial.html",
                 edit: true,
                 select: false,
                 remove: false,
                 data: product
-            };
+            })
         }, function (fail) {
             $scope.alerts.push({ type: 'warning', msg: 'could not get product! statusText: ' + fail.statusText });
         });
     };
-    //attributes();
-    //productType();
-    //brandCore();
-    //vendors();
-    //loadChannels();
-    //productCore();
 
-    $scope.refresh = function (strState) {
-        var tempcards = [];
-        if (strState == 'Overview') {
-            tempcards.push(attributes());
-            tempcards.push(productType());
-            tempcards.push(brandCore());
-            tempcards.push(vendors());
-            _.each(vendors(), function (vendor) {
-                tempcards.push(vendor);
+    function productChildren() {
+        productResources.getClass().children({ productID: $stateParams.id, results: null, page: null }, function (childProducts) {
+            _.each(childProducts, function (child) {
+                $scope.cards.push({
+                    template: "concentrator/partials/product/productPartial.html",
+                    edit: false,
+                    select: false,
+                    remove: false,
+                    data: child
+                });
             });
-            _.each(loadChannels(), function (channel) {
-                tempcards.push(channel);
-            });
-            tempcards.push(productCore());
-        } else if (strState == 'Children') {
-
-        } else if (strState == 'Channels') {
-        } else if (strState == 'Vendors') {
-
-        };
-
+        }, function (fail) {
+            $scope.alerts.push({ type: 'warning', msg: 'could not get childProduct! statusText: ' + fail.statusText });
+        })
     }
 
+    $scope.refresh = function () {
+        $scope.cards.splice(0, $scope.cards.length);
+        if ($scope.states.overview) {
+            productCore();
+        }
+        if ($scope.states.children) {
+            productChildren();
+        }
+        if ($scope.states.vendor) {
+            vendors(function () {
+
+            });
+        }
+        if($scope.states.type){
+            productType();
+        }
+        if ($scope.states.channel) {
+            channels();
+        }
+        if ($scope.states.attributes) {
+            attributes();
+        }
+        if ($scope.states.brand) {
+            brandCore();
+        } 
+    };
     //ALERTS
     $scope.alerts = [];
     $scope.closeAlert = function (alert) {
         var index = _.each($scope.alerts, function (item, index) {
-            if (_.has(item, 'msg') && item.msg == alert.msg) {
+            if (_.has(item, 'msg') && item.msg == alert.msg && item.type == alert.type) {
                 $scope.alerts.splice(index, 1);
             }
         });
     };
-
-    //Model
-
-    //$log.info($scope);
+    $scope.alerts.push({ type: 'warning', msg: 'example error' });
+    $scope.alerts.push({ type: 'danger', msg: 'example error' });
+    $scope.alerts.push({ type: 'info', msg: 'example error' });
+    $scope.refresh();
 };
 
 function attributeComponentCtrl($log, $scope, l10n) {

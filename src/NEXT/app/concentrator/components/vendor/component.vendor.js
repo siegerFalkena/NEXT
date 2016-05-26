@@ -2,7 +2,7 @@
     .controller('vendorPartialController', ['$scope', 'l10n', '$log', 'productResources', 'cfpLoadingBar', vendorPartialController]);
 
 function vendorPartialController($scope, l10n, $log, productResources, loadingBar) {
-    var vendorSelection = productResources.ProductType();
+    var vendorSelection = productResources.getClass();
     $scope.vendor = $scope.$parent.$parent.it.data;
     $scope.l10n = l10n;
 

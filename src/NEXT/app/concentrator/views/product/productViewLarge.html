@@ -1,17 +1,71 @@
 ﻿<div ng-controller="productDetailCtrl" class="container-fluid" style="height:100%; padding-left: 0px; ">
     <div class="row" style="height:100%">
-        <div class="col-lg-1 col-md-2 col-xs-2 " style="height:100%">
-
+        <div class="col-xs-3 col-sm-2 col-md-1" style="height:100%">
+            <script type="text/ng-template" id="alert.html">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="col-xs-2">
+                            <div ng-transclude></div>
+                        </div>
+                        <div class="col-xs-1">
+                            <a ng-click="closeAlert($index)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </script>
             <ul class="nav affix nav-pills nav-stacked submenu" style="height:100%; background:aliceblue;">
-                <li role="presentation" ng-class="{'active' : state == 'Overview'}"><a ng-click="state='Overview'; refresh(state);">{{l10n.getLocalized('Overview')}}</a></li>
-                <li role="presentation" ng-class="{'active' : state == 'Children'}"><a ng-click="state='Children'; refresh(state);">{{l10n.getLocalized('Children')}}</a></li>
-                <li role="presentation" ng-class="{'active' : state == 'Channels'}"><a ng-click="state='Channels'; refresh(state);">{{l10n.getLocalized('Channels')}}</a></li>
-                <li role="presentation" ng-class="{'active' : state == 'Vendors'}"><a ng-click="state='Vendors'; refresh(state);">{{l10n.getLocalized('Vendors')}}</a></li>
+                <li role="presentation" ng-class="{'active' : states.overview}">
+                    <a ng-click="states.overview = !states.overview; refresh(state);">
+                        <i class="fa fa-gift" aria-hidden="true"></i>
+                        {{l10n.getLocalized('Overview')}}
+                    </a>
+                </li>
+                <li role="presentation" ng-class="{'active' : states.children}">
+                    <a ng-click="states.children= !states.children; refresh(state);">
+                        <i class="fa fa-child" aria-hidden="true"></i>
+                        {{l10n.getLocalized('Children')}}
+                    </a>
+                </li>
+                <li role="presentation" ng-class="{'active' : states.channel}">
+                    <a ng-click="states.channel = !states.channel; refresh(state);">
+                        <i class="fa fa-exchange" aria-hidden="true"></i>
+                        {{l10n.getLocalized('Channels')}}
+                    </a>
+                </li>
+                <li role="presentation" ng-class="{'active' : states.type}">
+                    <a ng-click="states.type = !states.type; refresh(state);">
+                        <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        {{l10n.getLocalized('ProductType')}}
+                    </a>
+                </li>
+                <li role="presentation" ng-class="{'active' : states.attributes}">
+                    <a ng-click="states.attributes = !states.attributes; refresh(state);">
+                        <i class="fa fa-diamond" aria-hidden="true"></i>
+                        {{l10n.getLocalized('Attributes')}}
+                    </a>
+                </li>
+                <li role="presentation" ng-class="{'active' : states.vendor}">
+                    <a ng-click="states.vendor = !states.vendor; refresh(state);"><i class="fa fa-credit-card" aria-hidden="true"></i>{{l10n.getLocalized('Vendors')}}</a>
+                    <ul ng-show="states.vendor" class="nav nav-tabs nav-stacked" style="background: white">
+                        <li role="presentation" class="" style="background:white">
+                            <small><a ng-click="addVendor()">{{l10n.getLocalized('NewVendor')}}</a></small>
+                        </li>
+                    </ul>
+                </li>
+                <li role="presentation" ng-class="{'active' : states.brand}">
+                    <a ng-click="states.brand = !states.brand; refresh(state);">
+                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                        {{l10n.getLocalized('Brand')}}
+                    </a>
+                </li>
             </ul>
-            <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
+            <ul class="nav affix nav-pills nav-stacked navbar-fixed-bottom" style="color:black">
+                <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
+            </ul>
         </div>
-        <div class="col-md-10 col-xs-10">
+        <div class="col-xs-8 col-xs-offset-1 col-sm-9 col-sm-offset-1 col-md-9">
             <div class="container-fluid">
+                <h1><small>{{l10n.getLocalized('Product')}} {{product.SKU}}</small></h1>
                 <div dynamic-layout items="cards"></div>
             </div>
         </div>
