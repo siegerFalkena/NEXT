@@ -36,32 +36,35 @@ angular.module('concentrator')
                 // Home //
                 //////////
 
-
-
-                $stateProvider
+                $stateProvider.state('overview', {
+                    url: '/overview',
+                    templateUrl: 'concentrator/views/Home/Home.html'
+                })
                 .state('product', {
                     url: '/product',
                     abstract: true,
-                    template: '<ui-view/>'
+                    template: "<div ui-view style=\"height:100%;\"></div>"
                 })
-                 .state('product.list', {
-                     url: '/query',
-                     templateUrl: "concentrator/views/product/productList.html"
-                 }).state("product.detail", {
-                     url: '/{id}',
-                     templateUrl: "concentrator/views/product/productViewLarge.html"
-                 }).state("product.new", {
-                     url: '/new',
-                     params: { isNew: true},
-                     templateUrl: "concentrator/views/product/productViewLarge.html"
-                 })
-                    .state("home", {
-                        url: '/home',
-                        templateUrl: 'concentrator/views/Home/Home.html'
-                    }).state('404', {
-                        url: '/404',
-                        templateUrl: '404.html'
-                    });
+                    .state('product.overview', {
+                        url: '/overview',
+                        templateUrl: 'concentrator/views/product/productOverview.html'
+                    })
+                .state('product.list', {
+                    url: '/query',
+                    templateUrl: "concentrator/views/product/productList.html"
+                }).state("product.new", {
+                    url: '/new',
+                    params: { isNew: true },
+                    templateUrl: "concentrator/views/product/productViewLarge.html"
+                })
+                .state("product.detail", {
+                    url: '/{id}',
+                    templateUrl: "concentrator/views/product/productViewLarge.html"
+                })
+                .state('404', {
+                    url: '/404',
+                    templateUrl: '404.html'
+                });
 
             }
         ]

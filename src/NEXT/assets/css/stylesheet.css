@@ -1,13 +1,10 @@
 .background-title {
-     Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent 
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-     FF3.6-15 
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-     Chrome10-25,Safari5.1-6 
-    background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-     W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ 
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=1);
-     IE6-9 
+    Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;
+    White +to+Transparent background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    FF3 .6-15 background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    Chrome10-25,Safari5.1-6 background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=1);
+    IE6-9;
 }
 
 @media (min-width: 1900px) {
@@ -73,10 +70,10 @@
     .dynamic-layout-col-8 {
         width: 300px;
     }
+
     .collapse {
         display: none !important;
     }
-
 }
 
 
@@ -92,10 +89,10 @@
     .dynamic-layout-col-8 {
         width: 300px;
     }
+
     .collapse {
         display: none !important;
     }
-
 }
 
 
@@ -137,8 +134,19 @@ body {
     padding-top: 10px;
 }
 
-.fullscreen {
-    
+.boxgradient {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,e5e5e5+100;White+3D */
+    background: rgb(255,255,255); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background-attachment: fixed; 
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+    height: 100%;
+}
+
+.ui-view .ng-scope {
+    height: 100%;
 }
 
 .navbar-default .navbar-toggle {
@@ -146,28 +154,28 @@ body {
     margin: 0px;
 }
 
-  .typeahead-demo .custom-popup-wrapper {
+.typeahead-demo .custom-popup-wrapper {
     position: absolute;
     top: 100%;
     left: 0;
     z-index: 1000;
     display: none;
     background-color: #f9f9f9;
-  }
+}
 
-  .typeahead-demo .custom-popup-wrapper > .message {
-    padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
-    color: #868686;
-  }
+    .typeahead-demo .custom-popup-wrapper > .message {
+        padding: 10px 20px;
+        border-bottom: 1px solid #ddd;
+        color: #868686;
+    }
 
-  .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
-    position: static;
-    float: none;
-    display: block;
-    min-width: 160px;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-  }
+    .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+        position: static;
+        float: none;
+        display: block;
+        min-width: 160px;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }

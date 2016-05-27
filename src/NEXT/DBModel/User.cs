@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NEXT.DB.Models
 {
-    public partial class User
+    public partial class User : IdentityUser
     {
         public int ID { get; set; }
         public int CompanyID { get; set; }
-        public string Email { get; set; }
+        public override string Email { get; set; }
         public string Firstname { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

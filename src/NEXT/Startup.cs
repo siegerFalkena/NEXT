@@ -40,6 +40,7 @@ namespace NEXT
         {
             var connection = @"MultipleActiveResultSets=true;Server=localhost,1433;Database=NEXT;User ID=NEXT;Password=password31!;";
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
+            services.AddIdentity<User, Role>().AddEntityFrameworkStores<NEXTContext>().AddDefaultTokenProviders();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
@@ -106,9 +107,8 @@ namespace NEXT
                 app.UseRuntimeInfoPage();
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseIdentity();
             app.UseMvcWithDefaultRoute();
-            app.UseSession();
 
         }
 

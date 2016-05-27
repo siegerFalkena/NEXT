@@ -16,12 +16,12 @@
 </head>
 
 
-<body ng-app="concentrator" ng-controller="coreCtrl">
-    <div ng-if="!loginscreen" class="fullscreen">
+<body ng-app="concentrator" class="boxgradient" ng-controller="coreCtrl">
+    <div ng-if="!loginscreen" style="height:100%;">
         <navbar></navbar>
-        <div ui-view class="fullscreen"></div>
+        <div ui-view ></div>
     </div>
-    <div ng-if="loginscreen" class="container-fluid fullscreen">
+    <div ng-if="loginscreen" class="container-fluid" style="height:100%;">
         <loginscreen locale="l10n" class="fullscreen"></loginscreen>
     </div>
     <nav class="navbar-fixed-bottom" role="navigation">

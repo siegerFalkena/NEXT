@@ -404,6 +404,13 @@ namespace NEXT.DB.Models
                 entity.HasOne(d => d.Company).WithMany(p => p.User).HasForeignKey(d => d.CompanyID).OnDelete(DeleteBehavior.Restrict);
             });
 
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.roleID).IsRequired();
+
+            });
+
             modelBuilder.Entity<VAT>(entity =>
             {
                 entity.Property(e => e.Name)

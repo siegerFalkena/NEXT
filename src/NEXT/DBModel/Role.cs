@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NEXT.DB.Models
 {
-    public class Role
+    public class Role : IdentityRole
     {
-        [ScaffoldColumn(false)]
-        string rolename;
+        public Role(String x): base(x)
+        {
 
-        int roleID;
+        }
+        public string description;
+        public int userID;
+        public int roleID;
     }
 }
