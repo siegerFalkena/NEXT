@@ -1,9 +1,21 @@
-﻿<div class="row" style="margin-top: 70px">
-    <div class="col-lg-4 col-md-10 col-sm-6 col-xs-4">
-        <h1 class="text-center">Homepage</h1>
-        <div class="container">
-        <span class="glyphicon glyphicon-queen glyphicon-align-center" aria-hidden="true"></span>
-            
+﻿<div class="container-fluid" ng-controller="coreCtrl">
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <div class="thumbnail tile tile-medium tile-teal">
+                <a href="#/product/2">
+                    <h1>Product</h1>
+                </a>
+            </div>
+            <div class="thumbnail tile tile-medium tile-crimson">
+                <a href="#/product/query" class="fa-links">
+                    <i class="fa fa-4x fa-money"></i>
+                </a>
+            </div>
+            <div class="thumbnail tile tile-medium tile-magenta">
+                <a ng-click="addError()" class="fa-links">
+                    <h1>Add error</h1>
+                </a>
+            </div>
         </div>
     </div>
 </div>

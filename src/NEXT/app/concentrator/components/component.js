@@ -5,5 +5,8 @@ angular.module('concentrator.component', [
     'common.localization',
     'concentrator.model.product',
     'concentrator.model.brand',
-    'ui.bootstrap.typeahead'
+    'ui.bootstrap.dropdown',
+    'ui.bootstrap.typeahead',
+    'ui.bootstrap.position',
+    'common.alerts'
 ])

@@ -4,13 +4,15 @@ angular.module('concentrator.concentrator.navbar', [
         'concentrator.component.searchFilter',
         'concentrator.component.navbar',
         'common.localization',
-        'common.auth'
+        'common.auth',
+        'common.alerts',
+        'ui.bootstrap.alert'
     ])
-    .controller('navbarCtrl', ['$scope', '$log', 'l10n', 'auth', navbarCtrl]);
+    .controller('navbarCtrl', ['$scope', '$log', 'l10n', 'auth', 'alertService', navbarCtrl]);
 
 
 
-function navbarCtrl($scope, $log, l10n, auth) {
+function navbarCtrl($scope, $log, l10n, auth, alerts) {
 
     $scope.brand = {
         name: 'Jumbo',

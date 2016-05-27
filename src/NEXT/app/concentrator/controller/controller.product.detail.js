@@ -18,7 +18,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     };
 
     $scope.cards = [];
-
+    $log.info($stateParams.isNew);
 
     var i = 0;
     $scope.cards.splice(0, $scope.cards.length);
@@ -47,7 +47,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                     template: "concentrator/partials/channel/channelPartial.html",
                     edit: false,
                     select: false,
-                    remove: false,
+                    remove: true,
                     data: channel
                 });
             });
@@ -65,7 +65,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                     template: "concentrator/partials/vendor/vendorPartial.html",
                     edit: false,
                     select: false,
-                    remove: false,
+                    remove: true,
                     data: vendor
                 });
             });
@@ -93,6 +93,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     function brandCore(cb_brand) {
         productResources.getClass().brand({ productID: $stateParams.id }, function (brand) {
             $scope.cards.push({
+                productID: _.clone($stateParams.id),
                 template: "concentrator/partials/brand/brandPartial.html",
                 edit: false,
                 select: true,
@@ -113,6 +114,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                 edit: true,
                 select: false,
                 remove: false,
+                isNew: $stateParams.isNew, 
                 data: product
             })
         }, function (fail) {

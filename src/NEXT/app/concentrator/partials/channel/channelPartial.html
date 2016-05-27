@@ -44,6 +44,9 @@
                 <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">
                     {{l10n.getLocalized('Select')}}
                 </button>
+                <button ng-if="it.remove" ng-hide="savebtn" class="btn btn-default" ng-click="toggleRemove()">
+                    {{l10n.getLocalized('Remove')}}
+                </button>
             </div>
         </div>
     </div>

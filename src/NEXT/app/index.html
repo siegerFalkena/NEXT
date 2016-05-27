@@ -14,19 +14,24 @@
     <link rel="stylesheet" type="text/css" href="assets/css/angular-gridster.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
 </head>
+
+
 <body ng-app="concentrator" ng-controller="coreCtrl">
-        <div ng-if="!loginscreen" class="fullscreen">
-            <navbar></navbar>
-            <div ui-view class="fullscreen" ></div>
-        </div>
-        <div ng-if="loginscreen" class="container-fluid fullscreen">
-            <loginscreen locale="l10n" class="fullscreen"></loginscreen>
-        </div>
+    <div ng-if="!loginscreen" class="fullscreen">
+        <navbar></navbar>
+        <div ui-view class="fullscreen"></div>
+    </div>
+    <div ng-if="loginscreen" class="container-fluid fullscreen">
+        <loginscreen locale="l10n" class="fullscreen"></loginscreen>
+    </div>
+    <nav class="navbar-fixed-bottom" role="navigation">
+        <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </nav>
 </body>
 <!--BEFORE ANGULAR IMPORTS-->
 <script src="assets/js/underscore/underscore-min.js"></script>
 <script src="assets/js/moment.js"></script>
-TypePArtial
+
 <!--ANGULAR IMPORTS-->
 <script src="assets/js/angular/angular.min.js"></script>
 <script src="assets/js/angular-cookies/angular-cookies.min.js"></script>
@@ -41,7 +46,9 @@ TypePArtial
 <script src="assets/js/angular-dynamic-layout/dist/angular-dynamic-layout.min.js"></script>
 
 
+<script src="common/alerts/common.alerts.controller.js"></script>
 <script src="index.js"></script>
+
 <!--MODELS-->
 <script src="concentrator/model/product/concentrator.model.product.js"></script>
 <script src="concentrator/model/brand/concentrator.model.brand.js"></script>
@@ -60,7 +67,6 @@ TypePArtial
 <script src="concentrator/components/channel/component.channel.js"></script>
 <script src="concentrator/components/attribute/component.attribute.js"></script>
 <!--<script src="concentrator/components/component.smallBrand.js"></script>-->
-
 <!-- ROUTING -->
 <script src="routes.js"></script>
 

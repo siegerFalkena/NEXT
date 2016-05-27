@@ -1,14 +1,15 @@
 'use strict'
 angular.module('concentrator.model.product', [
-    'ngResource'
+    'ngResource',
+    'common.alerts'
 ]).config(['$resourceProvider', productResources])
-    .service('productResources', ['$resource', '$log', productAPI]);
+    .service('productResources', ['$resource', '$log', 'alertService', productAPI]);
 
 function productResources($resourceProvider) {
     $resourceProvider.defaults.stripTrailingSlashes = true;
 }
 
-function productAPI($resource, $log) {
+function productAPI($resource, $log, alertService) {
 
     this.getClass = function () {
         return $resource('/api/product/:productID', { productID: '@id' }, {
@@ -35,28 +36,37 @@ function productAPI($resource, $log) {
                 }, isArray: true
             },
             'brand': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/brand',
                 params: {
                     productID: '@productID'
                 }
             },
+            'setBrand': {
+                method: 'POST',
+                url: 'api/product/:productID/brand',
+                params: {
+                    productID: '@productID',
+                    brandID: null,
+                    Name: null
+                }
+            },
             'type': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/type',
                 params: {
                     productID: '@productID'
                 }
             },
             'vendor': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/vendors/:productVendorID',
                 params: {
                     productID: '@productID', vendorID: '@productVendorID'
                 }
             },
             'vendors': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/vendors',
                 params: {
                     results: null,
@@ -66,7 +76,7 @@ function productAPI($resource, $log) {
                 isArray: true
             },
             'children': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/children',
                 params: {
                     results: 25,
@@ -75,14 +85,14 @@ function productAPI($resource, $log) {
                 isArray: true
             },
             'channel': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/channels/:productChannelID',
                 params: {
                     productChannelID: '@productChannelID'
                 }
             },
             'channels': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/channels',
                 params: {
                     Name: null,
@@ -92,7 +102,7 @@ function productAPI($resource, $log) {
                 isArray: true
             },
             'attribute': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/attributes/:attributeID',
                 params: {
                     type: '@productType',
@@ -101,15 +111,33 @@ function productAPI($resource, $log) {
                 }
             },
             'attributes': {
-                method: 'get',
+                method: 'GET',
                 url: 'api/product/:productID/attributes',
-                param: {
+                params: {
                     //query things
                     Type: null,
                     Code: null,
                     Value: null
                 },
                 isArray: true
+            },
+            'removeAttribute': {
+                method: 'DELETE',
+                url: 'api/product/:productID/attributes/:attributeID',
+                params: {
+                    productID : "@productID",
+                    attributeID: "@attributeID"
+                },
+                isArray: true
+            },
+            'editAttribute': {
+                method: 'POST',
+                url: "api/product/:productID/attributes/:attributeID",
+                params: {
+                    value: null,
+                    productID: '@productID',
+                    attributeID: '@attributeID'
+                }
             }
 
         });

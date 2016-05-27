@@ -8,6 +8,7 @@ function productPartialController($scope, l10n, $log, productResources, loadingB
     $scope.isRoot = ($scope.product.ParentProduct != undefined);
     $scope.selectorItems = [];
 
+    var store = _.clone($scope.product);
 
     $scope.edit = false;
     $scope.select = false;
@@ -17,6 +18,19 @@ function productPartialController($scope, l10n, $log, productResources, loadingB
 
     $scope.save = function () {
         $scope.product.$save();
+        store = _.clone($scope.product);
+        $scope.edit = false;
+        $scope.remove = false;
+        $scope.select = false;
+        $scope.savebtn = false;
+    };
+
+    $scope.cancel = function () {
+        $scope.product = _.clone(store);
+        $scope.edit = false;
+        $scope.remove = false;
+        $scope.select = false;
+        $scope.savebtn = false;
     };
 
 

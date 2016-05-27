@@ -1,4 +1,5 @@
-﻿<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards" ng-controller="brandPartialController">
+﻿
+<div class="dynamic-layout-item dynamic-layout-col-4 bootcards-cards typeahead-demo" ng-controller="brandPartialController">
     <div class="panel panel-success">
         <div class="panel-heading">
             <div class="row">
@@ -15,25 +16,34 @@
         </div>
         <div class="panel-body">
             <ng-hide ng-hide="select">
-                <p class="list-group-item-text text-right">{{l10n.getLocalized('brandID')}}</p>
-                <h4 ng-hide="edit" class="list-group-item-heading"><a href="#/brand/{{brand.brandID}}">{{brand.brandID}}</a></h4>
                 <p class="list-group-item-text text-right">{{l10n.getLocalized('brandName')}}</p>
                 <h4 ng-hide="edit" class="list-group-item-heading"><a href="#/brand/{{brand.brandID}}">{{brand.Name}}</a></h4>
-                <input type="text" class="form-control" ng-show="edit" ng-model="brand.Name" />
+                <form name="form">
+                    <input type="text" class="form-control" ng-show="edit" name="brandName" ng-model="brand.Name" />
+                    <span ng-show="form.brandName.$error.required"></span>
+                </form>
             </ng-hide>
-            <div ng-show="select">
+            <div ng-show="select" class="typeahead-demo">
                 <input class="form-control"
                        type="text"
                        ng-model="selected"
-                       uib-typeahead="brand.Name for brand in dropdownSelector($viewValue)"
+                       typeahead-loading="loadingLocations"
+                       typeahead-no-results="noResults"
+                       typeahead-show-hint="true"
+                       typeahead-on-select="onSelect($item, $model, $label, $event)"
+                       uib-typeahead="brand.Name for brand in selectorSet"
                        placeholder="{{l10n.getLocalized('BrandName');}}" />
+                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                <div ng-show="noResults">
+                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                </div>
             </div>
         </div>
         <div class="panel-footer">
             <div class="btn-group">
                 <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{l10n.getLocalized('Edit')}}</button>
-                <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{l10n.getLocalized('Save')}}</button>
-                <button ng-show="savebtn" class="btn btn-primary" ng-click="logscope()">{{externalScope().l10n.getLocalized('Cancel')}}</button>
+                <button ng-show="savebtn" class="btn btn-default" ng-validate="" ng-click="save()">{{l10n.getLocalized('Save')}}</button>
+                <button ng-show="savebtn" class="btn btn-primary" ng-click="cancel()">{{externalScope().l10n.getLocalized('Cancel')}}</button>
                 <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{l10n.getLocalized('Select')}}</button>
                 <button ng-if="it.remove" ng-hide="savebtn" class="btn btn-default" ng-click="remove()">{{l10n.getLocalized('Remove')}}</button>
                 <button ng-if="it.delete" ng-hide="savebtn" class="btn btn-default" ng-click="delete()">{{l10n.getLocalized('Delete')}}</button>

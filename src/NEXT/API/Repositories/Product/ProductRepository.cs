@@ -236,7 +236,16 @@ namespace NEXT.API.Repositories
             if (product == null) { return null; };
             ICollection<DB.Models.Vendor> vendors = product.VendorProduct.Select(vp => vp.Vendor).ToList();
             return mapper.Map<ICollection<API.Resource.Vendor>>(vendors);
+        }
 
+
+        public void removeVendor(int productID, int vendorID)
+        {
+            ICollection<DB.Models.VendorProduct> product = _context.Product.Include(p => p.VendorProduct).SelectMany(p => p.VendorProduct).ToList();
+            foreach (VendorProduct vp in product) {
+                _context.VendorProduct.Remove(vp);
+            }
+            _context.SaveChangesAsync();
         }
 
         public ICollection<API.Resource.Channel> getChannels(int productID)
@@ -259,8 +268,7 @@ namespace NEXT.API.Repositories
             DB.Models.Brand dbBrand = mapper.Map<DB.Models.Brand>(brand);
             DB.Models.Product product = _context.Product.Where(p => p.ID == productID).SingleOrDefault();
             if (product == null) { return 0; }
-            _context.Attach(dbBrand);
-            product.Brand = dbBrand;
+            product.BrandID = brand.brandID;
             _context.Update(product);
             return _context.SaveChanges();
         }

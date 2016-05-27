@@ -23,6 +23,7 @@ namespace NEXT.API.Repositories
         ICollection<Product> getChildren(int id, int results, int page);
         Product getParent(int id);
         Brand getBrand(int productID);
+        void removeVendor(int productID, int vendorID);
         int setBrand(int productId, Brand brand);
         ProductType getType(int productID);
         int setType(int productID, ProductType type);

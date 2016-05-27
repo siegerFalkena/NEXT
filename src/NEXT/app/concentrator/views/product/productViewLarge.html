@@ -15,16 +15,32 @@
             </script>
             <ul class="nav affix nav-pills nav-stacked submenu" style="height:100%; background:aliceblue;">
                 <li role="presentation" ng-class="{'active' : states.overview}">
-                    <a ng-click="states.overview = !states.overview; refresh(state);">
+                    <a ui-sref="overview" ng-click="states.overview = !states.overview; refresh(state);">
                         <i class="fa fa-gift" aria-hidden="true"></i>
                         {{l10n.getLocalized('Overview')}}
                     </a>
+                    <ul ng-show="states.overview" class="nav nav-tabs nav-stacked" style="background: white">
+                        <li role="presentation" class="" style="background:white">
+                            <small><a ng-click="selectParent()">{{l10n.getLocalized('SelectParent')}}</a></small>
+                        </li>
+                        <li role="presentation" class="" style="background:white">
+                            <small><a ng-click="rootProduct()">{{l10n.getLocalized('MakeRoot')}}</a></small>
+                        </li>
+                    </ul>
                 </li>
                 <li role="presentation" ng-class="{'active' : states.children}">
-                    <a ng-click="states.children= !states.children; refresh(state);">
+                    <a ui-sref="children" ng-click="states.children= !states.children; refresh(state);">
                         <i class="fa fa-child" aria-hidden="true"></i>
                         {{l10n.getLocalized('Children')}}
                     </a>
+                    <ul ng-show="states.children" class="nav nav-tabs nav-stacked" style="background: white">
+                        <li role="presentation" class="" style="background:white">
+                            <small><a ng-click="addChild()">{{l10n.getLocalized('AddChild')}}</a></small>
+                        </li>
+                        <li role="presentation" class="" style="background:white">
+                            <small><a ng-click="addChild()">{{l10n.getLocalized('AddChild')}}</a></small>
+                        </li>
+                    </ul>
                 </li>
                 <li role="presentation" ng-class="{'active' : states.channel}">
                     <a ng-click="states.channel = !states.channel; refresh(state);">
@@ -48,7 +64,7 @@
                     <a ng-click="states.vendor = !states.vendor; refresh(state);"><i class="fa fa-credit-card" aria-hidden="true"></i>{{l10n.getLocalized('Vendors')}}</a>
                     <ul ng-show="states.vendor" class="nav nav-tabs nav-stacked" style="background: white">
                         <li role="presentation" class="" style="background:white">
-                            <small><a ng-click="addVendor()">{{l10n.getLocalized('NewVendor')}}</a></small>
+                            <small><a ng-click="addVendor()">{{l10n.getLocalized('AddVendor')}}</a></small>
                         </li>
                     </ul>
                 </li>
@@ -58,14 +74,18 @@
                         {{l10n.getLocalized('Brand')}}
                     </a>
                 </li>
+                <li role="presentation" ng-class="{'active' : states.brand}">
+                    <a href="#top">
+                        <i class="fa fa-2x fa-arrow-circle-up" aria-hidden="true"></i>
+                    </a>
+                </li>
             </ul>
-            <ul class="nav affix nav-pills nav-stacked navbar-fixed-bottom" style="color:black">
-                <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert)">{{alert.msg}}</uib-alert>
-            </ul>
+            
         </div>
         <div class="col-xs-8 col-xs-offset-1 col-sm-9 col-sm-offset-1 col-md-9">
             <div class="container-fluid">
-                <h1><small>{{l10n.getLocalized('Product')}} {{product.SKU}}</small></h1>
+                <h1 id="top"><small>{{l10n.getLocalized('Product')}}:</small> {{product.SKU}}</h1>
+                <a sref="state"></a>
                 <div dynamic-layout items="cards"></div>
             </div>
         </div>

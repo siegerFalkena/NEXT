@@ -15,16 +15,17 @@ angular.module('concentrator', [
         'concentrator.controller.product',
         'common.localization',
         'common.auth',
+        'common.alerts',
         'ngCookies',
         'angular-loading-bar'
 ])
     .config(function (cfpLoadingBarProvider) {
         cfpLoadingBarProvider.latencyThreshold = 300;
-        cfpLoadingBarProvider.includeSpinner = false;
+        cfpLoadingBarProvider.includeSpinner = true;
         cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     })
     .run(runInit)
-    .controller('coreCtrl', ['$scope', 'auth', coreCtrl])
+    .controller('coreCtrl', ['$scope', 'auth', 'alertService', coreCtrl])
     .directive('loginscreen', loginscreen);
 
 /**
@@ -34,12 +35,17 @@ angular.module('concentrator', [
  * @param      {$scope}  $scope  { description }
  * @param      {auth}  auth    @link concentrator.auth
  */
-function coreCtrl($scope, auth) {
+function coreCtrl($scope, auth, alertService) {
     if (auth.isAuth()) {
         $scope.loginscreen = false
     } else {
         $scope.loginscreen = false
     }
+    $scope.alerts = alertService.alerts();
+    $scope.closeAlert = function (index) { alertService.remove(index) };
+    $scope.addError = function () {
+        alertService.add(alertService.template());
+    };
 }
 
 function loginscreen() {

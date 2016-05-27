@@ -1,12 +1,15 @@
 ﻿angular.module('concentrator.component')
-    .controller('brandPartialController', ['$scope', 'l10n', '$log', 'brandResources', 'cfpLoadingBar', '$timeout', '$http', brandPartialController]);
+    .controller('brandPartialController', ['$scope', 'l10n', '$log', 'brandResources', 'cfpLoadingBar', '$timeout', '$http', 'alertService', 'productResources', brandPartialController]);
 
-function brandPartialController($scope, l10n, $log, brandResources, loadingBar, $timeout, $http) {
+function brandPartialController($scope, l10n, $log, brandResources, loadingBar, $timeout, $http, alerts, productResources) {
     var brandSelection = brandResources.Brand();
+    var Product = productResources.getClass();
     $scope.brand = $scope.$parent.$parent.it.data;
+    $scope.ID = $scope.$parent.$parent.it.productID;
+    var store = _.clone($scope.brand);
     $scope.l10n = l10n;
 
-    $scope.selectorItems = [];
+    $scope.selected = undefined;
     $scope.edit = false;
     $scope.select = false;
     $scope.remove = false;
@@ -23,37 +26,46 @@ function brandPartialController($scope, l10n, $log, brandResources, loadingBar, 
         $scope.savebtn = !$scope.savebtn;
     };
 
+    $scope.$watch('selected', function (old, newVal) {
+        $log.info(old);
+        $scope.dropdownSelector(newVal);
+    });
+
+    $scope.onSelect = function (item, model, label, event) {
+        $scope.brand = item;
+    }
+
+    $scope.save = function () {
+        Product.setBrand({ brandID: $scope.brand.brandID, Name: $scope.brand.Name, productID: $scope.ID });
+        store = $scope.brand;
+        $scope.edit = false;
+        $scope.select = false;
+        $scope.savebtn = false;
+        $scope.remove = false;
+    }
+
+    $scope.cancel = function () {
+        $scope.brand = store;
+        $scope.edit = false;
+        $scope.select = false;
+        $scope.savebtn = false;
+        $scope.remove = false;
+    }
+
     var timeout = false;
+    $scope.selectorSet = [];
     $scope.dropdownSelector = function (nameInput) {
-        function getSelection() {
-            loadingBar.start();
-            //$http.get('/api/brand/query', {
-            //    params: {
-            //        Name: nameInput
-            //    }
-            //}).then(function (response) {
-            //    $log.info(response);
-            //    $scope.selectorItems = response.data;
-            //    loadingBar.complete();
-            //});
-            brandSelection.query({ Name: nameInput, results: 25, page: 0 },
-                function (brandArray) {
-                    $scope.selectorItems = brandArray;
-                    $log.info(brandArray);
-                    loadingBar.complete();
-                }, function fail(status) {
-                    $log.error(status);
-                    loadingBar.complete();
-                });
-        }
-        if (timeout) {
-            return;
-        }
-        timeout = true;
-        $timeout(function () {
-            getSelection();
-            timeout = false;
-        }, 400);
+        $http({
+            method: 'GET', url: '/api/brand/query',
+            params: {
+                Name: nameInput
+            }
+        }).then(function (success) {
+            $scope.selectorSet = success.data;
+            return success.data;
+        }, function (fail) {
+            alerts.add(alerts.template());
+        });
     };
 
     $scope.logscope = function () {

@@ -15,14 +15,6 @@ angular.module('concentrator')
         ['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
             function ($stateProvider, $urlRouterProvider,
                 $urlMatcherFactoryProvider) {
-
-
-
-                /////////////////////////////
-                // Redirects and Otherwise //
-                /////////////////////////////
-
-                // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
                 $urlRouterProvider
 
                 // The `when` method says if the url is ever the 1st param, then redirect to the 2nd param
@@ -53,19 +45,19 @@ angular.module('concentrator')
                     template: '<ui-view/>'
                 })
                  .state('product.list', {
-                     url: '',
+                     url: '/query',
                      templateUrl: "concentrator/views/product/productList.html"
                  }).state("product.detail", {
                      url: '/{id}',
                      templateUrl: "concentrator/views/product/productViewLarge.html"
                  }).state("product.new", {
-                     url: '/',
+                     url: '/new',
                      params: { isNew: true},
                      templateUrl: "concentrator/views/product/productViewLarge.html"
                  })
                     .state("home", {
                         url: '/home',
-                        templateUrl: 'concentrator/views/Home/home.html'
+                        templateUrl: 'concentrator/views/Home/Home.html'
                     }).state('404', {
                         url: '/404',
                         templateUrl: '404.html'

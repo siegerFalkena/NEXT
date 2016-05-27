@@ -1,13 +1,13 @@
 .background-title {
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
+     Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent 
     background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-    /* FF3.6-15 */
+     FF3.6-15 
     background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-    /* Chrome10-25,Safari5.1-6 */
+     Chrome10-25,Safari5.1-6 
     background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+     W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ 
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=1);
-    /* IE6-9 */
+     IE6-9 
 }
 
 @media (min-width: 1900px) {
@@ -37,9 +37,9 @@
         width: 600px;
     }
 
-    /*.collapse {
+    .collapse {
         display: none !important;
-    }*/
+    }
 }
 
 
@@ -56,9 +56,9 @@
         width: 600px;
     }
 
-    /*.collapse {
+    .collapse {
         display: none !important;
-    }*/
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
@@ -73,9 +73,9 @@
     .dynamic-layout-col-8 {
         width: 300px;
     }
-    /*.collapse {
+    .collapse {
         display: none !important;
-    }*/
+    }
 
 }
 
@@ -92,9 +92,9 @@
     .dynamic-layout-col-8 {
         width: 300px;
     }
-    /*.collapse {
+    .collapse {
         display: none !important;
-    }*/
+    }
 
 }
 
@@ -145,3 +145,29 @@ body {
     border-color: #000000;
     margin: 0px;
 }
+
+  .typeahead-demo .custom-popup-wrapper {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    background-color: #f9f9f9;
+  }
+
+  .typeahead-demo .custom-popup-wrapper > .message {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+    color: #868686;
+  }
+
+  .typeahead-demo .custom-popup-wrapper > .dropdown-menu {
+    position: static;
+    float: none;
+    display: block;
+    min-width: 160px;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
