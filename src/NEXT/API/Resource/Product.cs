@@ -17,6 +17,9 @@ namespace NEXT.API.Resource
         public string description { get; set; } = null;
         public int? ParentProductID { get; set; } = null;
 
+        public int ProductTypeID { get; set; }
+        public int BrandID { get; set; }
+
         public ProductType ProductType { get; set; } = null;
         public Brand brand { get; set; } = null;
         public Product ParentProduct { get; set; } = null;

@@ -60,6 +60,8 @@ namespace NEXT
                    .ForMember(dest => dest.LastModifiedBy, opt => opt.MapFrom(src => src.LastModifiedBy))
                    .ForMember(dest => dest.attributeValues, opt => opt.MapFrom(src => src.ProductAttributeValue))
                    .ForMember(dest => dest.attributeValues, opt => opt.MapFrom(src => src.ProductAttributeValue))
+                   .ForMember(dest => dest.BrandID, opt => opt.MapFrom(src => src.BrandID))
+                   .ForMember(dest => dest.ProductTypeID, opt => opt.MapFrom(src => src.ProductTypeID))
                    .ForMember(dest => dest.attributeOptions, opt => opt.MapFrom(src => src.ProductAttributeOption))
                    .ForMember(dest => dest.relatedProductNavigation, opt => opt.MapFrom(src => src.RelatedProductNavigation));
 
@@ -84,6 +86,7 @@ namespace NEXT
 
                    cfg.CreateMap<API.Resource.Product, DB.Models.Product>()
                    .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.productID))
+                   .ForMember(dest => dest.BrandID, opt => opt.MapFrom(src => src.BrandID))
                    .ForMember(dest => dest.ProductAttributeValue, opt => opt.MapFrom(src => src.attributeValues))
                    .ForMember(dest => dest.Brand, opt => opt.MapFrom(src => src.brand))
                    .ForMember(dest => dest.ProductType, opt => opt.MapFrom(src => src.ProductType))

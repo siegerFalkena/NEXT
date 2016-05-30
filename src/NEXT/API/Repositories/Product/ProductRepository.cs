@@ -44,9 +44,8 @@ namespace NEXT.API.Repositories
         public ICollection<API.Resource.Product> getChildren(int productID, int results, int page)
         {
             int queryResults = results == 0 ? 25 : results;
-            DB.Models.Product product = _context.Product.Include(p => p.InverseParentProduct)
-                .Where(p => p.ID == productID).SingleOrDefault();
-                ICollection<DB.Models.Product> products = product.InverseParentProduct;
+            ICollection<DB.Models.Product> products = _context.Product.Include(p => p.InverseParentProduct).Include(p => p.Brand).Include(p => p.ProductType)
+                .Where(p => p.ParentProductID == productID).ToList();
             return mapper.Map<ICollection<DB.Models.Product>, ICollection<API.Resource.Product>>(products);
         }
 
@@ -161,6 +160,8 @@ namespace NEXT.API.Repositories
             DB.Models.Product frProduct = _context.Product.Where(p => p.ID == upProduct.ID).SingleOrDefault();
             frProduct.SKU = upProduct.SKU;
             frProduct.ExternalProductIdentifier = upProduct.ExternalProductIdentifier;
+            frProduct.ProductTypeID = upProduct.ProductTypeID;
+            frProduct.BrandID = upProduct.BrandID;
             _context.Update(frProduct, GraphBehavior.SingleObject);
             _context.SaveChanges();
         }

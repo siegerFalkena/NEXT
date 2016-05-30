@@ -4,6 +4,7 @@ angular.module('concentrator.component', [
     'ngAnimate',
     'common.localization',
     'concentrator.model.product',
+    'concentrator.model.productType',
     'concentrator.model.brand',
     'ui.bootstrap.dropdown',
     'ui.bootstrap.typeahead',

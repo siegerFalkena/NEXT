@@ -40,8 +40,9 @@ namespace NEXT
         {
             var connection = @"MultipleActiveResultSets=true;Server=localhost,1433;Database=NEXT;User ID=NEXT;Password=password31!;";
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
-            services.AddIdentity<User, Role>().AddEntityFrameworkStores<NEXTContext>().AddDefaultTokenProviders();
+            //services.AddIdentity<User, Role>().AddEntityFrameworkStores<NEXTContext>().AddDefaultTokenProviders();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddSingleton<IMappingConfigProvider, Mapping>();
@@ -58,10 +59,6 @@ namespace NEXT
         {
             app.UseIISPlatformHandler();
 
-            ////static files and filetypes
-            //IFileProvider provider = new PhysicalFileProvider(Path.GetFullPath(""));
-            //var filetypeprovider = new FileExtensionContentTypeProvider();
-            //filetypeprovider.Mappings.Add(".myapp", "application/x-msdownload");
             DefaultFilesOptions fileOptions = new DefaultFilesOptions();
 
             //routes
@@ -107,7 +104,7 @@ namespace NEXT
                 app.UseRuntimeInfoPage();
                 app.UseDeveloperExceptionPage();
             }
-            app.UseIdentity();
+            //app.UseIdentity();
             app.UseMvcWithDefaultRoute();
 
         }

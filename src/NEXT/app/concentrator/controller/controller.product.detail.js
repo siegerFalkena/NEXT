@@ -5,20 +5,14 @@ angular.module('concentrator.controller.product')
 
 function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar) {
     var $stateParams = $rootScope.$stateParams;
+    var state = $rootScope.$stateParams.state;
     $scope.l10n = l10n;
     var Product = productResources.getClass();
 
-    $scope.states = {
-        overview: true,
-        base: true,
-        children: false,
-        channel: false,
-        vendors: false,
-        attributes: false
-    };
+    $scope.STATE = 'detail';
+    $scope
 
     $scope.cards = [];
-    $log.info($stateParams.isNew);
 
     var i = 0;
     $scope.cards.splice(0, $scope.cards.length);
@@ -76,36 +70,6 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
     }
 
 
-    function productType(cb_types) {
-        productResources.getClass().type({ productID: $stateParams.id }, function (productType) {
-            $scope.cards.push({
-                template: "concentrator/partials/productType/productTypePartial.html",
-                edit: false,
-                select: true,
-                remove: false,
-                data: productType
-            })
-        }, function (fail) {
-            $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
-        });
-    };
-
-    function brandCore(cb_brand) {
-        productResources.getClass().brand({ productID: $stateParams.id }, function (brand) {
-            $scope.cards.push({
-                productID: _.clone($stateParams.id),
-                template: "concentrator/partials/brand/brandPartial.html",
-                edit: false,
-                select: true,
-                remove: false,
-                data: brand
-            });
-        }, function (fail) {
-            $log.error('could not get brand!' + fail);
-            $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
-        });
-    }
-
     function productCore(cb_core) {
         productResources.getClass().get({ productID: $stateParams.id }, function (product) {
             $scope.product = product;
@@ -114,7 +78,7 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                 edit: true,
                 select: false,
                 remove: false,
-                isNew: $stateParams.isNew, 
+                isNew: $stateParams.isNew,
                 data: product
             })
         }, function (fail) {
@@ -140,29 +104,17 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
 
     $scope.refresh = function () {
         $scope.cards.splice(0, $scope.cards.length);
-        if ($scope.states.overview) {
+        if ($scope.STATE == 'detail') {
             productCore();
-        }
-        if ($scope.states.children) {
+        } else if ($scope.STATE == 'children') {
             productChildren();
-        }
-        if ($scope.states.vendor) {
-            vendors(function () {
-
-            });
-        }
-        if($scope.states.type){
-            productType();
-        }
-        if ($scope.states.channel) {
+        } else if ($scope.STATE == 'vendors') {
+            vendors();
+        } else if ($scope.STATE == 'channels') {
             channels();
-        }
-        if ($scope.states.attributes) {
+        } else if ($scope.STATE == 'attributes') {
             attributes();
         }
-        if ($scope.states.brand) {
-            brandCore();
-        } 
     };
     //ALERTS
     $scope.alerts = [];

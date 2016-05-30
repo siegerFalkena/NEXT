@@ -7,12 +7,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace NEXT.DB.Models
 {
-    public class Role : IdentityRole
+    public class Role
     {
-        public Role(String x): base(x)
-        {
-
-        }
         public string description;
         public int userID;
         public int roleID;

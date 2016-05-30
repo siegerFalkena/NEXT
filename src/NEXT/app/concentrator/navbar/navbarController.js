@@ -14,6 +14,8 @@ angular.module('concentrator.concentrator.navbar', [
 
 function navbarCtrl($scope, $log, l10n, auth, alerts) {
 
+    $scope.navCollapsed = true;
+
     $scope.brand = {
         name: 'Jumbo',
         url: '/',

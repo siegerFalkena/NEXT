@@ -2,15 +2,18 @@
     .controller('brandPartialController', ['$scope', 'l10n', '$log', 'brandResources', 'cfpLoadingBar', '$timeout', '$http', 'alertService', 'productResources', brandPartialController]);
 
 function brandPartialController($scope, l10n, $log, brandResources, loadingBar, $timeout, $http, alerts, productResources) {
-    var brandSelection = brandResources.Brand();
+    var state = $scope.$parent.$parent.it.state;
+    
     var Product = productResources.getClass();
     $scope.brand = $scope.$parent.$parent.it.data;
+
     $scope.ID = $scope.$parent.$parent.it.productID;
     var store = _.clone($scope.brand);
     $scope.l10n = l10n;
 
     $scope.selected = undefined;
     $scope.edit = false;
+    $scope.selectBrand = false;
     $scope.select = false;
     $scope.remove = false;
     $scope.savebtn = false;
@@ -33,7 +36,7 @@ function brandPartialController($scope, l10n, $log, brandResources, loadingBar, 
 
     $scope.onSelect = function (item, model, label, event) {
         $scope.brand = item;
-    }
+    };
 
     $scope.save = function () {
         Product.setBrand({ brandID: $scope.brand.brandID, Name: $scope.brand.Name, productID: $scope.ID });
@@ -71,4 +74,8 @@ function brandPartialController($scope, l10n, $log, brandResources, loadingBar, 
     $scope.logscope = function () {
         $log.info($scope);
     };
+}
+
+function selectBrand($scope, l10n, $log, brandResources, loadingBar, $timeout, $http, alerts, productResources) {
+    var brandSelection = brandResources.Brand();
 }

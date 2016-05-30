@@ -20,7 +20,6 @@
         </div>
         <div class="panel-footer">
             <div class="btn-group" >
-
                 <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{externalScope().l10n.getLocalized('Edit')}}</button>
                 <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{externalScope().l10n.getLocalized('Save')}}</button>
                 <button ng-show="savebtn" class="btn btn-primary" ng-click="cancel()">{{externalScope().l10n.getLocalized('Cancel')}}</button>

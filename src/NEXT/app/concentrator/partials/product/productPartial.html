@@ -18,37 +18,93 @@
             </div>
         </div>
         <div class="panel-body">
+            <ul class="list-group">
+                <li role="presentation" class="list-group-item">
+                    <div ng-if="isRoot">
+                        <a href="#/product/{{product.ParentProductID}}">{{l10n.getLocalized('ParentProduct')}}</a>
+                    </div>
+                    <div ng-if="!isRoot">
+                        <p>{{l10n.getLocalized('rootProduct')}}</p>
+                    </div>
+                </li>
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('productID')}}</p>
+                    <h4 class="list-group-item-heading">{{product.productID}}</h4>
+                </li>
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('SKU')}}</p>
+                    <h4 class="list-group-item-heading" ng-hide="edit">{{product.SKU}}</h4>
+                    <input type="text" class="form-control slide" ng-show="edit" required ng-trim="false" name="productSKU" ng-model="product.SKU" />
+                    <span ng-show="form.productSKU.$error.required" class="slide"></span>
+                </li>
+                <!--PRODUCT BRAND-->
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('BrandName')}}</p>
+                    <h4 class="list-group-item-heading" ng-hide="selectBrand">{{product.brand.Name}}</h4>
+                    <div ng-show="selectBrand" class="slide">
+                        <input class="form-control"
+                               type="text"
+                               ng-model="brandSet"
+                               typeahead-loading="loadingBrandLocations"
+                               typeahead-no-results="noResultsBrand"
+                               typeahead-show-hint="true"
+                               ng-model-options="modelOptions"
+                               typeahead-on-select="onBrandSelect($item, $model, $label, $event)"
+                               uib-typeahead="brand.Name for brand in brandQuery($viewValue)"
+                               placeholder="{{l10n.getLocalized('BrandName');}}" />
+                        <i ng-show="loadingBrandLocations" class="glyphicon glyphicon-refresh slide"></i>
+                        <div ng-show="noResultsBrand">
+                            <i class="glyphicon glyphicon-remove"></i> No Results Found
+                        </div>
+                    </div>
+                </li>
+                <!--PRODUCT TYPE-->
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('ProductType')}}</p>
+                    <h4 class="list-group-item-heading" ng-hide="selectType">{{product.ProductType.Name}}</h4>
+                    <div ng-show="selectType">
+                        <input class="form-control"
+                               type="text"
+                               ng-model="productTypeSelection"
+                               typeahead-loading="loadingTypeLocations"
+                               typeahead-no-results="noResultsType"
+                               typeahead-show-hint="true"
+                               ng-model-options="modelOptions"
+                               typeahead-on-select="onProductTypeSelect($item, $model, $label, $event)"
+                               uib-typeahead="productType.Name for productType in typeQuery($viewValue)"
+                               placeholder="{{l10n.getLocalized('ProductTypeName');}}" />
+                        <i ng-show="loadingTypeLocations" class="glyphicon glyphicon-refresh"></i>
+                        <div ng-show="noResultsType">
+                            <i class="glyphicon glyphicon-remove"></i> No Results Found
+                        </div>
+                    </div>
+                </li>
+                <!--EXTERNAL PRODUCT ID-->
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('ExternalProductIdentifier')}}</p>
+                    <h4 class="list-group-item-heading" ng-hide="edit">{{product.ExternalProductIdentifier}}</h4>
+                    <input type="text" class="form-control" ng-show="edit" required ng-trim="false" ng-model="product.ExternalProductIdentifier" />
+                </li>
+                <!--LAST MODIFIED -->
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModifiedBy')}}</p>
+                    <h4 class="list-group-item-heading">{{product.LastModifiedBy}}</h4>
+                </li>
+                <!-- LAST MODIFIED USER -->
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModified')}}</p>
+                    <h4 class="list-group-item-heading">{{product.LastModified | date:'dd/MMM/yyyy HH:mm'}}</h4>
+                </li>
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('CreatedBy')}}</p>
+                    <h4 class="list-group-item-heading">{{product.CreatedBy}}</h4>
+                </li>
+                <li role="presentation" class="list-group-item">
+                    <p class="list-group-item-text text-right">{{l10n.getLocalized('Created')}}</p>
+                    <h4 class="list-group-item-heading">{{product.Created | date:'dd/MMM/yyyy HH:mm'}}</h4>
+                </li>
 
-            <div ng-if="isRoot">
-                <a href="#/product/{{product.ParentProductID}}">{{l10n.getLocalized('ParentProduct')}}</a>
-            </div>
-            <div ng-if="!isRoot">
-                <p>{{l10n.getLocalized('rootProduct')}}</p>
-            </div>
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('productID')}}</p>
-            <h4 class="list-group-item-heading">{{product.productID}}</h4>
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('SKU')}}</p>
-            <h4 class="list-group-item-heading" ng-hide="edit">{{product.SKU}}</h4>
-            <input type="text" class="form-control" ng-show="edit" required ng-trim="false" name="productSKU" ng-model="product.SKU" />
-            <span ng-show="form.productSKU.$error.required"></span>
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('ExternalProductIdentifier')}}</p>
-            <h4 class="list-group-item-heading" ng-hide="edit">{{product.ExternalProductIdentifier}}</h4>
-            <input type="text" class="form-control" ng-show="edit" required ng-trim="false" ng-model="product.ExternalProductIdentifier" />
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModifiedBy')}}</p>
-            <h4 class="list-group-item-heading">{{product.LastModifiedBy}}</h4>
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('LastModified')}}</p>
-            <h4 class="list-group-item-heading">{{product.LastModified | date:'dd/MMM/yyyy HH:mm'}}</h4>
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('CreatedBy')}}</p>
-            <h4 class="list-group-item-heading">{{product.CreatedBy}}</h4>
-
-            <p class="list-group-item-text text-right">{{l10n.getLocalized('Created')}}</p>
-            <h4 class="list-group-item-heading">{{product.Created | date:'dd/MMM/yyyy HH:mm'}}</h4>
+            </ul>
 
         </div>
         <div class="panel-footer">
