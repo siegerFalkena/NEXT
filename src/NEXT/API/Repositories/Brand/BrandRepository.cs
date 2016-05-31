@@ -7,7 +7,6 @@ using NEXT.DB.Models;
 using AutoMapper;
 using NEXT.API.Resource;
 using NEXT.API.Query;
-using NEXT.DB.Models;
 
 namespace NEXT.API.Repositories
 {

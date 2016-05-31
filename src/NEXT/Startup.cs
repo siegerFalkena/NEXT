@@ -42,6 +42,10 @@ namespace NEXT
             services.AddEntityFramework().AddSqlServer().AddDbContext<NEXTContext>(options => options.UseSqlServer(connection));
             //services.AddIdentity<User, Role>().AddEntityFrameworkStores<NEXTContext>().AddDefaultTokenProviders();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ILanguageRepository, LanguageRepository>();
+            services.AddTransient<IVendorRepository, VendorRepository>();
+            services.AddTransient<IAttributeRepository, AttributeRepository>();
+            services.AddTransient<IAttributeTypeRepository, AttributeTypeRepository>();
             services.AddTransient<IProductTypeRepository, ProductTypeRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();

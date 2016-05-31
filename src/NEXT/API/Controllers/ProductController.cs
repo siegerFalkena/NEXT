@@ -28,7 +28,8 @@ namespace NEXT.API
     {
 
         private static JsonSerializer serializer = new JsonSerializer();
-        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings {
+        private static JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
             NullValueHandling = NullValueHandling.Ignore
         };
@@ -42,7 +43,8 @@ namespace NEXT.API
             this.mapConfig = mapConfig;
         }
 
-        private JsonResult getFunctions() {
+        private JsonResult getFunctions()
+        {
             MethodInfo[] methodInfos = Type.GetType(typeof(ProductController).ToString()).GetMethods(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
             Dictionary<string, object> toBeSerialized = new Dictionary<string, object>();
             ParameterInfo[] tempPInfo = methodInfos[1].GetParameters();
@@ -63,13 +65,15 @@ namespace NEXT.API
         }
 
         [HttpGet("{productID}/children")]
-        public JsonResult getChildren(int productID, [FromQuery]int results, [FromQuery]int page ) {
+        public JsonResult getChildren(int productID, [FromQuery]int results, [FromQuery]int page)
+        {
             return Json(productRepo.getChildren(productID, results, page));
         }
 
 
         [HttpGet]
-        public JsonResult Root() {
+        public JsonResult Root()
+        {
             return getFunctions();
         }
 
@@ -100,7 +104,8 @@ namespace NEXT.API
         }
 
         [HttpGet("{id}/attributes")]
-        public JsonResult productAttribute(int id) {
+        public JsonResult productAttribute(int id)
+        {
             return Json(productRepo.getAttributes(id));
         }
 
@@ -124,7 +129,7 @@ namespace NEXT.API
         }
 
         [HttpPost("{id}/type")]
-        public JsonResult setType([FromBody][Bind] ProductType type,  int id)
+        public JsonResult setType([FromBody][Bind] ProductType type, int id)
         {
             return Json(productRepo.setType(id, type));
         }
@@ -134,7 +139,16 @@ namespace NEXT.API
         [HttpGet("{id}")]
         public JsonResult GetByID(int id)
         {
-            return Json(productRepo.getProductByID(id), serializerSettings);
+            Product tcudorp = productRepo.getProductByID(id);
+            if (tcudorp != null)
+            {
+                return Json(tcudorp, serializerSettings);
+            }
+            else
+            {
+                base.HttpContext.Response.StatusCode = 404;
+                return Json(tcudorp);
+            }
         }
 
         // GET: api/product
@@ -153,18 +167,28 @@ namespace NEXT.API
 
 
         // POST api/values
+        //TODO make some sensible return structure
         [HttpPost]
-        public void Post([FromBody][Bind] Product product)
+        public JsonResult Post([FromBody][Bind] Product product)
         {
             if (ModelState.IsValid)
             {
-                HttpContext _ctx = HttpContext;
-                productRepo.updateProduct(product);
-                
+                if (product.productID == 0)
+                {
+                    Product savedProduct = productRepo.createProduct(product);
+                    HttpContext.Response.Redirect("api/product/" + savedProduct.productID);
+                    return Json(savedProduct);
+                }
+                else
+                {
+                    productRepo.updateProduct(product);
+                    return Json("success");
+                };
             }
             else
             {
-                Response.StatusCode = 400;
+                base.HttpContext.Response.StatusCode = 422;
+                return Json("missing parameters");
             }
         }
 

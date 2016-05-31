@@ -148,6 +148,23 @@ namespace NEXT.API.Repositories
         }
 
 
+        public API.Resource.Product createProduct(API.Resource.Product newProduct) {
+            DB.Models.Product dbProduct = mapper.Map<DB.Models.Product>(newProduct);
+            dbProduct.Created = DateTime.Now;
+            dbProduct.LastModified = DateTime.Now;
+            
+            _context.Product.Add(dbProduct);
+            try {
+                _context.SaveChanges();
+            } catch (DbUpdateException update) {
+                return null;
+            }
+            DB.Models.Product savedProduct = _context.Product.Where(p => p.SKU == newProduct.SKU).SingleOrDefault();
+            if (savedProduct == null) { return null; }
+            return mapper.Map<API.Resource.Product>(savedProduct);
+        }
+
+
         public void Save()
         {
             _context.SaveChanges();
@@ -167,20 +184,20 @@ namespace NEXT.API.Repositories
         }
 
 
-        public ICollection<API.Resource.Attribute> getAttributes(int productID)
+        public ICollection<API.Resource.ProductAttribute> getAttributes(int productID)
         {
-            List<API.Resource.Attribute> attributes = new List<Resource.Attribute>();
+            List<API.Resource.ProductAttribute> attributes = new List<Resource.ProductAttribute>();
             DB.Models.Product product = _context.Product.Include(p => p.ProductAttributeOption)
                 .ThenInclude(p => p.AttributeOption).ThenInclude(ap => ap.Attribute).ThenInclude(at => at.AttributeType)
                 .Include(p => p.ProductAttributeValue).ThenInclude(p => p.Attribute).ThenInclude(at => at.AttributeType).Where(p => p.ID == productID).SingleOrDefault();
             if (product == null) { return attributes; };
             foreach (DB.Models.ProductAttributeValue pod in product.ProductAttributeValue)
             {
-                attributes.Add(mapper.Map<API.Resource.Attribute>(pod));
+                attributes.Add(mapper.Map<API.Resource.ProductAttribute>(pod));
             }
             foreach (DB.Models.ProductAttributeOption pod in product.ProductAttributeOption)
             {
-                attributes.Add(mapper.Map<API.Resource.Attribute>(pod));
+                attributes.Add(mapper.Map<API.Resource.ProductAttribute>(pod));
             }
             return attributes;
         }

@@ -20,7 +20,7 @@ namespace NEXT.DB.Models
         public DateTime Created { get; set; }
         public int CreatedBy { get; set; }
         public string ExternalProductIdentifier { get; set; }
-        public DateTime? LastModified { get; set; }
+        public DateTime LastModified { get; set; }
         public int? LastModifiedBy { get; set; } = null;
         public int? ParentProductID { get; set; } = null;
         public int ProductTypeID { get; set; }

@@ -1,25 +1,21 @@
 ﻿'use strict';
 angular.module('concentrator.controller.product')
-.controller('productDetailCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', productDetailCtrl]);
+.controller('productDetailCtrl', ['$q', '$location', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'cfpLoadingBar', 'alertService', productDetailCtrl]);
 
 
-function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar) {
+function productDetailCtrl($q, $location,  $scope, productResources, $log, l10n, $rootScope, cfpLoadingBar, alertService) {
     var $stateParams = $rootScope.$stateParams;
     var state = $rootScope.$stateParams.state;
     $scope.l10n = l10n;
     var Product = productResources.getClass();
 
     $scope.STATE = 'detail';
-    $scope
 
-    $scope.cards = [];
-
-    var i = 0;
-    $scope.cards.splice(0, $scope.cards.length);
 
     function attributes(cb_attributes) {
         productResources.getClass().attributes({ productID: $stateParams.id }, function (attributes) {
             _.each(attributes, function (attribute) {
+                $log.info(attribute);
                 $scope.cards.push({
                     template: "concentrator/partials/attribute/AttributePartial.html",
                     edit: true,
@@ -28,8 +24,16 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                     data: attribute
                 });
             });
+            $scope.cards.push({
+                template: "concentrator/partials/attribute/AttributePartial.html",
+                edit: true,
+                select: true,
+                remove: false,
+                newItem: true,
+            });
         }, function (fail) {
-            $scope.alerts.push({ type: 'warning', msg: 'could not get brand! statusText: ' + fail.statusText });
+            $log.error(fail)
+            alertService.add({ type: 'warning', msg: 'could not get product attributes! statusText: ' + fail.statusText })
         });
     };
 
@@ -47,8 +51,8 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             });
 
         }, function (fail) {
-            $log.info('failed');
-            $scope.alerts.push({ type: 'warning', msg: 'could not get channel! statusText: ' + fail.statusText });
+            $log.error(fail);
+            alertService.add({ type: 'warning', msg: 'could not get product channels! statusText: ' + fail.statusText })
         });
     };
 
@@ -65,7 +69,8 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             });
 
         }, function (fail) {
-            $scope.alerts.push({ type: 'warning', msg: 'could not get channel! statusText: ' + fail.statusText });
+            $log.error(fail);
+            alertService.add({ type: 'warning', msg: 'could not get product vendors! statusText: ' + fail.statusText })
         })
     }
 
@@ -82,7 +87,8 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                 data: product
             })
         }, function (fail) {
-            $scope.alerts.push({ type: 'warning', msg: 'could not get product! statusText: ' + fail.statusText });
+            $location.path('product/overview')
+            alertService.add({type: 'danger', msg: 'could not get product! ' + fail.statusText })
         });
     };
 
@@ -98,10 +104,13 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
                 });
             });
         }, function (fail) {
-            $scope.alerts.push({ type: 'warning', msg: 'could not get childProduct! statusText: ' + fail.statusText });
+            $log.error(fail)
+            alertService.add({ type: 'warning', msg: 'could not get child products! statusText: ' + fail.statusText })
         })
     }
 
+
+    $scope.cards = [];
     $scope.refresh = function () {
         $scope.cards.splice(0, $scope.cards.length);
         if ($scope.STATE == 'detail') {
@@ -116,18 +125,6 @@ function productDetailCtrl($q, $scope, productResources, $log, l10n, $rootScope,
             attributes();
         }
     };
-    //ALERTS
-    $scope.alerts = [];
-    $scope.closeAlert = function (alert) {
-        var index = _.each($scope.alerts, function (item, index) {
-            if (_.has(item, 'msg') && item.msg == alert.msg && item.type == alert.type) {
-                $scope.alerts.splice(index, 1);
-            }
-        });
-    };
-    $scope.alerts.push({ type: 'warning', msg: 'example error' });
-    $scope.alerts.push({ type: 'danger', msg: 'example error' });
-    $scope.alerts.push({ type: 'info', msg: 'example error' });
     $scope.refresh();
 };
 

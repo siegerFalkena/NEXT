@@ -16,26 +16,9 @@ function newProductCtrl($scope , productResources, $log, l10n, $rootScope, cfpLo
     $scope.cards.push({
         template: "concentrator/partials/product/productPartial.html",
         edit: true,
+        newItem : true,
         select: false,
         remove: false,
         data: product
     });
-
-    $scope.cards.push({
-        template: 'concentrator/partials/brand/brandPartial.html',
-        edit: false,
-        select: false,
-        remove: false,
-        data: product.brand
-    })
-
-    $scope.cards.push({
-        template: 'concentrator/partials/productType/productTypePartial.html',
-        edit: false,
-        select: false,
-        remove: false,
-        data: product.productTypeID
-    });
-
-    $scope.save(); 
 }

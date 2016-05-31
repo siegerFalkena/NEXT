@@ -14,7 +14,9 @@ function productAPI($resource, $log, alertService) {
     this.getClass = function () {
         return $resource('/api/product/:productID', { productID: '@id' }, {
             'query': {
-                method: 'GET', params: {
+                method: 'GET',
+                url: '/api/product/query',
+                params: {
                     page: null,
                     results: null,
                     min_Created: null,
@@ -33,7 +35,7 @@ function productAPI($resource, $log, alertService) {
                     SKU: null,
                     orderBy: null,
                     ascending: null
-                }, isArray: true
+                }, isArray: false
             },
             'brand': {
                 method: 'GET',
@@ -125,7 +127,7 @@ function productAPI($resource, $log, alertService) {
                 method: 'DELETE',
                 url: 'api/product/:productID/attributes/:attributeID',
                 params: {
-                    productID : "@productID",
+                    productID: "@productID",
                     attributeID: "@attributeID"
                 },
                 isArray: true
@@ -138,8 +140,17 @@ function productAPI($resource, $log, alertService) {
                     productID: '@productID',
                     attributeID: '@attributeID'
                 }
+            },
+            'newProduct': {
+                method: 'POST',
+                url: 'api/product',
+                params: {
+                    SKU: null,
+                    ExternalProductIdentifier: null,
+                    BrandID: null,
+                    ProductTypeID: null
+                }
             }
-
         });
     };
 };

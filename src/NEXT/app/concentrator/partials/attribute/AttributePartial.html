@@ -3,7 +3,8 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-xs-5">
-                    <a href="#/attribute/{{attribute.AttributeID}}"><h2 class="panel-title">{{externalScope().l10n.getLocalized('Attribute')}}</h2></a>
+                    <a ng-if="!newItem" href="#/attribute/{{attribute.AttributeID}}"><h2 class="panel-title">{{l10n.getLocalized('Attribute')}}</h2></a>
+                    <a ng-if="newItem" href="#/attribute/new"><h2 class="panel-title">{{l10n.getLocalized('AddAttribute')}}</h2></a>
                 </div>
                 <div class="col-xs-5">
                     <a href="#/attribute/{{attribute.AttributeID}}"><h2 class="panel-title">{{attribute.AttributeID}}</h2></a>
@@ -15,31 +16,80 @@
         </div>
         <div class="panel-body">
 
-            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('attributeID')}}</p>
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('attributeID')}}</p>
             <h4 class="list-group-item-heading">{{attribute.AttributeID}}</h4>
 
-            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeType')}}</p>
-            <h4 class="list-group-item-heading" ng-hide="externalScope().clicked" ng-show="!externalScope().clicked">{{attribute.AttributeType}}</h4>
-            <input type="text" class="form-control" ng-show="externalScope().clicked" ng-hide="!externalScope().clicked" required ng-trim="false" />
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('AttributeType')}}</p>
+            <h4 class="list-group-item-heading" ng-hide="select" ng-show="!clicked">{{attribute.AttributeType}}</h4>
+            <div ng-show="select" class="typeahead-demo">
+                <input class="form-control"
+                       type="text"
+                       ng-model="productTypeSelection"
+                       typeahead-loading="loadingTypeLocations"
+                       typeahead-no-results="noTypeResults"
+                       typeahead-show-hint="true"
+                       typeahead-on-select="onProductTypeSelect($item, $model, $label, $event)"
+                       uib-typeahead="attributeType.Name for attributeType in attributeTypeQuery($viewValue)"
+                       placeholder="{{l10n.getLocalized('AttributeType');}}" />
+                <i ng-show="loadingTypeLocations" class="glyphicon glyphicon-refresh"></i>
+                <div ng-show="noTypeResults">
+                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                </div>
+            </div>
 
-            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeCode')}}</p>
+
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('AttributeCode')}}</p>
             <h4 class="list-group-item-heading">{{attribute.Code}}</h4>
 
-            <!--//TODO include language-->
-            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('AttributeValue')}}</p>
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('AttributeValue')}}</p>
             <h4 ng-hide="edit" class="list-group-item-heading">{{attribute.Value}}</h4>
-            <input type="text" ng-show="edit" ng-model="attribute.Value" />
+            
+            <!--//TODO include language-->
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('Language')}}</p>
+            <h4 ng-hide="select" class="list-group-item-heading">{{attribute.LanguageID}}</h4>
+            <div ng-show="select" class="typeahead-demo">
+                <input class="form-control"
+                       type="text"
+                       ng-model="languageSelection"
+                       typeahead-loading="loadingLanguageLocations"
+                       typeahead-no-results="noLanguageResults"
+                       typeahead-show-hint="true"
+                       typeahead-on-select="onLanguageSelect($item, $model, $label, $event)"
+                       uib-typeahead="language.Name for language in LanguageQuery($viewValue)"
+                       placeholder="{{l10n.getLocalized('LanguageCode')}}" />
+                <i ng-show="loadingLanguageLocations" class="glyphicon glyphicon-refresh"></i>
+                <div ng-show="noLanguageResults">
+                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                </div>
+            </div>
 
 
-            <p class="list-group-item-text text-right">{{externalScope().l10n.getLocalized('Vendor')}}</p>
-            <a href="#/vendor/{{attribute.vendorID}}"><h4 class="list-group-item-heading">{{attribute.VendorID}}</h4></a>
+            <!--//TODO include vendor-->
+            <p class="list-group-item-text text-right">{{l10n.getLocalized('Vendor')}}</p>
+            <h4 ng-hide="select" class="list-group-item-heading">{{attribute.VendorID}}</h4>
+            <div ng-show="select" class="typeahead-demo">
+                <input class="form-control"
+                       type="text"
+                       ng-model="vendorSelection"
+                       typeahead-loading="loadingVendorLocations"
+                       typeahead-no-results="noVendorResults"
+                       typeahead-show-hint="true"
+                       typeahead-on-select="onVendorSelect($item, $model, $label, $event)"
+                       uib-typeahead="vendor.Name for vendor in VendorQuery($viewValue)"
+                       placeholder="{{l10n.getLocalized('VendorName');}}" />
+                <i ng-show="loadingVendorLocations" class="glyphicon glyphicon-refresh"></i>
+                <div ng-show="noVendorResults">
+                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                </div>
+            </div>
+
         </div>
         <div class="panel-footer">
             <div class="btn-group">
-                <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{externalScope().l10n.getLocalized('Edit')}}</button>
-                <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{externalScope().l10n.getLocalized('Save')}}</button>
-                <button ng-show="savebtn" class="btn btn-primary" ng-click="cancel()">{{externalScope().l10n.getLocalized('Cancel')}}</button>
-                <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{externalScope().l10n.getLocalized('Select')}}</button>
+                <button ng-if="it.edit" ng-hide="savebtn" class="btn btn-default" ng-click="toggleEdit()">{{l10n.getLocalized('Edit')}}</button>
+                <button ng-show="savebtn" class="btn btn-default" ng-click="save()">{{l10n.getLocalized('Save')}}</button>
+                <button ng-show="savebtn" class="btn btn-primary" ng-click="cancel()">{{l10n.getLocalized('Cancel')}}</button>
+                <button ng-if="it.select" ng-hide="savebtn" class="btn btn-default" ng-click="toggleSelect()">{{l10n.getLocalized('Select')}}</button>
             </div>
         </div>
     </div>

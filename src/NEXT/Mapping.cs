@@ -24,29 +24,21 @@ namespace NEXT
                    //toResource
                    cfg.CreateMap<DB.Models.ProductType, API.Resource.ProductType>();
 
-                   cfg.CreateMap<DB.Models.ProductAttributeValue, API.Resource.Attribute>()
+                   cfg.CreateMap<DB.Models.ProductAttributeValue, API.Resource.ProductAttribute>()
                    .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
-                   .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Attribute.Code))
+                   .ForMember(dest => dest.ProductID, opt => opt.MapFrom(src => src.ProductID))
                    .ForMember(dest => dest.LanguageID, opt => opt.MapFrom(src => src.LanguageID))
                    .ForMember(dest => dest.AttributeID, opt => opt.MapFrom(src => src.AttributeID))
-                   .ForMember(dest => dest.VendorID, opt => opt.MapFrom(src => src.VendorID))
-                   .ForMember(dest => dest.AttributeType, opt => opt.MapFrom(src => src.Attribute.AttributeType.Name));
-
-
-                   cfg.CreateMap<DB.Models.ProductAttributeOption, API.Resource.Attribute>()
-                   .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
-                   .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value))
-                   .ForMember(dest => dest.VendorID, opt => opt.MapFrom(src => src.VendorID))
-                   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.AttributeOption.Attribute.Name))
-                   .ForMember(dest => dest.AttributeID, opt => opt.MapFrom(src => src.AttributeOption.Attribute.ID))
-                   .ForMember(dest => dest.AttributeType, opt => opt.MapFrom(src => src.AttributeOption.Attribute.AttributeType))
-                   .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.AttributeOption.Attribute.Code));
+                   .ForMember(dest => dest.VendorID, opt => opt.MapFrom(src => src.VendorID));
 
 
                    cfg.CreateMap<DB.Models.Vendor, API.Resource.Vendor>()
-                   .ForMember(dest => dest.vendorID, opt => opt.MapFrom(src => src.ID));
+                   .ForMember(dest => dest.VendorID, opt => opt.MapFrom(src => src.ID));
 
-                   //CHANNEL
+                   cfg.CreateMap<DB.Models.Language, API.Resource.Language>()
+                   .ForMember(dest => dest.LanguageID , opt => opt.MapFrom(src => src.ID));
+
+                   //toResource CHANNEL
                    cfg.CreateMap<DB.Models.Channel, API.Resource.Channel>()
                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
@@ -59,10 +51,8 @@ namespace NEXT
                    .ForMember(dest => dest.ParentProductID, opt => opt.MapFrom(src => src.ParentProductID))
                    .ForMember(dest => dest.LastModifiedBy, opt => opt.MapFrom(src => src.LastModifiedBy))
                    .ForMember(dest => dest.attributeValues, opt => opt.MapFrom(src => src.ProductAttributeValue))
-                   .ForMember(dest => dest.attributeValues, opt => opt.MapFrom(src => src.ProductAttributeValue))
                    .ForMember(dest => dest.BrandID, opt => opt.MapFrom(src => src.BrandID))
                    .ForMember(dest => dest.ProductTypeID, opt => opt.MapFrom(src => src.ProductTypeID))
-                   .ForMember(dest => dest.attributeOptions, opt => opt.MapFrom(src => src.ProductAttributeOption))
                    .ForMember(dest => dest.relatedProductNavigation, opt => opt.MapFrom(src => src.RelatedProductNavigation));
 
                    cfg.CreateMap<DB.Models.Brand, API.Resource.Brand>()
@@ -73,10 +63,12 @@ namespace NEXT
 
                    cfg.CreateMap<DB.Models.User, API.Resource.User>();
 
+                   cfg.CreateMap<DB.Models.AttributeType, API.Resource.AttributeType>();
+
                    //fromResource
                    cfg.CreateMap<API.Resource.Brand, DB.Models.Brand>();
 
-                   cfg.CreateMap<API.Resource.Attribute, DB.Models.ProductAttributeValue>()
+                   cfg.CreateMap<API.Resource.ProductAttribute, DB.Models.ProductAttributeValue>()
                    .ForMember(dest => dest.Value, opt => opt.MapFrom(src => src.Value));
 
                    cfg.CreateMap<API.Resource.ProductType, DB.Models.ProductType>();

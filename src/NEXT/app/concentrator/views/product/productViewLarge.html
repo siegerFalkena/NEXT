@@ -2,6 +2,12 @@
     <div class="row" style="height:100%">
         <div class="col-xs-3 col-sm-2 col-md-1" style="height:100%">
             <ul class="nav affix nav-pills nav-stacked submenu" style="height:100%; background:aliceblue;">
+                <li role="presentation" class="">
+                    <a class="hoverpointer" href="#/product/overview">
+                        <i class="fa fa-2x fa-arrow-left" aria-hidden="true"></i>
+                        {{l10n.getLocalized('Back')}}
+                    </a>
+                </li>
                 <li role="presentation" class="" ng-class="{'active' : STATE == 'detail'}">
                     <a class="hoverpointer" ng-click="STATE = 'detail'; refresh();">
                         <i class="fa fa-gift" aria-hidden="true"></i>
@@ -49,11 +55,6 @@
                             <small><a ng-click="addVendor()">{{l10n.getLocalized('AddVendor')}}</a></small>
                         </li>
                     </ul>
-                </li>
-                <li role="presentation">
-                    <a href="#top">
-                        <i class="fa fa-2x fa-arrow-circle-up" aria-hidden="true"></i>
-                    </a>
                 </li>
             </ul>
             

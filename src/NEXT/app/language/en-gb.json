@@ -45,6 +45,18 @@
   "ProductTypeID": "Product Type Identifier",
   "ProductTypeName": "Product Type Name",
   "ProductType": "Product Type",
-  "Edit": "Modify.."
-
+  "Edit": "Modify..",
+  "Back": "Back",
+  "Overview": "Overview",
+  "Children": "Children",
+  "Channels": "Channels",
+  "Attributes": "Attributes",
+  "Vendors": "Vendors",
+  "Product": "Product",
+  "rootProduct": "is parent",
+  "Save": "Save..",
+  "Cancel": "Cancel",
+  "ProductOverview": "Product Overview",
+  "AddProduct": "Add Product",
+  "ProductList" :  "Product List"
 }

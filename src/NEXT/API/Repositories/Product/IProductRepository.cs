@@ -15,9 +15,10 @@ namespace NEXT.API.Repositories
         void insertProduct(Product product, Brand brand);
         void insertProduct(Product product, ProductType type);
         void insertProduct(Product product);
+        API.Resource.Product createProduct(API.Resource.Product newProduct);
         void deleteProduct(int productID);
         void updateProduct(Product product);
-        ICollection<API.Resource.Attribute> getAttributes(int id);
+        ICollection<API.Resource.ProductAttribute> getAttributes(int id);
         ICollection<Product> getRelatedProducts(int id, int results, int page);
         ICollection<Product> getRelatedNavigationProducts(int id, int results, int page);
         ICollection<Product> getChildren(int id, int results, int page);

@@ -2,10 +2,10 @@
     .factory('alertService', [alertService]);
 
 function alertService() {
-    var alerts = [{ msg: 'exampleAlert', type: 'warning' }];
+    var alerts = [];
 
     function addAlert(alert) {
-        this.alerts.push(alert);
+        alerts.push(alert);
     }
 
     function removeAlert(index) {
@@ -13,14 +13,14 @@ function alertService() {
     }
 
     function purgeAlerts() {
-
+        alerts = [];
     }
     return {
         purge: function () {
-            return this.purgeAlerts()
+            return purgeAlerts()
         },
         add: function (alert) {
-            return this.addAlert(alert);
+            addAlert(alert);
         },
         remove: function (index) {
             return removeAlert(index);

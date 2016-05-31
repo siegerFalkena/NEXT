@@ -1,8 +1,10 @@
 ﻿'use strict';
 
-angular.module('concentrator.controller.product').controller('productListCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', 'i18nService', '$http', '$httpParamSerializer', 'cfpLoadingBar', '$timeout', productListCtrl]);
+angular.module('concentrator.controller.product').controller('productListCtrl', ['$q', '$scope', 'productResources', '$log', 'l10n', '$rootScope', 'uiGridConstants', 'i18nService', 'cfpLoadingBar', '$timeout', 'alertService', '$window', productListCtrl]);
 
-function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, uiGridConstants, i18nService, $http, $httpParamSerializer, cfpLoadingBar, $timeout) {
+function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, uiGridConstants, i18nService, cfpLoadingBar, $timeout, alertService, $window) {
+    $scope.height = $window.innerHeight;
+    $log.info($scope.height);
     var parameters = {
         'orderBy': null,
         'ascending': true,
@@ -18,7 +20,8 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         'brand': null,
         'productTypeName': null,
         'productBrandName': null
-    }
+    };
+
     var columnDefs = [
         {
             displayName: "SKU",
@@ -106,10 +109,9 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         totalItems: 0
     }
 
-
+    //Register grid callbacks
     function onRegister(gridApi) {
         $scope.gridApi = gridApi;
-
         //Sorting
         $scope.gridApi.core.on.sortChanged($scope, function (grid, sortColumns) {
             if (sortColumns.length == 0) {
@@ -120,14 +122,12 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             }
             getPage();
         });
-
         //Pagination
         gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
             parameters.page = newPage - 1;
             parameters.results = pageSize;
             getPage();
         });
-
         //Filters
         gridApi.core.on.filterChanged($scope, function () {
             var grid = this.grid;
@@ -135,7 +135,6 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
                 function iterateFilters(filter) {
                     if (filter.term != undefined) {
                         parameters[column.field] = filter.term;
-                        $log.info(parameters);
                         getPage();
                     }
                 }
@@ -145,6 +144,7 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         });
     };
 
+    //Get product-array
     var waiting = false;
     var getPage = function getPageF() {
         if (waiting == false) {
@@ -152,17 +152,18 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
             $timeout(aftertimeout(), 800);
             function aftertimeout() {
                 cfpLoadingBar.start();
-                var url = '/api/product?' + $httpParamSerializer(parameters);
-                $http.get(url).then(function (data) {
-                    cfpLoadingBar.complete();
-                    $scope.gridOptions.totalItems = data.data.results;
-                    $log.info(data);
-                    $scope.gridOptions.data = data.data.data;
+                $log.info(parameters);
+                Product.query(parameters, function (success) {
+                    $scope.gridOptions.data = success.data;
+                    $scope.gridOptions.totalItems = success.results;
                     waiting = false;
-                }, function (response) {
                     cfpLoadingBar.complete();
-                    $log.info("probably failed" + response);
-                });
+                }, function (failure) {
+                    $log.error(failure);
+                    alertService.add({ msg: failure.statusText, type: 'danger' });
+                    waiting = false;
+                    cfpLoadingBar.complete();
+                })
             }
         }
     }
