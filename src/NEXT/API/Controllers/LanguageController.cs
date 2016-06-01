@@ -25,5 +25,10 @@ namespace NEXT.API.Controllers
         {
             return Json(_langRepo.query(query));
         }
+
+        [HttpGet("{LanguageID}")]
+        public JsonResult getByID(int LanguageID) {
+            return Json(_langRepo.getByID(LanguageID));
+        }
     }
 }

@@ -24,6 +24,13 @@ namespace NEXT.API.Controllers
         {
             return Json(_vendorRepo.query(query));
         }
-        
+
+        // GET: api/values
+        [HttpGet("{VendorID}")]
+        public JsonResult GetByID(int VendorID)
+        {
+            return Json(_vendorRepo.getByID(VendorID));
+        }
+
     }
 }

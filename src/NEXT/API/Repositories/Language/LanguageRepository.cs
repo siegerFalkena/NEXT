@@ -35,5 +35,10 @@ namespace NEXT.API.Repositories
             languages = query.getOrdering(languages).Skip(query.page * query.results).Take(query.results);
             return mapper.Map<ICollection<DB.Models.Language>, ICollection<API.Resource.Language>>(languages.ToList());
         }
+
+        public Resource.Language getByID(int LanguageID) {
+            DB.Models.Language lang =  context.Language.Where(l => l.ID == LanguageID).SingleOrDefault();
+            return mapper.Map<Resource.Language>(lang);
+        }
     }
 }

@@ -109,6 +109,12 @@ namespace NEXT.API
             return Json(productRepo.getAttributes(id));
         }
 
+        [HttpPost("{id}/attributes")]
+        public JsonResult updateOrSaveAttribute([FromBody][Bind] API.Resource.ProductAttribute attribute)
+        {
+            return Json(productRepo.createOrUpdateAttribute(attribute));
+        }
+
         [HttpGet("{id}/brand")]
         public JsonResult getBrand(int id)
         {
@@ -176,7 +182,6 @@ namespace NEXT.API
                 if (product.productID == 0)
                 {
                     Product savedProduct = productRepo.createProduct(product);
-                    HttpContext.Response.Redirect("api/product/" + savedProduct.productID);
                     return Json(savedProduct);
                 }
                 else

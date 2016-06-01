@@ -1,13 +1,7 @@
 'use strict'
-angular.module('concentrator.model.product', [
-    'ngResource',
-    'common.alerts'
-]).config(['$resourceProvider', productResources])
+angular.module('concentrator.model')
     .service('productResources', ['$resource', '$log', 'alertService', productAPI]);
 
-function productResources($resourceProvider) {
-    $resourceProvider.defaults.stripTrailingSlashes = true;
-}
 
 function productAPI($resource, $log, alertService) {
 
@@ -37,6 +31,8 @@ function productAPI($resource, $log, alertService) {
                     ascending: null
                 }, isArray: false
             },
+
+
             'brand': {
                 method: 'GET',
                 url: 'api/product/:productID/brand',
@@ -44,6 +40,8 @@ function productAPI($resource, $log, alertService) {
                     productID: '@productID'
                 }
             },
+
+
             'setBrand': {
                 method: 'POST',
                 url: 'api/product/:productID/brand',
@@ -53,6 +51,8 @@ function productAPI($resource, $log, alertService) {
                     Name: null
                 }
             },
+
+
             'type': {
                 method: 'GET',
                 url: 'api/product/:productID/type',
@@ -60,6 +60,8 @@ function productAPI($resource, $log, alertService) {
                     productID: '@productID'
                 }
             },
+
+
             'vendor': {
                 method: 'GET',
                 url: 'api/product/:productID/vendors/:productVendorID',
@@ -67,6 +69,8 @@ function productAPI($resource, $log, alertService) {
                     productID: '@productID', vendorID: '@productVendorID'
                 }
             },
+
+
             'vendors': {
                 method: 'GET',
                 url: 'api/product/:productID/vendors',
@@ -77,6 +81,8 @@ function productAPI($resource, $log, alertService) {
                 },
                 isArray: true
             },
+
+
             'children': {
                 method: 'GET',
                 url: 'api/product/:productID/children',
@@ -86,6 +92,8 @@ function productAPI($resource, $log, alertService) {
                 },
                 isArray: true
             },
+
+
             'channel': {
                 method: 'GET',
                 url: 'api/product/:productID/channels/:productChannelID',
@@ -93,6 +101,8 @@ function productAPI($resource, $log, alertService) {
                     productChannelID: '@productChannelID'
                 }
             },
+
+
             'channels': {
                 method: 'GET',
                 url: 'api/product/:productID/channels',
@@ -103,15 +113,31 @@ function productAPI($resource, $log, alertService) {
                 },
                 isArray: true
             },
+
+
             'attribute': {
                 method: 'GET',
                 url: 'api/product/:productID/attributes/:attributeID',
                 params: {
                     type: '@productType',
-                    Value: '@value'
-
+                    Value: '@attributeID'
                 }
             },
+
+
+            'saveAttribute': {
+                method: 'POST',
+                url: 'api/product/:productID/attributes',
+                params: {
+                    productID: '@id',
+                    VendorID: null,
+                    LanguageID: null,
+                    AttributeID: null,
+                    Value: null
+                }
+            },
+
+
             'attributes': {
                 method: 'GET',
                 url: 'api/product/:productID/attributes',
@@ -123,6 +149,8 @@ function productAPI($resource, $log, alertService) {
                 },
                 isArray: true
             },
+
+
             'removeAttribute': {
                 method: 'DELETE',
                 url: 'api/product/:productID/attributes/:attributeID',
@@ -132,6 +160,8 @@ function productAPI($resource, $log, alertService) {
                 },
                 isArray: true
             },
+
+
             'editAttribute': {
                 method: 'POST',
                 url: "api/product/:productID/attributes/:attributeID",
@@ -141,6 +171,8 @@ function productAPI($resource, $log, alertService) {
                     attributeID: '@attributeID'
                 }
             },
+
+
             'newProduct': {
                 method: 'POST',
                 url: 'api/product',

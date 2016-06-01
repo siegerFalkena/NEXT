@@ -10,5 +10,6 @@ namespace NEXT.API.Repositories
     public interface ILanguageRepository : IDisposable
     {
         ICollection<Resource.Language> query(LanguageQuery query);
+        Resource.Language getByID( int LanguageID);
     }
 }

@@ -148,17 +148,15 @@ namespace NEXT.API.Repositories
         }
 
 
-        public API.Resource.Product createProduct(API.Resource.Product newProduct) {
+        public API.Resource.Product createProduct(API.Resource.Product newProduct)
+        {
             DB.Models.Product dbProduct = mapper.Map<DB.Models.Product>(newProduct);
             dbProduct.Created = DateTime.Now;
             dbProduct.LastModified = DateTime.Now;
-            
+
             _context.Product.Add(dbProduct);
-            try {
-                _context.SaveChanges();
-            } catch (DbUpdateException update) {
-                return null;
-            }
+            _context.SaveChanges();
+
             DB.Models.Product savedProduct = _context.Product.Where(p => p.SKU == newProduct.SKU).SingleOrDefault();
             if (savedProduct == null) { return null; }
             return mapper.Map<API.Resource.Product>(savedProduct);
@@ -260,7 +258,8 @@ namespace NEXT.API.Repositories
         public void removeVendor(int productID, int vendorID)
         {
             ICollection<DB.Models.VendorProduct> product = _context.Product.Include(p => p.VendorProduct).SelectMany(p => p.VendorProduct).ToList();
-            foreach (VendorProduct vp in product) {
+            foreach (VendorProduct vp in product)
+            {
                 _context.VendorProduct.Remove(vp);
             }
             _context.SaveChangesAsync();
@@ -300,6 +299,35 @@ namespace NEXT.API.Repositories
             product.ProductType = dbProductType;
             _context.Update(product);
             return _context.SaveChanges();
+        }
+
+        public Resource.ProductAttribute createOrUpdateAttribute(Resource.ProductAttribute attribute)
+        {
+            DB.Models.ProductAttributeValue pa = _context.ProductAttributeValue.Where(pav => pav.AttributeID == attribute.AttributeID && pav.VendorID == attribute.VendorID && pav.LanguageID == attribute.LanguageID && pav.ProductID == attribute.ProductID).SingleOrDefault();
+
+            if (pa != null)
+            {
+                _context.ProductAttributeValue.Attach(pa);
+                pa.VendorID = attribute.VendorID;
+                pa.ProductID = attribute.ProductID;
+                pa.LanguageID = attribute.LanguageID;
+                _context.ProductAttributeValue.Update(pa);
+            }
+            else
+            {
+                pa = mapper.Map<DB.Models.ProductAttributeValue>(attribute);
+                _context.ProductAttributeValue.Add(pa);
+            }
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException concurrencyException)
+            {
+                _context.SaveChanges();
+                throw concurrencyException;
+            }
+            return mapper.Map<Resource.ProductAttribute>(pa);
         }
     }
 }

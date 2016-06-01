@@ -30,6 +30,7 @@ namespace NEXT.API.Repositories
         int setType(int productID, ProductType type);
         ICollection<Vendor> getVendors(int productID);
         ICollection<Channel> getChannels(int productID);
+        Resource.ProductAttribute createOrUpdateAttribute(Resource.ProductAttribute attribute);
 
         void Save();
     }

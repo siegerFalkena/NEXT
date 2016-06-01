@@ -27,7 +27,7 @@ namespace NEXT.API.Controllers
 
         // GET: api/values
         [HttpGet("type")]
-        public JsonResult Get([FromQuery][Bind] AttributeTypeQuery typeQuery )
+        public JsonResult Get([FromQuery][Bind] AttributeTypeQuery typeQuery)
         {
             ICollection<AttributeType> attributeTypes = _attributeTypeRepo.query(typeQuery);
             return Json(attributeTypes);
@@ -35,11 +35,15 @@ namespace NEXT.API.Controllers
 
         // GET: api/values
         [HttpGet()]
-        public JsonResult Get([FromQuery][Bind] ProductAttributeQuery typeQuery)
+        public JsonResult Get([FromQuery][Bind] AttributeQuery attQuery)
         {
-            ICollection<Resource.ProductAttribute> attributes = _attributeRepo.query(typeQuery);
+            ICollection<Resource.Attribute> attributes = _attributeRepo.query(attQuery);
             return Json(attributes);
         }
 
+        [HttpGet("{AttributeID}")]
+        public JsonResult getByID(int AttributeID) {
+            return Json(_attributeRepo.getByID(AttributeID));
+        }
     }
 }

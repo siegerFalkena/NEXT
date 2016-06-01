@@ -1,13 +1,7 @@
 'use strict'
-angular.module('concentrator.model.brand', [
-    'ngResource'
-])
-    .config(['$resourceProvider', brandResources])
+angular.module('concentrator.model')
     .service('brandResources', ['$resource', '$log', brandAPI]);
 
-function brandResources($resourceProvider) {
-    $resourceProvider.defaults.stripTrailingSlashes = true;
-}
 
 function brandAPI($resource, $log) {
     this.Brand = function () {

@@ -58,5 +58,7 @@
   "Cancel": "Cancel",
   "ProductOverview": "Product Overview",
   "AddProduct": "Add Product",
-  "ProductList" :  "Product List"
+  "ProductList": "Product List",
+  "AttributeTypeName": "Type Name",
+  "Value":  "Value"
 }

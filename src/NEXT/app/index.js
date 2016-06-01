@@ -11,7 +11,7 @@ angular.module('concentrator', [
         'ui.bootstrap.buttons',
         'ui.bootstrap.tooltip',
         'concentrator.concentrator.navbar',
-        'concentrator.model.product',
+        'concentrator.model',
         'concentrator.controller.product',
         'common.localization',
         'common.auth',

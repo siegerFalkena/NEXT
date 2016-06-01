@@ -25,24 +25,14 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
     var columnDefs = [
         {
             displayName: "SKU",
+            width: 200,
             enableCellEdit: true,
             visible: true,
             field: "SKU"
         },
         {
-            displayName: "brandName",
-            enableCellEdit: false,
-            visible: true,
-            field: "brand.Name"
-        },
-        {
-            displayName: "productType",
-            enableCellEdit: true,
-            visible: true,
-            field: "type.Name"
-        },
-        {
             displayName: "Created",
+            width: 150,
             enableCellEdit: false,
             visible: true,
             field: "Created",
@@ -59,13 +49,23 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         },
         {
             displayName: "CreatedBy",
+            width: 150,
             enableCellEdit: false,
-            visible: true,
+            visible: false,
             field: "CreatedBy"
         },
+         {
+
+             displayName: "LastModifiedBy",
+             width: 150,
+             enableCellEdit: false,
+             visible: false,
+             field: "LastModifiedBy"
+         },
         {
             displayName: "LastModified",
             enableCellEdit: false,
+            width: 150,
             visible: true,
             field: "LastModified",
             filters: [
@@ -82,6 +82,7 @@ function productListCtrl($q, $scope, productResources, $log, l10n, $rootScope, u
         },
         {
             displayName: "ExternalID",
+            width: 150,
             enableCellEdit: false,
             visible: true,
             field: "ExternalProductIdentifier"

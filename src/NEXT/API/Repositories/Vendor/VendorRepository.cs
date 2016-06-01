@@ -35,5 +35,10 @@ namespace NEXT.API.Repositories
             vendors = query.getOrdering(vendors).Skip(query.page * query.results).Take(query.results);
             return mapper.Map<ICollection<DB.Models.Vendor>, ICollection<API.Resource.Vendor>>(vendors.ToList());
         }
+
+        public Resource.Vendor getByID(int VendorID) {
+            DB.Models.Vendor vendor = context.Vendor.Where(v => v.ID == VendorID).SingleOrDefault();
+            return mapper.Map<Resource.Vendor>(vendor);
+        }
     }
 }

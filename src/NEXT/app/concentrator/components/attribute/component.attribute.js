@@ -1,105 +1,65 @@
 ﻿angular.module('concentrator.component')
-    .controller('attributePartialController', ['$scope', '$http', 'l10n', '$log', 'productResources', 'cfpLoadingBar',  'alertService', 'l10n', attributePartialController]);
+    .controller('attributePartialController', ['$scope', '$http', 'l10n', '$log', 'productResources', 'cfpLoadingBar', 'alertService', 'l10n', 'attributeResources', 'vendorResources', 'languageResources', attributePartialController]);
 
-function attributePartialController($scope,$http, l10n, $log, productResources, loadingBar, alertService, l10n) {
+function attributePartialController($scope, $http, l10n, $log, productResources, loadingBar, alertService, l10n, attributeResources, vendorResources, languageResources) {
     $scope.attribute = $scope.$parent.$parent.it.data;
     $scope.productID = $scope.$parent.$parent.it.productID;
     $scope.l10n = l10n;
 
-
-
+    //DEFAULT READ STATE
+    $scope.newItem = false;
     $scope.edit = false;
     $scope.select = false;
     $scope.remove = false;
     $scope.savebtn = false;
     $scope.remove = false;
-    $scope.newItem = $scope.$parent.$parent.it.newItem;
-    if($scope.newItem){
-        $scope.edit = true;
-        $scope.select = true;
-        $scope.savebtn = true;
+
+    function loadObject() {
+        $scope.attribute = _.clone($scope.$parent.$parent.it.data);
+        loadingBar.start();
+        vendorResources.Vendor().get({ vendorID: $scope.attribute.VendorID }, function (vendorData) {
+            $scope.attribute.Vendor = vendorData;
+        });
+
+        languageResources.Language().get({ languageID: $scope.attribute.LanguageID }, function (languageData) {
+            $scope.attribute.Language = languageData;
+        });
+
+        attributeResources.Attribute().get({ attributeID: $scope.attribute.AttributeID }, function (attributeData) {
+            $scope.attribute.Attribute = attributeData;
+        });
+        loadingBar.complete();
     }
 
     if ($scope.$parent.$parent.it.newItem) {
+        $scope.newItem = true;
+        $scope.edit = true;
+        $scope.select = true;
+        $scope.savebtn = true;
         $scope.attribute = {
+            Attribute: null,
             AttributeID: null,
+            Language: null,
             LanguageID: null,
+            Vendor: null,
             VendorID: null,
-            ProductID: $scope.productID,
+            Product: null,
+            ProductID: $scope.$parent.$parent.it.productID,
             Value: null
         }
-    }
-    $log.info($scope.attribute);
-    $scope.selectorItems = [];
-
-
-    //NOTE attributeTypeDropdown
-    $scope.attributeTypeSet = [];
-    $scope.attributeTypeSelection = '';
-    $scope.attributeTypeQuery = function (val) {
-        return $http.get('api/attribute/type', {
-            params: {
-                Name: val
-            }
-        }).then(function (response) {
-            $log.info(response);
-            return response.data;
-        }, function (failure) {
-            $log.error(failure);
-            alertService.add({ msg: 'failed to get attributeTypes ! ' + failure.statusText, type: 'danger' });
-        });
-    };
-
-    $scope.onAttributeTypeSelect = function ($item, $model, $label, $event) {
-        $scope.attribute = $item;
+    } else {
+        loadObject();
     }
 
-    //NOTE VendorDropdown
-    $scope.VendorSet = [];
-    $scope.VendorSelection = '';
-    $scope.VendorQuery = function (val) {
-        return $http.get('api/vendor', {
-            params: {
-                Name: val
-            }
-        }).then(function (response) {
-            $log.info(response);
-            return response.data;
-        }, function (failure) {
-            $log.error(failure);
-            alertService.add({ msg: 'failed to get Vendors ! ' + failure.statusText, type: 'danger' });
-        });
-    };
+    var store = _.clone($scope.attribute);
 
-    $scope.onVendorSelect = function ($item, $model, $label, $event) {
-        $log.info($item);
-        $scope.attribute.VendorID = $item.VendorID;
-    }
 
-    //NOTE LanguageDropdown
-    $scope.LanguageSet = [];
-    $scope.LanguageSelection = '';
-    $scope.LanguageQuery = function (val) {
-        return $http.get('api/language', {
-            params: {
-                Name: val
-            }
-        }).then(function (response) {
-            $log.info(response);
-            return response.data;
-        }, function (failure) {
-            $log.error(failure);
-            alertService.add({ msg: 'failed to get Languages ! ' + failure.statusText, type: 'danger' });
-        });
-    };
 
     $scope.onLanguageSelect = function ($item, $model, $label, $event) {
-        $scope.attribute.LanguageID = $item;
+        $scope.attribute.LanguageID = $item.LanguageID;
+        $scope.attribute.Language = $item;
     }
 
-
-
-    this.store = _.clone($scope.attribute);
 
     $scope.toggleSelect = function () {
         $scope.select = !$scope.select;
@@ -110,7 +70,7 @@ function attributePartialController($scope,$http, l10n, $log, productResources, 
     $scope.toggleEdit = function () {
         $scope.edit = !$scope.edit;
         $scope.savebtn = !$scope.savebtn;
-        $scope.selectType = !$scope.selectType;
+        $scope.select = !$scope.select;
     }
 
 
@@ -120,47 +80,121 @@ function attributePartialController($scope,$http, l10n, $log, productResources, 
     }
 
     $scope.save = function () {
-        if ($scope.edit) {
-            productResources.getClass().editAttribute({ value: product.value },
+        loadingBar.start();
+
+                    $log.info($scope.attribute);
+        if ($scope.edit | $scope.create) {
+            productResources.getClass().saveAttribute({productID: $scope.attribute.ProductID},
+                $scope.attribute
+                ,
                 function (success) {
+                    loadingBar.complete();
                     this.store = $scope.attribute;
-                }, function (fail) {
+                }, function (fail, headers) {
+                    loadingBar.complete();
+                    alertService.add({ msg: 'could not update this attribute : ' + fail.statusText, type: 'danger' });
+                    $log.error(fail);
+                    $log.error(headers);
                     $scope.attribute = this.store;
                 })
         } else if ($scope.remove) {
-            productResources.getClass().removeAttribute({ productID: $scope.productID, attributeID: $scope.attribute.attributeID }
-                , function (success) {
-
+            productResources.getClass().removeAttribute($scope.attribute,
+                function (success) {
+                    loadingBar.complete();
                 }, function (failure) {
-                    
+                    loadingBar.complete();
+                    alertService.add({ msg: 'could not delete attribute : ' + failure.statusText, type: 'danger' });
                 })
-        } else if ($scope.select) {
-
         }
+        $scope.edit = false;
+        $scope.remove = false;
+        $scope.select = false;
+        $scope.savebtn = false;
     }
 
     $scope.cancel = function () {
+        $scope.attribute = store;
+        loadObject();
         $scope.edit = false;
-        $scope.select = false;
         $scope.remove = false;
         $scope.select = false;
+        $scope.savebtn = false;
 
-        $scope.attribute = this.store;
     }
 
 
     $scope.dropdownSelector = function (nameInput) {
         loadingBar.start();
-        //vendorSelection.query({ Name: nameInput, results: 25, page: 0 }, function success() {
-        //    $log.info('concentrator.component.vendor.js');
-        //    loadingBar.complete();
-        //}, function fail() {
-        //    $log.info('notImplemented');
-        //    loadingBar.complete();
-        //});
     };
-    $scope.logscope = function () {
-        $log.info($scope);
+
+
+    //NOTE attributeTypeDropdown
+    $scope.attributeTypeSet = [];
+    $scope.attributeTypeSelection = '';
+    $scope.attributeTypeQuery = function (val) {
+        loadingBar.start();
+        return $http.get('api/attribute', {
+            params: {
+                Name: val
+            }
+        }).then(function (response) {
+            loadingBar.complete();
+            return response.data;
+        }, function (failure) {
+            $log.error(failure);
+            alertService.add({ msg: 'failed to get attributeTypes ! ' + failure.statusText, type: 'danger' });
+        });
+    };
+
+    $scope.onAttributeTypeSelect = function ($item, $model, $label, $event) {
+        $log.info($item);
+        $scope.attribute.Attribute = $item;
+        $scope.attribute.AttributeID = $item.attributeID;
+        $log.info($scope.attribute.Attribute);
+    }
+
+    //NOTE VendorDropdown
+    $scope.VendorQuery = function (val) {
+        loadingBar.start();
+        return $http.get('api/vendor', {
+            params: {
+                Name: val
+            }
+        }).then(function (response) {
+            loadingBar.complete();
+            return response.data;
+        }, function (failure) {
+            loadingBar.complete();
+            $log.error(failure);
+            alertService.add({ msg: 'failed to get Vendors ! ' + failure.statusText, type: 'danger' });
+        });
+    };
+    $scope.VendorSet = $scope.VendorQuery('');
+    $scope.VendorSelection = '';
+
+    $scope.onVendorSelect = function ($item, $model, $label, $event) {
+        $scope.attribute.Vendor = $item;
+        $log.info($item);
+        $scope.attribute.VendorID = $item.VendorID;
+    }
+
+    //NOTE LanguageDropdown
+    $scope.LanguageSet = [];
+    $scope.LanguageSelection = '';
+    $scope.LanguageQuery = function (val) {
+        loadingBar.start();
+        return $http.get('api/language', {
+            params: {
+                Name: val
+            }
+        }).then(function (response) {
+            loadingBar.complete();
+            return response.data;
+        }, function (failure) {
+            loadingBar.complete();
+            $log.error(failure);
+            alertService.add({ msg: 'failed to get Languages ! ' + failure.statusText, type: 'danger' });
+        });
     };
 
 

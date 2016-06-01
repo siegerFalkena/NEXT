@@ -9,6 +9,7 @@ namespace NEXT.API.Repositories
 {
     public interface IAttributeRepository : IDisposable
     {
-        ICollection<Resource.ProductAttribute> query(ProductAttributeQuery query);
+        ICollection<Resource.Attribute> query(AttributeQuery query);
+        Resource.Attribute getByID(int AttributeID);
     }
 }

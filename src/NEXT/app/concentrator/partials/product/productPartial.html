@@ -45,6 +45,7 @@
                         <input class="form-control"
                                type="text"
                                ng-model="brandSet"
+                               typeahead-min-length="0"
                                typeahead-loading="loadingBrandLocations"
                                typeahead-no-results="noResultsBrand"
                                typeahead-show-hint="true"
@@ -65,6 +66,7 @@
                     <div ng-show="selectType">
                         <input class="form-control"
                                type="text"
+                               typeahead-min-length="0"
                                ng-model="productTypeSelection"
                                typeahead-loading="loadingTypeLocations"
                                typeahead-no-results="noResultsType"

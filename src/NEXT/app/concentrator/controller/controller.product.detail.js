@@ -30,6 +30,7 @@ function productDetailCtrl($q, $location,  $scope, productResources, $log, l10n,
                 select: true,
                 remove: false,
                 newItem: true,
+                productID: $stateParams.id
             });
         }, function (fail) {
             $log.error(fail)

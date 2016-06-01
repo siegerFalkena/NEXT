@@ -38,6 +38,10 @@ namespace NEXT
                    cfg.CreateMap<DB.Models.Language, API.Resource.Language>()
                    .ForMember(dest => dest.LanguageID , opt => opt.MapFrom(src => src.ID));
 
+                   cfg.CreateMap<DB.Models.Attribute, API.Resource.Attribute>()
+                   .ForMember(dest => dest.attributeID, opt => opt.MapFrom( src => src.ID))
+                   .ForMember(dest => dest.attributeTypeName, opt => opt.MapFrom(src => src.AttributeType.Name));
+
                    //toResource CHANNEL
                    cfg.CreateMap<DB.Models.Channel, API.Resource.Channel>()
                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));

@@ -1,8 +1,7 @@
 ﻿'use strict';
 
 angular.module('concentrator.controller.product', [
-    'concentrator.model.product',
-    'concentrator.model.brand',
+    'concentrator.model',
     'concentrator.component',
     'common.localization',
     'ngAnimate',

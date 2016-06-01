@@ -10,5 +10,6 @@ namespace NEXT.API.Repositories
     public interface IVendorRepository :IDisposable
     {
         ICollection<Resource.Vendor> query(VendorQuery query);
+        Resource.Vendor getByID(int VendorID);
     }
 }
