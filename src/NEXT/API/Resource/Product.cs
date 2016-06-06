@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Reflection.Emit;
+using System.Reflection;
+using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +13,10 @@ namespace NEXT.API.Resource
 {
     public class Product : AbstractResource
     {
+        public Product() {
+            this._meta.type = this.GetType().Name;
+        }
+
         public int productID { get; set; }
 
         public DateTime? Created { get; set; }
@@ -27,6 +36,7 @@ namespace NEXT.API.Resource
 
         [Required]
         public int ProductTypeID { get; set; }
+
         [Required]
         public int BrandID { get; set; }
 
@@ -42,14 +52,8 @@ namespace NEXT.API.Resource
         public ICollection<Product> relatedProductNavigation { get; set; }
         public ICollection<Product> children { get; set; }
 
-        public override Dictionary<string, string> generateMeta(string relationship)
-        {
-            Dictionary<string, string> newMeta = new Dictionary<string, string>();
-            newMeta.Add("ID", productID.ToString());
-            newMeta.Add("link", "/api/product/" + productID);
-            if (relationship != null) newMeta.Add("rel", relationship);
-            return newMeta;
+        public override void setMeta() {
         }
-
+        
     }
 }

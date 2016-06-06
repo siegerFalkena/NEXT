@@ -9,6 +9,7 @@ using Microsoft.AspNet.WebUtilities;
 using Microsoft.AspNet.Http;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.Text;
@@ -18,7 +19,6 @@ using System.IO;
 using NEXT.API.Resource;
 using NEXT.API.Repositories;
 using NEXT.API.Query;
-using NEXT.API.Serializer;
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace NEXT.API
@@ -83,20 +83,11 @@ namespace NEXT.API
         {
             int total;
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            IEnumerable<API.Resource.Product> products = productRepo.getProducts(query, out total);
-
-            //using (var strWriter = new StringWriter())
-            //{
-            //    using (var jsonWriter = new CustomJsonTextWriter(strWriter))
-            //    {
-            //        Func<bool> include = () => jsonWriter.CurrentDepth <= 2;
-            //        var resolver = new CustomContractResolver(include);
-            //        var serializer = new JsonSerializer { ContractResolver = resolver, ReferenceLoopHandling = ReferenceLoopHandling.Serialize };
-            //        serializer.Serialize(jsonWriter, products);
-            //    }
-            //    string data = strWriter.ToString();
-            //    dictionary.Add("data", data);
-            //}
+            IEnumerable<API.Resource.Product> products = productRepo.getProducts(query, out total).ToArray();
+            JObject root = new JObject();
+            JObject jProducts = new JObject(products);
+            root.Add("data", jProducts);
+            root.Add("totalResults", total.ToString());
             dictionary.Add("meta", total.ToString());
             dictionary.Add("data", products);
             dictionary.Add("results", total);

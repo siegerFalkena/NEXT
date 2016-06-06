@@ -11,10 +11,6 @@ namespace NEXT.API.Resource
         public int parentChannelID { get; set; } 
 
         public string Name { get; set; } = null;
-
-        public override Dictionary<string, string> generateMeta(string relationship)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

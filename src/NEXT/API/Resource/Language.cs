@@ -12,10 +12,6 @@ namespace NEXT.API.Resource
         public bool IsDefault { get; set; }
         public string ISOCode { get; set; }
         public string Name { get; set; }
-
-        public override Dictionary<string, string> generateMeta(string relationship)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
