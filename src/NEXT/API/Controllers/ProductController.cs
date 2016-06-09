@@ -84,10 +84,6 @@ namespace NEXT.API
             int total;
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             IEnumerable<API.Resource.Product> products = productRepo.getProducts(query, out total).ToArray();
-            JObject root = new JObject();
-            JObject jProducts = new JObject(products);
-            root.Add("data", jProducts);
-            root.Add("totalResults", total.ToString());
             dictionary.Add("meta", total.ToString());
             dictionary.Add("data", products);
             dictionary.Add("results", total);

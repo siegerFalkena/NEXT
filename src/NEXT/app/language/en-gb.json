@@ -60,5 +60,6 @@
   "AddProduct": "Add Product",
   "ProductList": "Product List",
   "AttributeTypeName": "Type Name",
-  "Value":  "Value"
+  "Value": "Value",
+  "ProductGrid":  "Product list"
 }

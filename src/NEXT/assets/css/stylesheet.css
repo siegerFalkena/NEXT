@@ -25,7 +25,7 @@
 
 @media (min-width: 992px) and (max-width: 1200px) {
     [dynamic-layout] {
-        width: 970px;
+        width: 900px;
     }
 
     .dynamic-layout-col-4 {
@@ -33,7 +33,7 @@
     }
 
     .dynamic-layout-col-8 {
-        width: 600px;
+        width: 300px;
     }
 
   
@@ -42,15 +42,15 @@
 
 @media (min-width: 768px) and (max-width: 992px) {
     [dynamic-layout] {
-        width: 750px;
+        width: 700px;
     }
 
     .dynamic-layout-col-4 {
-        width: 375px;
+        width: 500px;
     }
 
     .dynamic-layout-col-8 {
-        width: 750px;
+        width: 500px;
     }
 
     
@@ -58,15 +58,15 @@
 
 @media (max-width: 768px) {
     [dynamic-layout] {
-        width: 480px;
+        width: 500px;
     }
 
     .dynamic-layout-col-4 {
-        width: 240px;
+        width: 250px;
     }
 
     .dynamic-layout-col-8 {
-        width: 240px;
+        width: 250px;
     }
 }
 
