@@ -7,20 +7,33 @@
     IE6-9;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1600px) {
     [dynamic-layout] {
         width: 1400px;
     }
 
     .dynamic-layout-col-4 {
-        width: 300px;
+        width: 325px;
     }
 
     .dynamic-layout-col-8 {
-        width: 300px;
+        width: 325px;
+    }
+}
+
+
+@media (min-width: 1200px) and (max-width: 1600px) {
+    [dynamic-layout] {
+        width: 1200px;
     }
 
+    .dynamic-layout-col-4 {
+        width: 325px;
+    }
 
+    .dynamic-layout-col-8 {
+        width: 325px;
+    }
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
@@ -29,14 +42,12 @@
     }
 
     .dynamic-layout-col-4 {
-        width: 300px;
+        width: 335px;
     }
 
     .dynamic-layout-col-8 {
-        width: 300px;
+        width: 335px;
     }
-
-  
 }
 
 
@@ -46,27 +57,25 @@
     }
 
     .dynamic-layout-col-4 {
-        width: 500px;
+        width: 325px;
     }
 
     .dynamic-layout-col-8 {
-        width: 500px;
+        width: 325px;
     }
-
-    
 }
 
 @media (max-width: 768px) {
     [dynamic-layout] {
-        width: 500px;
+        width: 440px;
     }
 
     .dynamic-layout-col-4 {
-        width: 250px;
+        width: 325px;
     }
 
     .dynamic-layout-col-8 {
-        width: 250px;
+        width: 325px;
     }
 }
 
@@ -90,16 +99,12 @@ body,
 
 .navbar-default {
     background-color: #000c01;
-    border-color: rgb(0,0,0,0);
+    border-color: rgba(0,0,0,0);
     color: white;
 }
 
 .navbar {
     margin-bottom: 0px;
-}
-
-body {
-    padding-top: 50px;
 }
 
 .nav > li > a {
@@ -115,9 +120,18 @@ body {
     background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    background-attachment: fixed;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+    background-position: bottom left;
+    background-position: left bottom;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     height: 100%;
+}
+
+.logingradient {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f4fcff+0,ffffff+59&1+0,0+59 */
+    background-color: rgba(229,229,240,0.75);
 }
 
 .ui-view .ng-scope {
@@ -170,6 +184,22 @@ body {
     transform: rotateX(90deg);
 }
 
-.list-group-item:hover, li:hover{
-    cursor: pointer;   
+.list-group-item:hover, li:hover {
+    cursor: pointer;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.fa-exclamation {
+    color: fuchsia;
+}
+
+.panel {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.offset-navbar {
+    padding-top: 50px;
 }

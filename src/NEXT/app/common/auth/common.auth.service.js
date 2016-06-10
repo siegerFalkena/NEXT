@@ -22,6 +22,8 @@ function authServiceF($http, $log, $cookies, $window) {
     authService.auth =  function doAuthF(username, password, rememberMe,  cb_result) {
         function cb_success(response) {
             $log.info("authentication: " + response.status + "\t" + response.statusText);
+            $cookies.put('user', username);
+            $cookies.put('role', 'userRoles');
             cb_result(true);
         }
 
@@ -31,7 +33,7 @@ function authServiceF($http, $log, $cookies, $window) {
         }
 
         var item = {
-                url: 'api/authenticate/login',
+                url: 'api/auth',
                 data: { "username": username, "password": password, "isPersistent": rememberMe },
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 method: 'POST'
@@ -64,8 +66,8 @@ function authServiceF($http, $log, $cookies, $window) {
     };
 
     return {
-        auth :function(username, password, cb_result){
-            return authService.auth(username, password, cb_result);
+        auth :function(username, password, rememberMe, cb_result){
+            return authService.auth(username, password, rememberMe,  cb_result);
         },
         isAuth: function(){
             return authService.isAuth()

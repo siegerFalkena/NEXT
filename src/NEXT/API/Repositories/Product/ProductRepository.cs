@@ -100,7 +100,6 @@ namespace NEXT.API.Repositories
             List<DB.Models.Product> products = newQuery
                 .Skip(query.page * query.results)
                 .Take(query.results)
-                //.Select<IEnumerable<DB.Models.Product>, IEnumerable<API.Resource.Product>>((x)=> mapper.Map<IEnumerable<API.Resource.Product>>(x))
                 .ToList();
 
             total = productQuery.Count();

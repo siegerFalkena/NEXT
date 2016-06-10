@@ -10,40 +10,54 @@ angular.module('concentrator')
         ['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
             function ($stateProvider, $urlRouterProvider,
                 $urlMatcherFactoryProvider) {
-                $urlRouterProvider.otherwise('/404');
+                $urlRouterProvider.otherwise('/app/404');
 
                 $stateProvider.state('overview', {
                     url: '/overview',
                     templateUrl: 'concentrator/views/Home/Home.html'
                 })
-                .state('product', {
+                .state('app', {
+                    url: '/app',
+                    abstract: true,
+                    template: '<navbar></navbar> <div ui-view style=\"height:100%; padding-top: 50px\"></div>'
+                })
+                .state('app.product', {
                     url: '/product',
                     abstract: true,
                     template: "<div ui-view style=\"height:100%;\"></div>"
                 })
-                .state('product.overview', {
+                .state('app.product.overview', {
                     url: '/overview',
                     controller: 'productOverviewCtrl',
                     templateUrl: 'concentrator/views/product/productOverview.html'
                 })
-                .state('product.list', {
+                .state('app.product.list', {
                     url: '/query',
                     controller: 'productListCtrl',
                     templateUrl: "concentrator/views/product/productList.html"
                 })
-                .state("product.new", {
+                .state("app.product.new", {
                     url: '/new',
                     controller: 'productNewCtrl',
                     templateUrl: "concentrator/views/product/productViewLarge.html"
                 })
-                .state("product.detail", {
+                .state("app.product.detail", {
                     url: '/{id}',
                     controller: 'productDetailCtrl',
-                    templateUrl: "concentrator/views/product/productViewLarge.html"
+                    templateUrl: "concentrator/views/product/productSidebar.html"
                 })
-                .state('404', {
+                .state("app.product.detail.children", {
+                    url: '/children',
+                    controller: 'productChildCtrl',
+                    templateUrl: "concentrator/views/product/productChildren.html"
+                })
+                .state('app.404', {
                     url: '/404',
                     templateUrl: '404.html'
+                })
+                .state('login', {
+                    url: '/',
+                    templateUrl: "common/auth/loginScreen.html"
                 });
 
             }

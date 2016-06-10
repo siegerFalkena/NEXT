@@ -33,19 +33,24 @@
                         <h4 class="list-group-item-heading">{{product.productID}}</h4>
                     </li>
                     <li role="presentation" class="list-group-item">
-                        <p class="list-group-item-text text-right">{{l10n.getLocalized('SKU')}}</p>
-                        <h4 class="list-group-item-heading" ng-hide="edit">{{product.SKU}}</h4>
-                        <input type="text" class="form-control slide" ng-show="edit" required="" min="4" ng-trim="false" name="productSKU" ng-model="product.SKU" />
-                        <span ng-show="form.productSKU.$error.required">Required!</span>
-                        <span ng-show="form.productSKU.$error.min">minimum length!</span>
+                        <div class="form-group" ng-class="{'has-error' : form.productSKU.$error.required || form.productSKU.$error.ngMinlength }">
+                            <p class="list-group-item-text text-right">{{l10n.getLocalized('SKU')}}</p>
+                            <h4 class="list-group-item-heading" ng-hide="edit">{{product.SKU}}</h4>
+                            <input type="text" class="form-control slide" ng-show="edit" required="" ng-minlength="3" ng-trim="false" name="productSKU" ng-model="product.SKU" />
+                            <div class="list-group" ng-show="edit">
+                                <span ng-show="form.productSKU.$error.required"><i class="fa fa-exclamation"></i> Required!</span>
+                                <span ng-show="form.productSKU.$error.ngMinlength"><i class="fa fa-exclamation"></i>minimum length!</span>
+                            </div>
+                        </div>
                     </li>
                     <!--PRODUCT BRAND-->
                     <li role="presentation" class="list-group-item">
                         <p class="list-group-item-text text-right">{{l10n.getLocalized('BrandName')}}</p>
-                        <h4 class="list-group-item-heading">{{product.brand.Name}}</h4>
+                        <h4 ng-hide="selectBrand" class="list-group-item-heading">{{product.brand.Name}}</h4>
                         <div ng-show="selectBrand" class="slide">
                             <input class="form-control"
                                    type="text"
+                                   name="productBrand"
                                    ng-model="brandSet"
                                    typeahead-min-length="0"
                                    typeahead-loading="loadingBrandLocations"
@@ -60,7 +65,7 @@
                                 <i class="glyphicon glyphicon-remove"></i> No Results Found
                             </div>
                             <div ng-show="selectBrand && form.uBrandSelection.$pristine">
-                                <i class="glyphicon glyphicon-apple"></i>
+                                <i class="fa fa-exclamation"></i>
                             </div>
                         </div>
                     </li>
@@ -68,9 +73,10 @@
                     <li role="presentation" class="list-group-item">
                         <p class="list-group-item-text text-right">{{l10n.getLocalized('ProductType')}}</p>
                         <h4 class="list-group-item-heading" ng-hide="selectType">{{product.ProductType.Name}}</h4>
-                        <div ng-show="selectType">
+                        <div class="form-group" ng-show="selectType" ng-class="{'has-error' : form.productName.$error.required}">
                             <input class="form-control"
                                    type="text"
+                                   name="productName"
                                    typeahead-min-length="0"
                                    ng-model="productTypeSelection"
                                    typeahead-loading="loadingTypeLocations"
@@ -80,6 +86,7 @@
                                    typeahead-on-select="onProductTypeSelect($item, $model, $label, $event)"
                                    uib-typeahead="productType.Name for productType in typeQuery($viewValue)"
                                    placeholder="{{l10n.getLocalized('ProductTypeName');}}" />
+                            <div ng-show="form.productName.$error.required"><i class="fa fa-exclamation"></i> Required!</div>
                             <i ng-show="loadingTypeLocations" class="glyphicon glyphicon-refresh"></i>
                             <div ng-show="noResultsType">
                                 <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -88,9 +95,13 @@
                     </li>
                     <!--EXTERNAL PRODUCT ID-->
                     <li role="presentation" class="list-group-item">
+                        <div class="form-group" ng-class="{'has-error' : form.productEPI.$error.required}">
                         <p class="list-group-item-text text-right">{{l10n.getLocalized('ExternalProductIdentifier')}}</p>
                         <h4 class="list-group-item-heading" ng-hide="edit">{{product.ExternalProductIdentifier}}</h4>
-                        <input type="text" class="form-control" ng-show="edit" required ng-trim="false" ng-model="product.ExternalProductIdentifier" />
+                        <input type="text" class="form-control" ng-show="edit" required ng-trim="false" name="productEPI" ng-model="product.ExternalProductIdentifier" 
+                               ng-class="{'has-error' : form.productEPI.$error.required}"/>
+                        <div ng-show="form.productEPI.$error.required"><i class="fa fa-exclamation"></i> Required!</div>
+                        </div>
                     </li>
                     <!--LAST MODIFIED -->
                     <li role="presentation" class="list-group-item">

@@ -15,14 +15,12 @@
     <link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
 </head>
 
+<!--Refactor to different views-->
 
 <body ng-app="concentrator" class="boxgradient" ng-controller="coreCtrl">
-    <div ng-if="!loginscreen" style="height:100%;">
-        <navbar></navbar>
-        <div ui-view ></div>
-    </div>
-    <div ng-if="loginscreen" class="container-fluid" style="height:100%;">
-        <loginscreen locale="l10n" class="fullscreen"></loginscreen>
+    <!--<navbar></navbar>-->
+    <div class="boxgradient" style="height:100%;">
+        <div ui-view style="height:100%"></div>
     </div>
     <nav class="navbar-fixed-bottom" role="navigation">
         <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>

@@ -12,10 +12,14 @@ namespace NEXT.API.Controllers
     public class AuthController : Controller
     {
         // GET: api/values
-        [HttpPost("/auth")]
-        public void auth([FromHeader]string username, [FromHeader] string password)
+        [HttpPost()]
+        public JsonResult auth([FromHeader]string username, [FromHeader] string password)
         {
-            
+            Response.Cookies.Append("authToken", "true", new Microsoft.AspNet.Http.CookieOptions { Expires = DateTime.Now.AddDays(1)});
+            Response.Cookies.Append("user", username, new Microsoft.AspNet.Http.CookieOptions { Expires = DateTime.Now.AddDays(1) });
+            Response.Cookies.Append("role", "userRole", new Microsoft.AspNet.Http.CookieOptions { Expires = DateTime.Now.AddDays(1) });
+            Redirect("#/product/overview");
+            return Json(new KeyValuePair<string, string>(username, password));
         }
 
     }

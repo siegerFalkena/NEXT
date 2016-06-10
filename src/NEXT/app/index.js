@@ -25,7 +25,7 @@ angular.module('concentrator', [
         cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     })
     .run(runInit)
-    .controller('coreCtrl', ['$scope', 'auth', 'alertService', coreCtrl])
+    .controller('coreCtrl', ['$scope', 'auth', 'alertService', '$rootScope', '$log', coreCtrl])
     .directive('loginscreen', loginscreen);
 
 /**
@@ -35,17 +35,15 @@ angular.module('concentrator', [
  * @param      {$scope}  $scope  { description }
  * @param      {auth}  auth    @link concentrator.auth
  */
-function coreCtrl($scope, auth, alertService) {
-    if (auth.isAuth()) {
-        $scope.loginscreen = false
-    } else {
-        $scope.loginscreen = false
-    }
+function coreCtrl($scope, auth, alertService, $rootScope, $log) {
+    $log.info($rootScope.$state);
+    
     $scope.alerts = alertService.alerts();
     $scope.closeAlert = function (index) { alertService.remove(index) };
     $scope.addError = function () {
         alertService.add(alertService.template());
     };
+    $scope.$rootScope = $rootScope;
 }
 
 function loginscreen() {

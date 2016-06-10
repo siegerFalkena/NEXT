@@ -31,5 +31,4 @@ function navbarCtrl($scope, $log, l10n, auth, alerts) {
     $scope.l10n = l10n;
     $scope.locale = l10n.getLocale();    
     $scope.auth = auth;
-
 };
