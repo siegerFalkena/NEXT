@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='devBuild' Clean='cleanDocs, cleanDist' />
+/// <binding BeforeBuild='build' Clean='cleanDist' />
 var gulp = require('gulp'),
     watch = require('gulp-watch'),
     util = require('gulp-util'),
@@ -26,6 +26,7 @@ var SRC = './app/',
     PORT = 4000,
     LIVERELOAD_PORT = 35729;
 //build, components
+
 
 var excludeBowerImports = ['!' + src + 'assets/bower/*.*',
     '!' + src + 'assets/bower/**/*.*'
@@ -59,7 +60,7 @@ gulp.task('devBuild', function () {
         .pipe(changed(DIST + 'app'))
         .pipe(gulp.dest(DIST));
     return;
-})
+});
 
 
 gulp.task('components', function () {
@@ -124,6 +125,7 @@ gulp.task('copyCSS', function () {
         .pipe(gulp.dest(DIST + 'assets/css/'));
 });
 
+
 gulp.task('copyFonts', function () {
     return gulp.src([
             ASSET + 'fonts/*.*'
@@ -131,6 +133,7 @@ gulp.task('copyFonts', function () {
         .pipe(changed(DIST + 'assets/fonts/'))
         .pipe(gulp.dest(DIST + 'assets/fonts/'));
 });
+
 
 gulp.task('copyImages', function () {
     return gulp.src([
@@ -140,11 +143,13 @@ gulp.task('copyImages', function () {
         .pipe(gulp.dest(DIST + 'assets/img/'));
 });
 
+
 gulp.task('bower', function () {
     return bower({
         cmd: 'install'
     });
 });
+
 
 var child_exec = require('child_process').exec;
 gulp.task('generateDocs', function (done) {
@@ -173,6 +178,7 @@ gulp.task('cleanDocs', function () {
 gulp.task('cleanDist', function () {
     return gulp.src([DIST + '**/*.*', DIST + '*.*', DIST, '!*.config'], { read: false }).pipe(clean());
 });
+
 
 gulp.task('buildWatcher', function () {
     util.log('watching ' + SRC + ' for build');

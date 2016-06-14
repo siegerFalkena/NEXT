@@ -1,0 +1,5 @@
+Project is op basis van C#, .NET Core en NodeJS gemaakt.
+
+Open met Visual Studio 2015. Build project, done.
+
+Buildscripts staan in gulpfile.js, de project root.

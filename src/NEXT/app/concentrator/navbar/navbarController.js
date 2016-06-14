@@ -8,13 +8,18 @@ angular.module('concentrator.concentrator.navbar', [
         'common.alerts',
         'ui.bootstrap.alert'
     ])
-    .controller('navbarCtrl', ['$scope', '$log', 'l10n', 'auth', 'alertService', navbarCtrl]);
+    .controller('navbarCtrl', ['$scope', '$log', 'l10n', 'auth', 'alertService', '$rootScope', navbarCtrl]);
 
 
 
-function navbarCtrl($scope, $log, l10n, auth, alerts) {
+function navbarCtrl($scope, $log, l10n, auth, alerts, $rootScope) {
 
+    $scope.STATE = $rootScope.$state;
     $scope.navCollapsed = false;
+
+    $scope.selected = function (isActiveQuery) {
+       return $rootScope.$state.current.name.includes(isActiveQuery);
+    }
 
     $scope.brand = {
         name: 'Jumbo',

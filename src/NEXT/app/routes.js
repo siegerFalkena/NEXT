@@ -1,7 +1,7 @@
 'use strict';
 angular.module('concentrator')
-    .run(['$rootScope', '$state', '$stateParams',
-        function ($rootScope, $state, $stateParams) {
+    .run(['$rootScope', '$state', '$stateParams', '$log',
+        function ($rootScope, $state, $stateParams, $log) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
         }

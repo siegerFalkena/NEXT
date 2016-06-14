@@ -62,5 +62,7 @@
   "AttributeTypeName": "Type Name",
   "Value": "Value",
   "ProductGrid": "Product list",
-  "BrandName":  "Brand Name"
+  "BrandName": "Brand Name",
+  "SelectParent": "Select Parent",
+  "MakeRoot" :  "Detach from Parent"
 }
